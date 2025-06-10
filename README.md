@@ -2,7 +2,7 @@
 
 This is a leaning app for the bolt.new hackaton
 
-backend : fastapi
+backend : nextjs
 frontend : react/nextjs
 database : None for now
 
