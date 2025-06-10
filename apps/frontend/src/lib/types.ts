@@ -5,6 +5,15 @@ export interface RichContent {
   audio?: string; // URL to audio asset
 }
 
+// Topic categories for better organization
+export interface Topic {
+  id: string;
+  name: string;
+  description: string;
+  icon: string; // Emoji or icon name
+  color: string;
+}
+
 // Defines the data for a card. A card represents a single concept to be learned.
 export interface Card {
   id: string;
@@ -38,10 +47,14 @@ export interface Deck {
   title: string;
   description: string;
   topic: string;
+  topicId: string; // Reference to Topic.id
+  difficulty: 'beginner' | 'intermediate' | 'advanced'; // Overall deck difficulty
   cards: Card[];
   createdAt: Date;
   updatedAt: Date;
   color: string;
+  estimatedTime?: number; // Minutes to complete
+  cardCount?: number; // Computed property
 }
 
 export type GameType = 'flashcard' | 'quiz' | 'matching' | 'word-search' | 'word-scramble';

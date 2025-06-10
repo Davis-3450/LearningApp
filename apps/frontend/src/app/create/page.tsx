@@ -2,14 +2,15 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
-import { Card as CardType, Deck, RichContent } from '@/lib/types';
-import { generateId } from '@/lib/mock-data';
+import { Card as CardType, Deck } from '@/lib/types';
+import { generateId, topics } from '@/lib/mock-data';
 
 export default function CreateDeck() {
   const router = useRouter();
@@ -17,6 +18,8 @@ export default function CreateDeck() {
     title: '',
     description: '',
     topic: '',
+    topicId: '',
+    difficulty: 'beginner',
     color: 'bg-blue-500',
     cards: []
   });
@@ -50,33 +53,37 @@ export default function CreateDeck() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!deck.title || cards.some(card => !card.prompt || !card.answer)) {
-      alert('Please fill in title, and all card prompts and answers');
+    if (!deck.title || !deck.topicId || cards.some(card => !card.prompt || !card.answer)) {
+      alert('Please fill in title, topic, and all card prompts and answers');
       return;
     }
 
+    const selectedTopic = topics.find(t => t.id === deck.topicId);
+    
     const newDeck: Deck = {
       id: generateId(),
       title: deck.title!,
       description: deck.description || '',
-      topic: deck.topic || 'General',
-      color: deck.color!,
+      topic: selectedTopic?.name || 'General',
+      topicId: deck.topicId!,
+      difficulty: deck.difficulty as 'beginner' | 'intermediate' | 'advanced',
+      color: selectedTopic?.color || deck.color!,
       cards: cards.map((card): CardType => ({
         id: generateId(),
         difficulty: 'medium',
-        tags: deck.topic ? [deck.topic.toLowerCase()] : [],
+        tags: selectedTopic ? [selectedTopic.name.toLowerCase()] : [],
         prompt: { text: card.prompt },
         answer: { text: card.answer },
         variations: {
           quiz: {
-            // For simplicity, we are not adding distractors in this form yet
             distractors: []
           }
         },
         explanation: card.hint ? { text: card.hint } : undefined,
       })),
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      estimatedTime: Math.ceil(cards.length * 1.5) // Rough estimate
     };
 
     console.log('Created deck:', newDeck);
@@ -142,12 +149,38 @@ export default function CreateDeck() {
 
               <div>
                 <Label htmlFor="topic">Topic</Label>
-                <Input
-                  id="topic"
-                  value={deck.topic}
-                  onChange={(e) => handleDeckChange('topic', e.target.value)}
-                  placeholder="e.g., Mathematics, History, Languages"
-                />
+                <Select
+                  value={deck.topicId}
+                  onValueChange={(value) => handleDeckChange('topicId', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select topic" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {topics.map((topic) => (
+                      <SelectItem key={topic.id} value={topic.id}>
+                        {topic.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label htmlFor="difficulty">Difficulty</Label>
+                <Select
+                  value={deck.difficulty}
+                  onValueChange={(value) => handleDeckChange('difficulty', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select difficulty" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="beginner">Beginner</SelectItem>
+                    <SelectItem value="intermediate">Intermediate</SelectItem>
+                    <SelectItem value="advanced">Advanced</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div>
