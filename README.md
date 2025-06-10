@@ -3,7 +3,7 @@
 This is a leaning app for the bolt.new hackaton
 
 backend : fastapi
-frontend : react
+frontend : react/nextjs
 database : None for now
 
 we will make a deck system where the user can create a deck of cards and then learn them based on any topic they want.
@@ -24,4 +24,4 @@ We will have:
 
 The deck model will be contained on a json schema with multiple fields so each question can be represented in different ways, variations or interfaces.s
 
-We will have a separate mode for soroban like math challenges with a graphical interface (this wont use AI)
+We will have a separate mode for soroban like math challenges with a graphical interface (this wont use AI for bovious)
