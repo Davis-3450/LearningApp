@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
-import { Card as CardType, Deck } from '@/lib/types';
+import { Card as CardType, Deck, RichContent } from '@/lib/types';
 import { generateId } from '@/lib/mock-data';
 
 export default function CreateDeck() {
@@ -21,22 +21,24 @@ export default function CreateDeck() {
     cards: []
   });
 
-  const [cards, setCards] = useState<Partial<CardType>[]>([
-    { question: '', answer: '', difficulty: 'medium' }
+  const [cards, setCards] = useState<
+    { prompt: string; answer: string; hint?: string }[]
+  >([
+    { prompt: '', answer: '' }
   ]);
 
   const handleDeckChange = (field: keyof Deck, value: string) => {
     setDeck(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleCardChange = (index: number, field: keyof CardType, value: string) => {
+  const handleCardChange = (index: number, field: 'prompt' | 'answer' | 'hint', value: string) => {
     const updatedCards = [...cards];
     updatedCards[index] = { ...updatedCards[index], [field]: value };
     setCards(updatedCards);
   };
 
   const addCard = () => {
-    setCards(prev => [...prev, { question: '', answer: '', difficulty: 'medium' }]);
+    setCards(prev => [...prev, { prompt: '', answer: '' }]);
   };
 
   const removeCard = (index: number) => {
@@ -48,34 +50,37 @@ export default function CreateDeck() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
-    if (!deck.title || !deck.description || cards.some(card => !card.question || !card.answer)) {
-      alert('Please fill in all required fields');
+    if (!deck.title || cards.some(card => !card.prompt || !card.answer)) {
+      alert('Please fill in title, and all card prompts and answers');
       return;
     }
 
-    // Create deck with proper structure
     const newDeck: Deck = {
       id: generateId(),
       title: deck.title!,
-      description: deck.description!,
+      description: deck.description || '',
       topic: deck.topic || 'General',
       color: deck.color!,
-      cards: cards.map(card => ({
+      cards: cards.map((card): CardType => ({
         id: generateId(),
-        question: card.question!,
-        answer: card.answer!,
-        difficulty: card.difficulty as 'easy' | 'medium' | 'hard',
-        hint: card.hint,
-        tags: []
+        difficulty: 'medium',
+        tags: deck.topic ? [deck.topic.toLowerCase()] : [],
+        prompt: { text: card.prompt },
+        answer: { text: card.answer },
+        variations: {
+          quiz: {
+            // For simplicity, we are not adding distractors in this form yet
+            distractors: []
+          }
+        },
+        explanation: card.hint ? { text: card.hint } : undefined,
       })),
       createdAt: new Date(),
       updatedAt: new Date()
     };
 
-    // In a real app, you would save this to a database
     console.log('Created deck:', newDeck);
-    alert('Deck created successfully! (In development mode)');
+    alert('Deck created successfully! (This is a mock save)');
     router.push('/');
   };
 
@@ -193,12 +198,12 @@ export default function CreateDeck() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor={`question-${index}`}>Question *</Label>
+                      <Label htmlFor={`prompt-${index}`}>Prompt *</Label>
                       <Textarea
-                        id={`question-${index}`}
-                        value={card.question}
-                        onChange={(e) => handleCardChange(index, 'question', e.target.value)}
-                        placeholder="Enter the question"
+                        id={`prompt-${index}`}
+                        value={card.prompt}
+                        onChange={(e) => handleCardChange(index, 'prompt', e.target.value)}
+                        placeholder="Enter the prompt"
                         required
                       />
                     </div>
@@ -221,7 +226,7 @@ export default function CreateDeck() {
                       id={`hint-${index}`}
                       value={card.hint || ''}
                       onChange={(e) => handleCardChange(index, 'hint', e.target.value)}
-                      placeholder="Optional hint for the question"
+                      placeholder="Optional hint for the prompt"
                     />
                   </div>
                 </div>

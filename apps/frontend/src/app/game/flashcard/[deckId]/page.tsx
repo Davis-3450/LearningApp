@@ -126,14 +126,14 @@ export default function FlashcardGame() {
               
               <div className="flex-1 flex items-center justify-center">
                 <p className="text-xl md:text-2xl font-medium text-gray-900 dark:text-white">
-                  {showAnswer ? currentCard.answer : currentCard.question}
+                  {showAnswer ? currentCard.answer.text : currentCard.prompt.text}
                 </p>
               </div>
 
-              {currentCard.hint && !showAnswer && (
+              {currentCard.explanation && showAnswer && (
                 <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    💡 Hint: {currentCard.hint}
+                    💡 {currentCard.explanation.text}
                   </p>
                 </div>
               )}

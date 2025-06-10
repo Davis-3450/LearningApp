@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
 import { mockDecks } from '@/lib/mock-data';
-import { Deck, Card as CardType } from '@/lib/types';
+import { Deck, Card as CardType, RichContent } from '@/lib/types';
 import { FeedbackBanner } from '@/components/ui/feedback-banner';
 import { cn } from '@/lib/utils';
 
@@ -17,6 +17,11 @@ interface QuizAnswer {
   selectedOption: string;
   isCorrect: boolean;
 }
+
+// Helper to shuffle array
+const shuffleArray = <T,>(array: T[]): T[] => {
+  return [...array].sort(() => Math.random() - 0.5);
+};
 
 export default function QuizGame() {
   const params = useParams();
@@ -55,14 +60,25 @@ export default function QuizGame() {
   const progress = ((currentCardIndex + 1) / deck.cards.length) * 100;
   const score = answers.filter(a => a.isCorrect).length;
 
-  const handleOptionSelect = (option: string) => {
-    if (showResult) return;
+  const quizOptions = useMemo(() => {
+    if (!currentCard || !currentCard.variations.quiz) return [];
     
-    setSelectedOption(option);
-    const isCorrect = option === currentCard.correctAnswer;
+    const options = [
+      currentCard.answer,
+      ...currentCard.variations.quiz.distractors
+    ];
+    
+    return shuffleArray(options);
+  }, [currentCard]);
+
+  const handleOptionSelect = (option: RichContent) => {
+    if (showResult || !currentCard) return;
+    
+    setSelectedOption(option.text || '');
+    const isCorrect = option.text === currentCard.answer.text;
     const newAnswer: QuizAnswer = {
       cardIndex: currentCardIndex,
-      selectedOption: option,
+      selectedOption: option.text || '',
       isCorrect
     };
     
@@ -88,13 +104,13 @@ export default function QuizGame() {
     setIsQuizComplete(false);
   };
 
-  const getOptionClass = (option: string) => {
+  const getOptionClass = (option: RichContent) => {
     if (!showResult) {
       return 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-750';
     }
 
-    const isCorrectAnswer = option === currentCard.correctAnswer;
-    const isSelected = option === selectedOption;
+    const isCorrectAnswer = option.text === currentCard.answer.text;
+    const isSelected = option.text === selectedOption;
 
     if (isCorrectAnswer) {
       return 'bg-green-100 border-green-500 text-green-800 dark:bg-green-900/20 dark:border-green-500 dark:text-green-200';
@@ -198,11 +214,11 @@ export default function QuizGame() {
         <div className="max-w-2xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl">{currentCard.question}</CardTitle>
+              <CardTitle className="text-xl">{currentCard?.prompt.text}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {currentCard.options?.map((option, index) => (
+                {quizOptions.map((option, index) => (
                   <button
                     key={index}
                     onClick={() => handleOptionSelect(option)}
@@ -213,11 +229,11 @@ export default function QuizGame() {
                         getOptionClass(option)
                     )}
                   >
-                    <span>{option}</span>
-                    {showResult && option === currentCard.correctAnswer && (
+                    <span>{option.text}</span>
+                    {showResult && option.text === currentCard.answer.text && (
                       <CheckCircle className="h-5 w-5 text-green-500" />
                     )}
-                    {showResult && selectedOption === option && option !== currentCard.correctAnswer && (
+                    {showResult && selectedOption === option.text && option.text !== currentCard.answer.text && (
                       <XCircle className="h-5 w-5 text-red-500" />
                     )}
                   </button>
@@ -228,10 +244,10 @@ export default function QuizGame() {
         </div>
       </div>
       
-      {showResult && (
+      {showResult && currentCard && (
         <FeedbackBanner
           isCorrect={answers[answers.length - 1].isCorrect}
-          correctAnswer={currentCard.correctAnswer}
+          correctAnswer={currentCard.answer.text}
           onContinue={handleNextQuestion}
           continueText={currentCardIndex < deck.cards.length - 1 ? 'Next Question' : 'Finish Quiz'}
         />
