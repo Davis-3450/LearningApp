@@ -1,28 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, BookOpen, Play, Clock, Users, Shapes, TrendingUp, Target, Award } from 'lucide-react';
-import { mockDecks, topics } from '@/lib/mock-data';
-import { Deck, Topic } from '@/lib/types';
+import { topics } from '@/lib/mock-data';
+import { Topic } from '@/lib/types';
+import { DecksAPI } from '@/lib/api/decks';
+import type { Deck } from '@/shared/schemas/deck';
 import Link from 'next/link';
 
-const difficultyColors = {
-  'beginner': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-  'intermediate': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-  'advanced': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-};
 
-const DifficultyBadge = ({ difficulty }: { difficulty: string }) => (
-  <Badge className={difficultyColors[difficulty as keyof typeof difficultyColors] || 'bg-gray-100 text-gray-800'}>
-    {difficulty}
-  </Badge>
-);
 
-const DeckCard = ({ deck }: { deck: Deck }) => (
+const DeckCard = ({ deck, fileName }: { deck: Deck; fileName: string }) => (
   <Card className="hover:shadow-lg transition-all hover:scale-[1.02]">
     <CardHeader>
       <div className="flex items-start justify-between">
@@ -32,42 +24,38 @@ const DeckCard = ({ deck }: { deck: Deck }) => (
             {deck.description}
           </CardDescription>
           <div className="flex items-center gap-2 mb-2">
-            <DifficultyBadge difficulty={deck.difficulty} />
-            {deck.estimatedTime && (
-              <Badge variant="outline" className="text-xs">
-                <Clock className="mr-1 h-3 w-3" />
-                {deck.estimatedTime}m
-              </Badge>
-            )}
+            <Badge variant="outline" className="text-xs">
+              <Users className="mr-1 h-3 w-3" />
+              {deck.concepts.length} concepts
+            </Badge>
           </div>
         </div>
-        <div className={`w-4 h-4 rounded-full ${deck.color}`} />
       </div>
     </CardHeader>
     <CardContent>
       <div className="flex items-center justify-between mb-4">
         <span className="text-sm text-gray-500 flex items-center gap-1">
-          <Users className="h-4 w-4" />
-          {deck.cardCount || deck.cards.length} cards
+          <BookOpen className="h-4 w-4" />
+          {deck.concepts.length * 2} flashcards
         </span>
       </div>
       
       <div className="flex gap-2">
         <Button variant="default" size="sm" asChild className="flex-1">
-          <Link href={`/game/flashcard/${deck.id}`}>
+          <Link href={`/game/flashcard/${fileName}`}>
             <BookOpen className="mr-2 h-4 w-4" />
             Study
           </Link>
         </Button>
         <Button variant="outline" size="sm" asChild className="flex-1">
-          <Link href={`/game/quiz/${deck.id}`}>
+          <Link href={`/game/quiz/${fileName}`}>
             <Play className="mr-2 h-4 w-4" />
             Quiz
           </Link>
         </Button>
       </div>
       <Button variant="secondary" size="sm" asChild className="w-full mt-2">
-        <Link href={`/game/matching/${deck.id}`}>
+        <Link href={`/game/matching/${fileName}`}>
           <Shapes className="mr-2 h-4 w-4" />
           Matching Game
         </Link>
@@ -76,13 +64,7 @@ const DeckCard = ({ deck }: { deck: Deck }) => (
   </Card>
 );
 
-const TopicSection = ({ topic, decks }: { topic: Topic; decks: Deck[] }) => {
-  const groupedByDifficulty = {
-    beginner: decks.filter(d => d.difficulty === 'beginner'),
-    intermediate: decks.filter(d => d.difficulty === 'intermediate'),
-    advanced: decks.filter(d => d.difficulty === 'advanced')
-  };
-
+const TopicSection = ({ topic, deckItems }: { topic: Topic; deckItems: Array<{ fileName: string; deck: Deck }> }) => {
   return (
     <div className="space-y-6">
       {/* Topic Header */}
@@ -100,27 +82,21 @@ const TopicSection = ({ topic, decks }: { topic: Topic; decks: Deck[] }) => {
         </div>
       </div>
 
-      {/* Difficulty Sections */}
-      {Object.entries(groupedByDifficulty).map(([difficulty, difficultyDecks]) => (
-        difficultyDecks.length > 0 && (
-          <div key={difficulty} className="space-y-4">
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 capitalize">
-                {difficulty}
-              </h3>
-              <DifficultyBadge difficulty={difficulty} />
-              <span className="text-sm text-gray-500">
-                ({difficultyDecks.length} deck{difficultyDecks.length !== 1 ? 's' : ''})
-              </span>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {difficultyDecks.map((deck) => (
-                <DeckCard key={deck.id} deck={deck} />
-              ))}
-            </div>
+      {/* Decks Grid */}
+      {deckItems.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-500">
+              ({deckItems.length} deck{deckItems.length !== 1 ? 's' : ''})
+            </span>
           </div>
-        )
-      ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {deckItems.map(({ fileName, deck }) => (
+              <DeckCard key={deck.id} deck={deck} fileName={fileName} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -146,18 +122,40 @@ const StatsCard = ({ title, value, description, icon: Icon }: {
 );
 
 export default function Home() {
-  const [decks] = useState<Deck[]>(mockDecks);
+  const [deckItems, setDeckItems] = useState<Array<{ fileName: string; deck: Deck }>>([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('all');
 
-  const groupedDecks = topics.reduce((acc, topic) => {
-    acc[topic.id] = decks.filter(deck => deck.topicId === topic.id);
+  useEffect(() => {
+    const loadDecks = async () => {
+      try {
+        const response = await DecksAPI.getAll();
+        if (response.success && response.data) {
+          setDeckItems(response.data);
+        }
+      } catch (error) {
+        console.error('Failed to load decks:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDecks();
+  }, []);
+
+  // Group decks by topic (we'll use a simple title-based grouping for now)
+  const groupedDeckItems = topics.reduce((acc, topic) => {
+    acc[topic.id] = deckItems.filter(({ deck }) => 
+      deck.title.toLowerCase().includes(topic.name.toLowerCase()) ||
+      (deck.description && deck.description.toLowerCase().includes(topic.name.toLowerCase()))
+    );
     return acc;
-  }, {} as Record<string, Deck[]>);
+  }, {} as Record<string, Array<{ fileName: string; deck: Deck }>>);
 
   // Calculate statistics
-  const totalCards = decks.reduce((acc, deck) => acc + deck.cards.length, 0);
-  const avgCardsPerDeck = Math.round(totalCards / decks.length);
-  const totalEstimatedTime = decks.reduce((acc, deck) => acc + (deck.estimatedTime || 0), 0);
+  const totalConcepts = deckItems.reduce((acc, { deck }) => acc + deck.concepts.length, 0);
+  const avgConceptsPerDeck = deckItems.length > 0 ? Math.round(totalConcepts / deckItems.length) : 0;
+  const totalFlashcards = totalConcepts * 2; // Each concept generates 2 flashcards
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -169,7 +167,7 @@ export default function Home() {
               Learning App
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Explore {decks.length} learning decks across {topics.length} topics
+              Explore {deckItems.length} learning decks across {topics.length} topics
             </p>
           </div>
           <div className="flex gap-3">
@@ -191,21 +189,21 @@ export default function Home() {
         {/* Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <StatsCard
-            title="Total Cards"
-            value={totalCards}
+            title="Total Concepts"
+            value={totalConcepts}
             description="Ready to study"
             icon={BookOpen}
           />
           <StatsCard
-            title="Study Time"
-            value={`${totalEstimatedTime}m`}
-            description="Total estimated time"
+            title="Flashcards"
+            value={totalFlashcards}
+            description="Generated from concepts"
             icon={Clock}
           />
           <StatsCard
             title="Average Deck Size"
-            value={avgCardsPerDeck}
-            description="Cards per deck"
+            value={avgConceptsPerDeck}
+            description="Concepts per deck"
             icon={Target}
           />
         </div>
@@ -224,24 +222,36 @@ export default function Home() {
 
           {/* All Topics View */}
           <TabsContent value="all" className="space-y-12">
-            {topics.map((topic) => {
-              const topicDecks = groupedDecks[topic.id];
-              return topicDecks.length > 0 ? (
-                <TopicSection key={topic.id} topic={topic} decks={topicDecks} />
-              ) : null;
-            })}
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-gray-500">Loading decks...</p>
+              </div>
+            ) : (
+              topics.map((topic) => {
+                const topicDeckItems = groupedDeckItems[topic.id];
+                return topicDeckItems.length > 0 ? (
+                  <TopicSection key={topic.id} topic={topic} deckItems={topicDeckItems} />
+                ) : null;
+              })
+            )}
           </TabsContent>
 
           {/* Individual Topic Views */}
           {topics.map((topic) => (
             <TabsContent key={topic.id} value={topic.id}>
-              <TopicSection topic={topic} decks={groupedDecks[topic.id]} />
+              {loading ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-500">Loading decks...</p>
+                </div>
+              ) : (
+                <TopicSection topic={topic} deckItems={groupedDeckItems[topic.id]} />
+              )}
             </TabsContent>
           ))}
         </Tabs>
 
         {/* Empty State */}
-        {decks.length === 0 && (
+        {!loading && deckItems.length === 0 && (
           <div className="text-center py-12">
             <BookOpen className="mx-auto h-12 w-12 text-gray-400" />
             <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">

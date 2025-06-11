@@ -44,7 +44,7 @@ export default function EditDeckPage() {
           const { deck } = response.data;
           setDeckData({
             title: deck.title,
-            description: deck.description,
+            description: deck.description || '',
           });
           setConcepts(deck.concepts.map(concept => ({
             term: concept.term,
@@ -301,6 +301,9 @@ export default function EditDeckPage() {
                             <SelectItem value="alternative-definition">Alt. Definition</SelectItem>
                             <SelectItem value="fun-fact">Fun Fact</SelectItem>
                             <SelectItem value="misconception">Misconception</SelectItem>
+                            <SelectItem value="tip">Tip</SelectItem>
+                            <SelectItem value="explanation">Explanation</SelectItem>
+                            <SelectItem value="historical-note">Historical Note</SelectItem>
                           </SelectContent>
                         </Select>
                         <Input

@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       .trim();
 
     // Check if file already exists
-    const deckDirectory = path.join(process.cwd(), '..', '..', 'shared', 'data', 'decks');
+    const deckDirectory = path.join(process.cwd(), '../../shared/data/decks');
     const filePath = path.join(deckDirectory, `${fileName}.json`);
     
     try {

@@ -253,6 +253,9 @@ export default function CreateDeckPage() {
                             <SelectItem value="alternative-definition">Alt. Definition</SelectItem>
                             <SelectItem value="fun-fact">Fun Fact</SelectItem>
                             <SelectItem value="misconception">Misconception</SelectItem>
+                            <SelectItem value="tip">Tip</SelectItem>
+                            <SelectItem value="explanation">Explanation</SelectItem>
+                            <SelectItem value="historical-note">Historical Note</SelectItem>
                           </SelectContent>
                         </Select>
                         <Input

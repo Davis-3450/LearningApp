@@ -44,10 +44,8 @@ export async function PUT(
     const body = await request.json();
     
     // Validate the deck data
-    const validatedDeck = DeckSchema.parse(body);
-
-    // Write the updated deck to file
-    const deckDirectory = path.join(process.cwd(), '..', '..', 'shared', 'data', 'decks');
+    const validatedDeck = DeckSchema.parse(body);    // Write the updated deck to file
+    const deckDirectory = path.join(process.cwd(), '../../shared/data/decks');
     const filePath = path.join(deckDirectory, `${fileName}.json`);
     
     await fs.writeFile(filePath, JSON.stringify(validatedDeck, null, 2), 'utf8');
@@ -74,8 +72,7 @@ export async function DELETE(
 ) {
   try {
     const { fileName } = await params;
-    
-    const deckDirectory = path.join(process.cwd(), '..', '..', 'shared', 'data', 'decks');
+      const deckDirectory = path.join(process.cwd(), '../../shared/data/decks');
     const filePath = path.join(deckDirectory, `${fileName}.json`);
     
     // Check if file exists

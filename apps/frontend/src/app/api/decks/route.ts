@@ -35,10 +35,8 @@ export async function POST(request: NextRequest) {
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
       .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .trim();
-
-    // Check if file already exists
-    const deckDirectory = path.join(process.cwd(), '..', '..', 'shared', 'data', 'decks');
+      .trim();    // Check if file already exists
+    const deckDirectory = path.join(process.cwd(), '../../shared/data/decks');
     const filePath = path.join(deckDirectory, `${fileName}.json`);
     
     try {
