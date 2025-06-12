@@ -1,0 +1,31 @@
+{
+  "id": "history-deck",
+  "title": "World History Basics",
+  "description": "Important events and people in history",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Renaissance",
+      "definition": "Period of renewed interest in art and learning in Europe.",
+      "variations": [
+        { "type": "fun-fact", "text": "It began in Italy during the 14th century." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Industrial Revolution",
+      "definition": "Era of rapid industrial growth during the 18th and 19th centuries.",
+      "variations": [
+        { "type": "example", "text": "Steam engines powered factories." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Magna Carta",
+      "definition": "1215 document limiting the powers of the English king.",
+      "variations": [
+        { "type": "historical-note", "text": "Seen as a foundation of constitutional rights." }
+      ]
+    }
+  ]
+}
