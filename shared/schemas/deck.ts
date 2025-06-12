@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { z } from "zod";
 import { ConceptSchema } from "./concepts";
 
@@ -14,3 +15,16 @@ export const DeckSchema = z.object({
 }).passthrough();
 
 export type Deck = z.infer<typeof DeckSchema>; 
+=======
+import { z } from 'zod';
+import { ConceptSchema } from './concepts';
+
+export const DeckSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string().optional(),
+  concepts: z.array(ConceptSchema),
+});
+
+export type Deck = z.infer<typeof DeckSchema>;
+>>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
