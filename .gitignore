@@ -1,7 +1,17 @@
 # python cache
-__pycache__/
+**/__pycache__/
 
 #env
 .env
 
-node_modules/
+**/node_modules/
+
+#logs
+**/logs/
+
+#build
+**/build/
+
+#dist
+
+**/bun.lock
