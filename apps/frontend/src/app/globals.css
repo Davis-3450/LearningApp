@@ -112,6 +112,40 @@
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
+.rose {
+  --background: #fff1f2;
+  --foreground: #881337;
+  --card: #fff1f2;
+  --card-foreground: #881337;
+  --popover: #fff1f2;
+  --popover-foreground: #881337;
+  --primary: #be123c;
+  --primary-foreground: #fff1f2;
+  --secondary: #ffe4e6;
+  --secondary-foreground: #be123c;
+  --muted: #ffe4e6;
+  --muted-foreground: #be123c;
+  --accent: #fecdd3;
+  --accent-foreground: #9f1239;
+}
+
+.forest {
+  --background: #f0fdf4;
+  --foreground: #064e3b;
+  --card: #f0fdf4;
+  --card-foreground: #064e3b;
+  --popover: #f0fdf4;
+  --popover-foreground: #064e3b;
+  --primary: #047857;
+  --primary-foreground: #f0fdf4;
+  --secondary: #dcfce7;
+  --secondary-foreground: #047857;
+  --muted: #dcfce7;
+  --muted-foreground: #064e3b;
+  --accent: #bbf7d0;
+  --accent-foreground: #064e3b;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
