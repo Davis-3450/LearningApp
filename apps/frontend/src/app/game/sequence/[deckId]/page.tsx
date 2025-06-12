@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { scienceDeck } from "../../../../../../shared/data/decks/science-deck";
+import { scienceDeck } from "../../../../../../../shared/data/decks/science-deck";
 import { Card } from "../../../../../../shared/schemas/cards";
 import { useMemo, useState } from "react";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
