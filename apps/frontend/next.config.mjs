@@ -9,6 +9,7 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['@/shared']
   },
+  transpilePackages: ["geist"],
   webpack: (config) => {
     // Handle shared directory
     config.resolve.alias = {
