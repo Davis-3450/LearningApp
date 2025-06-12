@@ -1,0 +1,31 @@
+{
+  "id": "ecology-deck",
+  "title": "Ecology Fundamentals",
+  "description": "Key terms about ecosystems and the environment",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Ecosystem",
+      "definition": "Community of living organisms and their environment.",
+      "variations": [
+        { "type": "example", "text": "A pond is a type of ecosystem" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Biodiversity",
+      "definition": "Variety of life in the world or a region.",
+      "variations": [
+        { "type": "fun-fact", "text": "Rainforests have high biodiversity" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Habitat",
+      "definition": "Natural home of a plant or animal.",
+      "variations": [
+        { "type": "example", "text": "Coral reefs provide habitat for fish" }
+      ]
+    }
+  ]
+}

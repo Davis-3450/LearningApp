@@ -1,0 +1,31 @@
+{
+  "id": "math-deck",
+  "title": "Basic Mathematics",
+  "description": "Fundamental math terms and operations",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Addition",
+      "definition": "Combining two or more quantities to form a sum.",
+      "variations": [
+        { "type": "example", "text": "2 + 3 = 5" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Multiplication",
+      "definition": "Repeated addition of the same number.",
+      "variations": [
+        { "type": "example", "text": "4 × 3 = 12" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Fraction",
+      "definition": "Represents a part of a whole or, more generally, any number of equal parts.",
+      "variations": [
+        { "type": "explanation", "text": "Example: 1/2 is one of two equal parts." }
+      ]
+    }
+  ]
+}

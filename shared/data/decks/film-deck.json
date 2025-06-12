@@ -1,0 +1,31 @@
+{
+  "id": "film-deck",
+  "title": "Film Basics",
+  "description": "Famous movies and film terms",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "The Godfather",
+      "definition": "1972 crime film directed by Francis Ford Coppola",
+      "variations": [
+        { "type": "fun-fact", "text": "Won the Oscar for Best Picture" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Director",
+      "definition": "Person who supervises the creative aspects of a film",
+      "variations": [
+        { "type": "example", "text": "Steven Spielberg is a well-known director" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Animation",
+      "definition": "Technique of creating moving images from drawings or models",
+      "variations": [
+        { "type": "example", "text": "Pixar is famous for its animated films" }
+      ]
+    }
+  ]
+}

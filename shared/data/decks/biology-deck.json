@@ -1,0 +1,31 @@
+{
+  "id": "biology-deck",
+  "title": "Biology Basics",
+  "description": "Core principles in the life sciences",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Cell",
+      "definition": "The smallest structural unit of living organisms",
+      "variations": [
+        { "type": "fun-fact", "text": "Human bodies contain trillions of cells" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "DNA",
+      "definition": "Molecule that carries genetic information",
+      "variations": [
+        { "type": "example", "text": "DNA is organized into chromosomes" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Evolution",
+      "definition": "The process by which different kinds of living organisms develop over generations",
+      "variations": [
+        { "type": "alternative-definition", "text": "Change in the heritable characteristics of populations" }
+      ]
+    }
+  ]
+}

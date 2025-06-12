@@ -1,0 +1,31 @@
+{
+  "id": "chemistry-deck",
+  "title": "Chemistry Essentials",
+  "description": "Key concepts in the study of matter and reactions",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Atom",
+      "definition": "The basic unit of a chemical element",
+      "variations": [
+        { "type": "fun-fact", "text": "Atoms consist of protons, neutrons, and electrons" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Molecule",
+      "definition": "A group of atoms bonded together",
+      "variations": [
+        { "type": "example", "text": "Water is a molecule made of hydrogen and oxygen" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Chemical Reaction",
+      "definition": "Process in which substances convert into new substances",
+      "variations": [
+        { "type": "example", "text": "Rust forming on iron is a chemical reaction" }
+      ]
+    }
+  ]
+}

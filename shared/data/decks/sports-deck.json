@@ -1,0 +1,31 @@
+{
+  "id": "sports-deck",
+  "title": "Popular Sports",
+  "description": "Key facts about popular sports",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Soccer",
+      "definition": "Team sport played with a spherical ball on a rectangular field",
+      "variations": [
+        { "type": "fun-fact", "text": "Known as football outside the US" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Basketball",
+      "definition": "Game where players score by shooting a ball through a hoop",
+      "variations": [
+        { "type": "example", "text": "NBA is a professional basketball league" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Tennis",
+      "definition": "Racquet sport played on a court divided by a net",
+      "variations": [
+        { "type": "fun-fact", "text": "Grand Slam includes Wimbledon and US Open" }
+      ]
+    }
+  ]
+}

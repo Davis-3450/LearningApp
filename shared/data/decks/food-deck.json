@@ -1,0 +1,31 @@
+{
+  "id": "food-deck",
+  "title": "World Cuisine Basics",
+  "description": "Dishes from various cultures",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Sushi",
+      "definition": "Japanese dish with vinegared rice and seafood",
+      "variations": [
+        { "type": "fun-fact", "text": "Often served with soy sauce and wasabi" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Tacos",
+      "definition": "Mexican dish consisting of a folded tortilla filled with ingredients",
+      "variations": [
+        { "type": "example", "text": "Tacos can be filled with meat or vegetables" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Pizza",
+      "definition": "Italian dish of flatbread topped with tomato sauce and cheese",
+      "variations": [
+        { "type": "fun-fact", "text": "Margherita pizza represents the Italian flag" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "french-vocab-deck",
+  "title": "Basic French Vocabulary",
+  "description": "Simple French words and their English equivalents",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Bonjour",
+      "definition": "Hello",
+      "variations": [
+        { "type": "example", "text": "Bonjour, comment ça va?" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Merci",
+      "definition": "Thank you",
+      "variations": [
+        { "type": "example", "text": "Merci beaucoup" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Au revoir",
+      "definition": "Goodbye",
+      "variations": [
+        { "type": "alternative-spelling", "text": "Sometimes shortened to 'Salut' in casual contexts" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "philosophy-deck",
+  "title": "Philosophy Basics",
+  "description": "Key concepts from major philosophers",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Socratic Method",
+      "definition": "Form of cooperative argumentative dialogue",
+      "variations": [
+        { "type": "example", "text": "Uses questions to stimulate critical thinking" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Utilitarianism",
+      "definition": "Ethical theory focused on maximizing happiness",
+      "variations": [
+        { "type": "fun-fact", "text": "Associated with Jeremy Bentham" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Existentialism",
+      "definition": "Philosophy emphasizing individual freedom and choice",
+      "variations": [
+        { "type": "example", "text": "Prominent in the works of Jean-Paul Sartre" }
+      ]
+    }
+  ]
+}

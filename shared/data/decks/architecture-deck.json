@@ -1,0 +1,31 @@
+{
+  "id": "architecture-deck",
+  "title": "Architecture Basics",
+  "description": "Fundamental concepts in architecture",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Arch",
+      "definition": "A curved structure spanning an opening.",
+      "variations": [
+        { "type": "example", "text": "Roman aqueducts use arches" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Gothic style",
+      "definition": "Medieval architectural style with pointed arches.",
+      "variations": [
+        { "type": "example", "text": "Many European cathedrals are Gothic" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Skyscraper",
+      "definition": "A very tall multi-story building.",
+      "variations": [
+        { "type": "fun-fact", "text": "The first skyscrapers were built in Chicago" }
+      ]
+    }
+  ]
+}

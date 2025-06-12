@@ -1,0 +1,31 @@
+{
+  "id": "poetry-deck",
+  "title": "Poetry Terms",
+  "description": "Basic concepts found in poetry",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Haiku",
+      "definition": "Japanese poem with 5-7-5 syllables.",
+      "variations": [
+        { "type": "example", "text": "An old silent pond..." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Sonnet",
+      "definition": "14-line poem with a specific rhyme scheme.",
+      "variations": [
+        { "type": "example", "text": "Shakespeare wrote many sonnets" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Metaphor",
+      "definition": "Comparison of two things without using like or as.",
+      "variations": [
+        { "type": "fun-fact", "text": "Metaphors add depth to language" }
+      ]
+    }
+  ]
+}

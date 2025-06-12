@@ -1,0 +1,31 @@
+{
+  "id": "photography-deck",
+  "title": "Photography Essentials",
+  "description": "Core terms for beginning photographers",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Aperture",
+      "definition": "Opening in a lens that controls light.",
+      "variations": [
+        { "type": "example", "text": "A wide aperture creates shallow depth of field" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Shutter Speed",
+      "definition": "Length of time the camera shutter is open.",
+      "variations": [
+        { "type": "example", "text": "Fast shutter speed freezes motion" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Composition",
+      "definition": "Arrangement of elements in a photo.",
+      "variations": [
+        { "type": "fun-fact", "text": "The rule of thirds aids composition" }
+      ]
+    }
+  ]
+}

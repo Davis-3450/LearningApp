@@ -1,0 +1,31 @@
+{
+  "id": "spanish-vocab-deck",
+  "title": "Basic Spanish Vocabulary",
+  "description": "Common Spanish words and their English meanings",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Hola",
+      "definition": "Hello",
+      "variations": [
+        { "type": "example", "text": "Hola, ¿cómo estás?" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Gracias",
+      "definition": "Thank you",
+      "variations": [
+        { "type": "example", "text": "Muchas gracias por tu ayuda." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Adiós",
+      "definition": "Goodbye",
+      "variations": [
+        { "type": "example", "text": "Nos vemos, ¡adiós!" }
+      ]
+    }
+  ]
+}

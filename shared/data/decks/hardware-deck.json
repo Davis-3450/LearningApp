@@ -1,0 +1,31 @@
+{
+  "id": "hardware-deck",
+  "title": "Computer Hardware",
+  "description": "Essential components of computer systems",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "CPU",
+      "definition": "Central processing unit that performs instructions",
+      "variations": [
+        { "type": "example", "text": "Often called the brain of the computer" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "RAM",
+      "definition": "Random-access memory for temporary data storage",
+      "variations": [
+        { "type": "fun-fact", "text": "More RAM allows more programs to run" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "SSD",
+      "definition": "Solid-state drive for persistent data storage",
+      "variations": [
+        { "type": "example", "text": "Faster than traditional hard drives" }
+      ]
+    }
+  ]
+}

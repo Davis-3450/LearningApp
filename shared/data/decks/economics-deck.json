@@ -1,0 +1,31 @@
+{
+  "id": "economics-deck",
+  "title": "Economics Basics",
+  "description": "Introductory concepts in economics",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Supply and Demand",
+      "definition": "Economic model of price determination.",
+      "variations": [
+        { "type": "example", "text": "High demand and low supply increase prices" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Inflation",
+      "definition": "General increase in prices over time.",
+      "variations": [
+        { "type": "example", "text": "Inflation reduces purchasing power" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "GDP",
+      "definition": "Gross Domestic Product, total value of goods and services produced.",
+      "variations": [
+        { "type": "fun-fact", "text": "GDP is a common measure of a country's economy" }
+      ]
+    }
+  ]
+}

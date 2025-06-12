@@ -1,0 +1,31 @@
+{
+  "id": "statistics-deck",
+  "title": "Statistics Basics",
+  "description": "Fundamental statistics terms",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Mean",
+      "definition": "Average value of a set of numbers.",
+      "variations": [
+        { "type": "example", "text": "The mean of 2, 3, 5 is 3.33." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Median",
+      "definition": "Middle value when numbers are ordered.",
+      "variations": [
+        { "type": "example", "text": "In 1, 3, 9, the median is 3." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Standard Deviation",
+      "definition": "Measure of variation within a set of values.",
+      "variations": [
+        { "type": "fun-fact", "text": "A low standard deviation means data points are close to the mean." }
+      ]
+    }
+  ]
+}

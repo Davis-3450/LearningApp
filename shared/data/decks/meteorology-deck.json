@@ -1,0 +1,31 @@
+{
+  "id": "meteorology-deck",
+  "title": "Meteorology Basics",
+  "description": "Introductory meteorology concepts",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Atmosphere",
+      "definition": "Layers of gases surrounding the Earth.",
+      "variations": [
+        { "type": "example", "text": "The atmosphere protects life from UV radiation." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Precipitation",
+      "definition": "Any form of water falling from the sky.",
+      "variations": [
+        { "type": "example", "text": "Rain and snow are forms of precipitation." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Climate",
+      "definition": "Average weather conditions of a region over time.",
+      "variations": [
+        { "type": "fun-fact", "text": "Climate change affects global patterns." }
+      ]
+    }
+  ]
+}

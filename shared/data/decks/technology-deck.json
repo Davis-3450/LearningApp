@@ -1,0 +1,31 @@
+{
+  "id": "technology-deck",
+  "title": "Modern Technology",
+  "description": "Common terms in today's tech landscape",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Artificial Intelligence",
+      "definition": "Simulation of human intelligence by machines",
+      "variations": [
+        { "type": "example", "text": "AI powers voice assistants like Siri" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Cloud Computing",
+      "definition": "Delivery of computing services over the internet",
+      "variations": [
+        { "type": "fun-fact", "text": "Allows scaling resources on demand" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Blockchain",
+      "definition": "Distributed ledger technology for secure transactions",
+      "variations": [
+        { "type": "example", "text": "Bitcoin uses blockchain" }
+      ]
+    }
+  ]
+}
