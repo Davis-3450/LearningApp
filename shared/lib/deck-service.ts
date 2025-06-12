@@ -1,7 +1,5 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { DeckSchema, type Deck } from '../schemas/deck';
 
 /**
@@ -18,37 +16,16 @@ export class DeckService {
       const filePath = path.join(this.deckDirectory, `${deckFileName}.json`);
       const fileContent = await fs.readFile(filePath, 'utf8');
       const data = JSON.parse(fileContent);
-      
+
       // Validate data against our schema
       const deck = DeckSchema.parse(data);
       return deck;
-
     } catch (error) {
       console.error(`Failed to load deck "${deckFileName}":`, error);
-=======
-=======
->>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
-import { Deck, DeckSchema } from '../schemas/deck';
-
-const DECKS_DIR = path.join(process.cwd(), 'shared/data/decks');
-
-export class DeckService {
-  static async loadDeck(fileName: string): Promise<Deck | null> {
-    try {
-      const filePath = path.join(DECKS_DIR, `${fileName}.json`);
-      const data = await fs.readFile(filePath, 'utf8');
-      return DeckSchema.parse(JSON.parse(data));
-    } catch {
-<<<<<<< HEAD
->>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
-=======
->>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
       return null;
     }
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   /**
    * Lists all available deck files
    */
@@ -69,7 +46,7 @@ export class DeckService {
    */
   static async getAllDecksInfo(): Promise<Array<{ fileName: string; deck: Deck }>> {
     const deckFiles = await this.listAvailableDecks();
-    const decks = [];
+    const decks: Array<{ fileName: string; deck: Deck }> = [];
 
     for (const fileName of deckFiles) {
       const deck = await this.loadDeck(fileName);
@@ -80,28 +57,4 @@ export class DeckService {
 
     return decks;
   }
-} 
-=======
-=======
->>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
-  static async getAllDecksInfo(): Promise<Array<{ fileName: string; deck: Deck }>> {
-    try {
-      const files = await fs.readdir(DECKS_DIR);
-      const decks: Array<{ fileName: string; deck: Deck }> = [];
-      for (const file of files) {
-        if (!file.endsWith('.json')) continue;
-        const fileName = path.parse(file).name;
-        const data = await fs.readFile(path.join(DECKS_DIR, file), 'utf8');
-        const deck = DeckSchema.parse(JSON.parse(data));
-        decks.push({ fileName, deck });
-      }
-      return decks;
-    } catch {
-      return [];
-    }
-  }
 }
-<<<<<<< HEAD
->>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
-=======
->>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
