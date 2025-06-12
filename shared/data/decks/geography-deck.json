@@ -1,0 +1,31 @@
+{
+  "id": "geography-deck",
+  "title": "World Geography",
+  "description": "Capitals and landmarks around the globe",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Mount Everest",
+      "definition": "Highest mountain above sea level, located in the Himalayas.",
+      "variations": [
+        { "type": "fun-fact", "text": "Its peak is 8,849 meters high." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Nile River",
+      "definition": "Longest river in the world, flowing through northeastern Africa.",
+      "variations": [
+        { "type": "fun-fact", "text": "It empties into the Mediterranean Sea." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Capital of Japan",
+      "definition": "Tokyo",
+      "variations": [
+        { "type": "example", "text": "Tokyo is the most populous metropolitan area." }
+      ]
+    }
+  ]
+}

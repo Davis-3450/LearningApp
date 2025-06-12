@@ -1,0 +1,31 @@
+{
+  "id": "literature-deck",
+  "title": "Classic Literature",
+  "description": "Famous authors and works",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "1984",
+      "definition": "A dystopian novel by George Orwell.",
+      "variations": [
+        { "type": "fun-fact", "text": "Introduced the concept of Big Brother." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Moby-Dick",
+      "definition": "Novel by Herman Melville about the quest for a giant whale.",
+      "variations": [
+        { "type": "example", "text": "The narrator famously begins, 'Call me Ishmael.'" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Pride and Prejudice",
+      "definition": "Romantic novel by Jane Austen.",
+      "variations": [
+        { "type": "historical-note", "text": "Published in 1813." }
+      ]
+    }
+  ]
+}
