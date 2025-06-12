@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Learning App - Study with Custom Decks",
   description: "Create and study with custom learning decks. Flashcards, quizzes, and more!",
+  viewport: "width=device-width, initial-scale=1"
 };
 
 export default function RootLayout({
