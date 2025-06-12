@@ -1,0 +1,31 @@
+{
+  "id": "deck-spanish-basics",
+  "title": "Spanish Basics",
+  "description": "Essential Spanish vocabulary for beginners",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Hola",
+      "definition": "Hello",
+      "variations": [
+        {"type": "example", "text": "Hola, ¿cómo estás?"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Adiós",
+      "definition": "Goodbye",
+      "variations": [
+        {"type": "example", "text": "Adiós, hasta luego"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Gracias",
+      "definition": "Thank you",
+      "variations": [
+        {"type": "example", "text": "Gracias por tu ayuda"}
+      ]
+    }
+  ]
+}
