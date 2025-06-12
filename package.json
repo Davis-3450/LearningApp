@@ -1,0 +1,9 @@
+{
+  "name": "learning-app-root",
+  "private": true,
+  "workspaces": ["apps/frontend"],
+  "dependencies": {
+    "zod": "^3.25.57",
+    "@radix-ui/react-dialog": "^1.1.14"
+  }
+}
