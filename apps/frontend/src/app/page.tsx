@@ -210,7 +210,7 @@ export default function Home() {
 
         {/* Topic Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-7">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:grid-cols-7">
             <TabsTrigger value="all">All Topics</TabsTrigger>
             {topics.map((topic) => (
               <TabsTrigger key={topic.id} value={topic.id} className="flex items-center gap-2">
