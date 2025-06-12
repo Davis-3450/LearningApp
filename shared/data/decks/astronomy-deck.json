@@ -1,0 +1,31 @@
+{
+  "id": "astronomy-deck",
+  "title": "Intro to Astronomy",
+  "description": "Fundamental terms about space and the universe",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Star",
+      "definition": "A massive, luminous sphere of plasma held together by gravity",
+      "variations": [
+        { "type": "example", "text": "The Sun is the closest star to Earth" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Planet",
+      "definition": "A celestial body orbiting a star, massive enough for gravity to make it round",
+      "variations": [
+        { "type": "fun-fact", "text": "Earth is the third planet from the Sun" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Galaxy",
+      "definition": "A huge system of stars, gas, and dust bound together by gravity",
+      "variations": [
+        { "type": "example", "text": "The Milky Way is our home galaxy" }
+      ]
+    }
+  ]
+}

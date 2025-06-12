@@ -1,0 +1,31 @@
+{
+  "id": "finance-deck",
+  "title": "Finance Fundamentals",
+  "description": "Important terms used in personal and business finance",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Asset",
+      "definition": "Resource with economic value owned by an individual or corporation",
+      "variations": [
+        { "type": "example", "text": "A house is considered a tangible asset" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Liability",
+      "definition": "Something a person or company owes, usually a sum of money",
+      "variations": [
+        { "type": "example", "text": "A mortgage is a liability" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Interest",
+      "definition": "The cost of borrowing money or the return on investment",
+      "variations": [
+        { "type": "fun-fact", "text": "Compound interest helps savings grow faster" }
+      ]
+    }
+  ]
+}

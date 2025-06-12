@@ -1,0 +1,31 @@
+{
+  "id": "medical-basics-deck",
+  "title": "Medical Basics",
+  "description": "Fundamental medical terms",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Anatomy",
+      "definition": "Study of body structure",
+      "variations": [
+        { "type": "example", "text": "Human anatomy includes organs and systems" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Pathology",
+      "definition": "Study of diseases and their causes",
+      "variations": [
+        { "type": "fun-fact", "text": "Pathologists examine tissue samples" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Pharmacology",
+      "definition": "Science of drug action on biological systems",
+      "variations": [
+        { "type": "example", "text": "Involves studying how drugs interact with cells" }
+      ]
+    }
+  ]
+}

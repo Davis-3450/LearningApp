@@ -1,0 +1,31 @@
+{
+  "id": "psychology-deck",
+  "title": "Intro to Psychology",
+  "description": "Fundamental concepts in the study of mind and behavior",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Cognition",
+      "definition": "The mental action of acquiring knowledge and understanding",
+      "variations": [
+        { "type": "example", "text": "Problem-solving is a cognitive process" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Behavior",
+      "definition": "Observable actions of an organism",
+      "variations": [
+        { "type": "fun-fact", "text": "Behavior is influenced by both genetics and environment" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Emotion",
+      "definition": "Complex reaction pattern involving experiential and physiological elements",
+      "variations": [
+        { "type": "example", "text": "Happiness and anger are emotions" }
+      ]
+    }
+  ]
+}

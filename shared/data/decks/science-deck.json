@@ -1,0 +1,32 @@
+{
+  "id": "science-deck",
+  "title": "Basic Science",
+  "description": "Key terms from general science",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Atom",
+      "definition": "The smallest unit of ordinary matter.",
+      "variations": [
+        { "type": "example", "text": "Atoms combine to form molecules." },
+        { "type": "fun-fact", "text": "Atoms are mostly empty space." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Photosynthesis",
+      "definition": "Process by which plants convert sunlight into energy.",
+      "variations": [
+        { "type": "example", "text": "Plants need light for photosynthesis." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Gravity",
+      "definition": "A force attracting bodies toward each other.",
+      "variations": [
+        { "type": "alternative-definition", "text": "What keeps us on the ground." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "music-deck",
+  "title": "Music Genres",
+  "description": "Introduction to popular music styles",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Classical",
+      "definition": "Formal music tradition rooted in Europe",
+      "variations": [
+        { "type": "example", "text": "Composers include Mozart and Beethoven" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Jazz",
+      "definition": "Genre characterized by swing and improvisation",
+      "variations": [
+        { "type": "fun-fact", "text": "Originated in African-American communities" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Hip Hop",
+      "definition": "Music style featuring rhythmic speech and beats",
+      "variations": [
+        { "type": "example", "text": "Rap is a key component of hip hop" }
+      ]
+    }
+  ]
+}

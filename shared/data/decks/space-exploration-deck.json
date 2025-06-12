@@ -1,0 +1,31 @@
+{
+  "id": "space-exploration-deck",
+  "title": "Space Exploration",
+  "description": "Key milestones and terms about exploring space",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Apollo 11",
+      "definition": "First crewed mission to land on the Moon",
+      "variations": [
+        { "type": "date", "text": "Landed in 1969" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "International Space Station",
+      "definition": "Modular space station in low Earth orbit",
+      "variations": [
+        { "type": "fun-fact", "text": "Continuously inhabited since 2000" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Hubble Telescope",
+      "definition": "Space telescope that has provided deep space images",
+      "variations": [
+        { "type": "example", "text": "Helped determine the rate of expansion of the universe" }
+      ]
+    }
+  ]
+}

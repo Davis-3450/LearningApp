@@ -1,0 +1,31 @@
+{
+  "id": "sociology-deck",
+  "title": "Sociology Basics",
+  "description": "Key terms from sociology",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Culture",
+      "definition": "Shared beliefs, values, and practices of a group.",
+      "variations": [
+        { "type": "example", "text": "Language is part of culture." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Socialization",
+      "definition": "Process by which individuals learn societal norms.",
+      "variations": [
+        { "type": "example", "text": "Family plays a role in socialization." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Norms",
+      "definition": "Rules and expectations guiding behavior in a society.",
+      "variations": [
+        { "type": "fun-fact", "text": "Norms differ across cultures." }
+      ]
+    }
+  ]
+}

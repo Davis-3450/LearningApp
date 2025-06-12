@@ -1,0 +1,31 @@
+{
+  "id": "robotics-deck",
+  "title": "Robotics Basics",
+  "description": "Fundamental robotics terms",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Robot",
+      "definition": "Machine capable of carrying out complex actions automatically.",
+      "variations": [
+        { "type": "example", "text": "Industrial robots assemble cars." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Actuator",
+      "definition": "Component that moves or controls a mechanism or system.",
+      "variations": [
+        { "type": "example", "text": "Servos are common actuators in robotics." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Sensor",
+      "definition": "Device that detects or measures a physical property.",
+      "variations": [
+        { "type": "fun-fact", "text": "Robots use sensors to perceive their environment." }
+      ]
+    }
+  ]
+}

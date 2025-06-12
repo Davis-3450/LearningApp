@@ -1,0 +1,31 @@
+{
+  "id": "mythology-deck",
+  "title": "World Mythology",
+  "description": "Figures and stories from global myths",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Zeus",
+      "definition": "Greek god of the sky and thunder",
+      "variations": [
+        { "type": "fun-fact", "text": "King of the Greek gods" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Thor",
+      "definition": "Norse god associated with thunder",
+      "variations": [
+        { "type": "example", "text": "Wields the hammer Mjolnir" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Ra",
+      "definition": "Egyptian sun god",
+      "variations": [
+        { "type": "fun-fact", "text": "Often depicted with a falcon head" }
+      ]
+    }
+  ]
+}

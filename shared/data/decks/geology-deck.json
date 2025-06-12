@@ -1,0 +1,31 @@
+{
+  "id": "geology-deck",
+  "title": "Geology Basics",
+  "description": "Fundamental geology terms",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Rock",
+      "definition": "Solid mineral material forming the surface of the earth.",
+      "variations": [
+        { "type": "example", "text": "Granite is a common igneous rock." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Plate Tectonics",
+      "definition": "Theory explaining the movement of Earth's plates.",
+      "variations": [
+        { "type": "fun-fact", "text": "Plate interactions cause earthquakes." }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Mineral",
+      "definition": "Naturally occurring inorganic solid with a crystal structure.",
+      "variations": [
+        { "type": "example", "text": "Quartz is a common mineral." }
+      ]
+    }
+  ]
+}

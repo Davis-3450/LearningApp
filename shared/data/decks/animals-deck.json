@@ -1,0 +1,31 @@
+{
+  "id": "animals-deck",
+  "title": "Common Animals",
+  "description": "Basic facts about common animals",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Cat",
+      "definition": "Domesticated feline known for agility",
+      "variations": [
+        { "type": "fun-fact", "text": "Cats have retractable claws" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Dog",
+      "definition": "Domesticated canine often kept as pets",
+      "variations": [
+        { "type": "fun-fact", "text": "Dogs are known for their loyalty" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Elephant",
+      "definition": "Largest land animal with a trunk",
+      "variations": [
+        { "type": "example", "text": "Elephants live in social herds" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "programming-deck",
+  "title": "Programming Basics",
+  "description": "Fundamental concepts in computer programming",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Variable",
+      "definition": "Named storage that holds a value",
+      "variations": [
+        { "type": "example", "text": "let count = 0;" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Function",
+      "definition": "Reusable block of code that performs a task",
+      "variations": [
+        { "type": "example", "text": "function greet() { console.log('Hello'); }" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Loop",
+      "definition": "Control structure that repeats a block of code",
+      "variations": [
+        { "type": "example", "text": "for (let i=0;i<5;i++) {...}" }
+      ]
+    }
+  ]
+}

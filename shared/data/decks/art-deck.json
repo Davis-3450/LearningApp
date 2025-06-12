@@ -1,0 +1,31 @@
+{
+  "id": "art-deck",
+  "title": "Art Fundamentals",
+  "description": "Important movements and techniques in art",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Impressionism",
+      "definition": "19th-century art movement focused on light and color",
+      "variations": [
+        { "type": "example", "text": "Claude Monet painted Water Lilies" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Cubism",
+      "definition": "Art style that breaks objects into geometric shapes",
+      "variations": [
+        { "type": "example", "text": "Pablo Picasso co-founded Cubism" }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Perspective",
+      "definition": "Technique to represent three-dimensional space on a flat surface",
+      "variations": [
+        { "type": "fun-fact", "text": "Used to create depth in Renaissance art" }
+      ]
+    }
+  ]
+}
