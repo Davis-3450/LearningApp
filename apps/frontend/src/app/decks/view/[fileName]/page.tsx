@@ -33,7 +33,7 @@ export default function ViewDeckPage() {
           alert(`Failed to load deck: ${response.error}`);
           router.push('/decks');
         }
-      } catch (error) {
+      } catch {
         alert('Failed to load deck: Network error');
         router.push('/decks');
       } finally {
@@ -48,7 +48,7 @@ export default function ViewDeckPage() {
     if (deck && fileName) {
       try {
         await DecksAPI.export(fileName, deck);
-      } catch (error) {
+      } catch {
         alert('Export failed');
       }
     }
