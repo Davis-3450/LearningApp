@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, BookOpen, Play, Clock, Users, Shapes, TrendingUp, Target, Award } from 'lucide-react';
+import { Plus, BookOpen, Play, Clock, Users, Shapes, Target } from 'lucide-react';
 import { topics } from '@/lib/mock-data';
 import { Topic } from '@/lib/types';
 import { DecksAPI } from '@/lib/api/decks';
@@ -133,8 +133,8 @@ export default function HomePage() {
         if (response.success && response.data) {
           setDeckItems(response.data);
         }
-      } catch (error) {
-        console.error('Failed to load decks:', error);
+      } catch (_error) {
+        console.error('Failed to load decks:', _error);
       } finally {
         setLoading(false);
       }
