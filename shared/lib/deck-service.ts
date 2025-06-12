@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { DeckSchema, type Deck } from '../schemas/deck';
 
 /**
@@ -25,6 +26,8 @@ export class DeckService {
     } catch (error) {
       console.error(`Failed to load deck "${deckFileName}":`, error);
 =======
+=======
+>>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
 import { Deck, DeckSchema } from '../schemas/deck';
 
 const DECKS_DIR = path.join(process.cwd(), 'shared/data/decks');
@@ -36,11 +39,15 @@ export class DeckService {
       const data = await fs.readFile(filePath, 'utf8');
       return DeckSchema.parse(JSON.parse(data));
     } catch {
+<<<<<<< HEAD
+>>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
+=======
 >>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
       return null;
     }
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /**
    * Lists all available deck files
@@ -75,6 +82,8 @@ export class DeckService {
   }
 } 
 =======
+=======
+>>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
   static async getAllDecksInfo(): Promise<Array<{ fileName: string; deck: Deck }>> {
     try {
       const files = await fs.readdir(DECKS_DIR);
@@ -92,4 +101,7 @@ export class DeckService {
     }
   }
 }
+<<<<<<< HEAD
+>>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
+=======
 >>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { z } from "zod";
 import { ConceptSchema } from "./concepts";
 
@@ -16,6 +17,8 @@ export const DeckSchema = z.object({
 
 export type Deck = z.infer<typeof DeckSchema>; 
 =======
+=======
+>>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
 import { z } from 'zod';
 import { ConceptSchema } from './concepts';
 
@@ -27,4 +30,7 @@ export const DeckSchema = z.object({
 });
 
 export type Deck = z.infer<typeof DeckSchema>;
+<<<<<<< HEAD
+>>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
+=======
 >>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2

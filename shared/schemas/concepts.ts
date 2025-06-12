@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { z } from "zod";
 
 // ---------------------------------------------------------------------------
@@ -58,6 +59,8 @@ export const ConceptSchema = z.discriminatedUnion("conceptType", [
   // Other concept schemas will be added here
 ]); 
 =======
+=======
+>>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
 import { z } from 'zod';
 
 export const VariationSchema = z.object({
@@ -76,4 +79,7 @@ export type TermConcept = z.infer<typeof TermConceptSchema>;
 
 export const ConceptSchema = TermConceptSchema;
 export type Concept = z.infer<typeof ConceptSchema>;
+<<<<<<< HEAD
+>>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
+=======
 >>>>>>> 85b5c276ec45cbf76a8a69c7fa290c5b64704bc2
