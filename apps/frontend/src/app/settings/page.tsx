@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 import { availableThemes, themeColors } from '@/components/theme-provider'
+import ThemePreview from '@/components/theme-preview'
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme()
@@ -48,6 +49,11 @@ export default function SettingsPage() {
                 ))}
               </SelectContent>
             </Select>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+              {availableThemes.map((t) => (
+                <ThemePreview key={t} theme={t} onSelect={setTheme} />
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
