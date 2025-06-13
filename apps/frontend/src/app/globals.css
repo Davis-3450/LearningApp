@@ -197,6 +197,23 @@
   --accent-foreground: #f1f5f9;
 }
 
+.midnight-sunset {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card: #0f172a;
+  --card-foreground: #f1f5f9;
+  --popover: #0f172a;
+  --popover-foreground: #f1f5f9;
+  --primary: #ea580c;
+  --primary-foreground: #0f172a;
+  --secondary: #334155;
+  --secondary-foreground: #f1f5f9;
+  --muted: #1e293b;
+  --muted-foreground: #f1f5f9;
+  --accent: #ea580c;
+  --accent-foreground: #f1f5f9;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

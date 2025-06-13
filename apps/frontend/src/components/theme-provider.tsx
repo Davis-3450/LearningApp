@@ -13,6 +13,7 @@ export const availableThemes = [
   "ocean",
   "sunset",
   "midnight",
+  "midnight-sunset",
 ] as const
 
 export type AvailableTheme = (typeof availableThemes)[number]
@@ -24,7 +25,8 @@ export const themeColors: Record<AvailableTheme, string> = {
   forest: "#047857",
   ocean: "#0ea5e9",
   sunset: "#ea580c",
-  midnight: "#0ea5e9",
+  midnight: "#38bdf8",
+  "midnight-sunset": "#ea580c",
 }
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
