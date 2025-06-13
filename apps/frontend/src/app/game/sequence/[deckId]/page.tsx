@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 
 import { scienceDeck } from "../../../../../../shared/data/decks/science-deck";
@@ -9,7 +8,7 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSo
 import { SortableItem } from "./_components/sortable-item";
 
 
-export default function SequenceGamePage({ params }: { params: { deckId: string } }) {
+export default function SequenceGamePage() {
   // NOTE: For now, we are using a mock deck.
   // In the future, you would fetch the deck based on params.deckId
   const deck = scienceDeck;
@@ -19,8 +18,7 @@ export default function SequenceGamePage({ params }: { params: { deckId: string 
     [deck]
   );
 
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
-  const activeCard = orderingCards[activeCardIndex] as Extract<Card, { cardType: 'ordering' }>;
+  const activeCard = orderingCards[0] as Extract<Card, { cardType: 'ordering' }>;
 
   const [items, setItems] = useState(activeCard.data.items);
 

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
-import { availableThemes } from '@/components/theme-provider'
+import { availableThemes, themeColors } from '@/components/theme-provider'
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme()
@@ -34,7 +34,15 @@ export default function SettingsPage() {
               </SelectTrigger>
               <SelectContent>
                 {availableThemes.map((t) => (
-                  <SelectItem key={t} value={t} className="capitalize">
+                  <SelectItem
+                    key={t}
+                    value={t}
+                    className="capitalize flex items-center gap-2"
+                  >
+                    <span
+                      className="w-3 h-3 rounded-full"
+                      style={{ backgroundColor: themeColors[t] }}
+                    />
                     {t}
                   </SelectItem>
                 ))}

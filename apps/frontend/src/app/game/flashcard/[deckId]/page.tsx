@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { notFound } from 'next/navigation';
 import { DeckService } from '@/shared/lib/deck-service';
 import { generateFlashcards } from '@/shared/lib/card-generator';

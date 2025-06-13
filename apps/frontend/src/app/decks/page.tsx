@@ -64,6 +64,7 @@ export default function DecksPage() {
         alert(`Import failed: ${response.error}`);
       }
     } catch (error) {
+      console.error(error);
       alert('Import failed: Network error');
     } finally {
       setImporting(false);
@@ -85,6 +86,7 @@ export default function DecksPage() {
         alert(`Delete failed: ${response.error}`);
       }
     } catch (error) {
+      console.error(error);
       alert('Delete failed: Network error');
     }
   };
@@ -94,6 +96,7 @@ export default function DecksPage() {
     try {
       await DecksAPI.export(fileName, deck);
     } catch (error) {
+      console.error(error);
       alert('Export failed');
     }
   };

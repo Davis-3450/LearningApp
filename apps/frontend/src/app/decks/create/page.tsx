@@ -43,7 +43,11 @@ export default function CreateDeckPage() {
     setConcepts(concepts.filter((_, i) => i !== index));
   };
 
-  const updateConcept = (index: number, field: keyof Omit<TermConcept, 'conceptType'>, value: any) => {
+  const updateConcept = (
+    index: number,
+    field: keyof Omit<TermConcept, 'conceptType'>,
+    value: string
+  ) => {
     const updated = [...concepts];
     updated[index] = { ...updated[index], [field]: value };
     setConcepts(updated);
@@ -110,6 +114,7 @@ export default function CreateDeckPage() {
         alert(`Creation failed: ${response.error}`);
       }
     } catch (error) {
+      console.error(error);
       alert('Creation failed: Network error');
     } finally {
       setLoading(false);

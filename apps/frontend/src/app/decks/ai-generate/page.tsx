@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,7 +10,6 @@ import { ArrowLeft, Bot, Zap, Info } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AIGeneratePage() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   
   const [formData, setFormData] = useState({
