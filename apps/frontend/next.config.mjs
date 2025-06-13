@@ -6,9 +6,7 @@ const __dirname = dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['@/shared']
-  },
+  serverExternalPackages: ['@/shared', 'zod'],
   webpack: (config) => {
     // Handle shared directory
     config.resolve.alias = {
