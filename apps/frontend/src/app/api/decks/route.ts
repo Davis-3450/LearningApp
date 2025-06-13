@@ -1,68 +1,41 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { DeckService } from '@/shared/lib/deck-service';
-import { DeckSchema } from '@/shared/schemas/deck';
-import { promises as fs } from 'fs';
+import { NextResponse } from 'next/server';
+import fs from 'fs/promises';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 
-// GET /api/decks - List all decks
 export async function GET() {
   try {
-    const decks = await DeckService.getAllDecksInfo();
-    return NextResponse.json({ success: true, data: decks });
+    // Construct the path to the JSON file
+    // The 'shared' directory is expected to be at the root of the project,
+    // and process.cwd() in Next.js app routes usually refers to the root of the frontend app.
+    // Thus, we might need to adjust the path to go up to the monorepo root.
+    // Assuming 'apps/frontend' is the current working directory structure.
+    const filePath = path.join(process.cwd(), '..', '..', 'shared', 'data', 'decks', 'spanish-basics.json');
+
+    // Read the file content
+    const fileContent = await fs.readFile(filePath, 'utf-8');
+
+    // Parse the JSON data
+    const data = JSON.parse(fileContent);
+
+    // Return the data as a JSON response
+    return NextResponse.json(data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   } catch (error) {
-    console.error('Error fetching decks:', error);
+    console.error('Error reading deck data:', error);
+    // Handle errors, such as file not found or invalid JSON
+    // It's good practice to check the type of error to provide more specific feedback
+    // For instance, if (error.code === 'ENOENT') { /* file not found */ }
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch decks' },
-      { status: 500 }
+      { error: 'Failed to load deck data', details: error.message },
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
     );
   }
 }
-
-// POST /api/decks - Create a new deck
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    
-    // Validate the deck data
-    const validatedDeck = DeckSchema.parse({
-      ...body,
-      id: body.id || uuidv4(), // Generate UUID if not provided
-    });
-
-    // Create a safe filename from the title
-    const fileName = validatedDeck.title
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .trim();    // Check if file already exists
-    const deckDirectory = path.join(process.cwd(), '../../shared/data/decks');
-    const filePath = path.join(deckDirectory, `${fileName}.json`);
-    
-    try {
-      await fs.access(filePath);
-      return NextResponse.json(
-        { success: false, error: 'A deck with this name already exists' },
-        { status: 409 }
-      );
-    } catch {
-      // File doesn't exist, which is what we want
-    }
-
-    // Write the deck to file
-    await fs.writeFile(filePath, JSON.stringify(validatedDeck, null, 2), 'utf8');
-
-    return NextResponse.json({
-      success: true,
-      data: { fileName, deck: validatedDeck },
-      message: 'Deck created successfully'
-    });
-
-  } catch (error) {
-    console.error('Error creating deck:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to create deck' },
-      { status: 500 }
-    );
-  }
-} 

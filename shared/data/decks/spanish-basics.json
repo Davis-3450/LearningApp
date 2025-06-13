@@ -1,31 +1,88 @@
-{
-  "id": "deck-spanish-basics",
-  "title": "Spanish Basics",
-  "description": "Essential Spanish vocabulary for beginners",
-  "concepts": [
-    {
-      "conceptType": "term",
-      "term": "Hola",
-      "definition": "Hello",
-      "variations": [
-        {"type": "example", "text": "Hola, ¿cómo estás?"}
-      ]
-    },
-    {
-      "conceptType": "term",
-      "term": "Adiós",
-      "definition": "Goodbye",
-      "variations": [
-        {"type": "example", "text": "Adiós, hasta luego"}
-      ]
-    },
-    {
-      "conceptType": "term",
-      "term": "Gracias",
-      "definition": "Thank you",
-      "variations": [
-        {"type": "example", "text": "Gracias por tu ayuda"}
-      ]
-    }
-  ]
-}
+[
+  {
+    "id": "spanish-basics-1",
+    "title": "Spanish Basics",
+    "description": "Essential Spanish vocabulary for beginners. Covers greetings, farewells, and basic politeness.",
+    "concepts": [
+      {
+        "id": "concept-1-1",
+        "term": "Hola",
+        "definition": "Hello",
+        "variations": [
+          {"type": "example", "text": "Hola, ¿cómo estás?"}
+        ]
+      },
+      {
+        "id": "concept-1-2",
+        "term": "Adiós",
+        "definition": "Goodbye",
+        "variations": [
+          {"type": "example", "text": "Adiós, hasta luego"}
+        ]
+      },
+      {
+        "id": "concept-1-3",
+        "term": "Gracias",
+        "definition": "Thank you",
+        "variations": [
+          {"type": "example", "text": "Gracias por tu ayuda"}
+        ]
+      },
+      {
+        "id": "concept-1-4",
+        "term": "Por favor",
+        "definition": "Please",
+        "variations": [
+          {"type": "example", "text": "Pásame la sal, por favor."}
+        ]
+      },
+      {
+        "id": "concept-1-5",
+        "term": "De nada",
+        "definition": "You're welcome",
+        "variations": [
+          {"type": "example", "text": "No hay de qué."}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "spanish-food-101",
+    "title": "Spanish Food Vocabulary",
+    "description": "Learn common food items and dining phrases in Spanish.",
+    "concepts": [
+      {
+        "id": "concept-2-1",
+        "term": "Agua",
+        "definition": "Water",
+        "variations": [
+          {"type": "example", "text": "Quisiera un vaso de agua, por favor."}
+        ]
+      },
+      {
+        "id": "concept-2-2",
+        "term": "Pan",
+        "definition": "Bread",
+        "variations": [
+          {"type": "example", "text": "El pan está muy fresco hoy."}
+        ]
+      },
+      {
+        "id": "concept-2-3",
+        "term": "Manzana",
+        "definition": "Apple",
+        "variations": [
+          {"type": "example", "text": "Una manzana al día mantiene al doctor en la lejanía."}
+        ]
+      },
+      {
+        "id": "concept-2-4",
+        "term": "La cuenta",
+        "definition": "The bill (in a restaurant)",
+        "variations": [
+          {"type": "example", "text": "Camarero, la cuenta, por favor."}
+        ]
+      }
+    ]
+  }
+]
