@@ -140,6 +140,7 @@ export default function DecksPage() {
                 <Link href="/decks" className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setSidebarOpen(false)}>Decks</Link>
                 <Link href="/decks/create" className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setSidebarOpen(false)}>Create Deck</Link>
                 <Link href="/decks/ai-generate" className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setSidebarOpen(false)}>Generate with AI</Link>
+                <Link href="/settings" className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setSidebarOpen(false)}>Settings</Link>
               </nav>
             </aside>
           </div>

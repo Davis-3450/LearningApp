@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, BookOpen, Play, Clock, Users, Shapes, TrendingUp, Target, Award } from 'lucide-react';
+import { Plus, BookOpen, Play, Clock, Users, Shapes, TrendingUp, Target, Award, Settings } from 'lucide-react';
 import { topics } from '@/lib/mock-data';
 import { Topic } from '@/lib/types';
 import { DecksAPI } from '@/lib/api/decks';
@@ -181,6 +181,12 @@ export default function Home() {
               <Link href="/create">
                 <Plus className="mr-2 h-4 w-4" />
                 Create Deck
+              </Link>
+            </Button>
+            <Button asChild variant="secondary">
+              <Link href="/settings">
+                <Settings className="mr-2 h-4 w-4" />
+                Settings
               </Link>
             </Button>
           </div>
