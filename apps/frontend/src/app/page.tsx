@@ -5,22 +5,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, BookOpen, Play, Clock, Users, Shapes, TrendingUp, Target, Award } from 'lucide-react';
+import { Plus, BookOpen, Play, Clock, Users, Shapes, TrendingUp, Target, Award, Menu, X } from 'lucide-react';
 import { topics } from '@/lib/mock-data';
 import { Topic } from '@/lib/types';
 import { DecksAPI } from '@/lib/api/decks';
 import type { Deck } from '@/shared/schemas/deck';
 import Link from 'next/link';
 
-
-
 const DeckCard = ({ deck, fileName }: { deck: Deck; fileName: string }) => (
-  <Card className="hover:shadow-lg transition-all hover:scale-[1.02]">
-    <CardHeader>
+  <Card className="hover:shadow-lg transition-all hover:scale-[1.02] h-full">
+    <CardHeader className="pb-3">
       <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <CardTitle className="text-lg mb-2">{deck.title}</CardTitle>
-          <CardDescription className="mb-3">
+        <div className="flex-1 min-w-0">
+          <CardTitle className="text-lg mb-2 line-clamp-2">{deck.title}</CardTitle>
+          <CardDescription className="mb-3 line-clamp-3">
             {deck.description}
           </CardDescription>
           <div className="flex items-center gap-2 mb-2">
@@ -32,7 +30,7 @@ const DeckCard = ({ deck, fileName }: { deck: Deck; fileName: string }) => (
         </div>
       </div>
     </CardHeader>
-    <CardContent>
+    <CardContent className="pt-0">
       <div className="flex items-center justify-between mb-4">
         <span className="text-sm text-gray-500 flex items-center gap-1">
           <BookOpen className="h-4 w-4" />
@@ -40,43 +38,45 @@ const DeckCard = ({ deck, fileName }: { deck: Deck; fileName: string }) => (
         </span>
       </div>
       
-      <div className="flex gap-2">
-        <Button variant="default" size="sm" asChild className="flex-1">
-          <Link href={`/game/flashcard/${fileName}`}>
-            <BookOpen className="mr-2 h-4 w-4" />
-            Study
-          </Link>
-        </Button>
-        <Button variant="outline" size="sm" asChild className="flex-1">
-          <Link href={`/game/quiz/${fileName}`}>
-            <Play className="mr-2 h-4 w-4" />
-            Quiz
+      <div className="space-y-2">
+        <div className="grid grid-cols-2 gap-2">
+          <Button variant="default" size="sm" asChild className="w-full">
+            <Link href={`/game/flashcard/${fileName}`}>
+              <BookOpen className="mr-2 h-4 w-4" />
+              Study
+            </Link>
+          </Button>
+          <Button variant="outline" size="sm" asChild className="w-full">
+            <Link href={`/game/quiz/${fileName}`}>
+              <Play className="mr-2 h-4 w-4" />
+              Quiz
+            </Link>
+          </Button>
+        </div>
+        <Button variant="secondary" size="sm" asChild className="w-full">
+          <Link href={`/game/matching/${fileName}`}>
+            <Shapes className="mr-2 h-4 w-4" />
+            Matching Game
           </Link>
         </Button>
       </div>
-      <Button variant="secondary" size="sm" asChild className="w-full mt-2">
-        <Link href={`/game/matching/${fileName}`}>
-          <Shapes className="mr-2 h-4 w-4" />
-          Matching Game
-        </Link>
-      </Button>
     </CardContent>
   </Card>
 );
 
 const TopicSection = ({ topic, deckItems }: { topic: Topic; deckItems: Array<{ fileName: string; deck: Deck }> }) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Topic Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className={`p-3 rounded-lg ${topic.color}`}>
-          <span className="text-2xl">{topic.icon}</span>
+      <div className="flex items-center gap-3 mb-4 sm:mb-6">
+        <div className={`p-2 sm:p-3 rounded-lg ${topic.color}`}>
+          <span className="text-xl sm:text-2xl">{topic.icon}</span>
         </div>
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
             {topic.name}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 line-clamp-2">
             {topic.description}
           </p>
         </div>
@@ -84,13 +84,13 @@ const TopicSection = ({ topic, deckItems }: { topic: Topic; deckItems: Array<{ f
 
       {/* Decks Grid */}
       {deckItems.length > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-500">
               ({deckItems.length} deck{deckItems.length !== 1 ? 's' : ''})
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {deckItems.map(({ fileName, deck }) => (
               <DeckCard key={deck.id} deck={deck} fileName={fileName} />
             ))}
@@ -107,15 +107,15 @@ const StatsCard = ({ title, value, description, icon: Icon }: {
   description: string;
   icon: React.ElementType;
 }) => (
-  <Card>
-    <CardContent className="p-6">
+  <Card className="h-full">
+    <CardContent className="p-4 sm:p-6">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{description}</p>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 truncate">{title}</p>
+          <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{description}</p>
         </div>
-        <Icon className="h-8 w-8 text-gray-400" />
+        <Icon className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 flex-shrink-0 ml-2" />
       </div>
     </CardContent>
   </Card>
@@ -125,6 +125,7 @@ export default function Home() {
   const [deckItems, setDeckItems] = useState<Array<{ fileName: string; deck: Deck }>>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('all');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const loadDecks = async () => {
@@ -159,18 +160,20 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+      <div className="container mx-auto px-4 py-4 sm:py-8">
+        {/* Mobile Header */}
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
               Learning App
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1 sm:mt-2 line-clamp-2">
               Explore {deckItems.length} learning decks across {topics.length} topics
             </p>
           </div>
-          <div className="flex gap-3">
+          
+          {/* Desktop Actions */}
+          <div className="hidden sm:flex gap-3">
             <Button asChild variant="outline">
               <Link href="/decks">
                 <BookOpen className="mr-2 h-4 w-4" />
@@ -184,10 +187,40 @@ export default function Home() {
               </Link>
             </Button>
           </div>
+
+          {/* Mobile Menu Button */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="sm:hidden ml-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </Button>
         </div>
 
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="sm:hidden mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg border shadow-lg">
+            <div className="space-y-2">
+              <Button asChild variant="outline" className="w-full justify-start">
+                <Link href="/decks" onClick={() => setMobileMenuOpen(false)}>
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  Manage Decks
+                </Link>
+              </Button>
+              <Button asChild className="w-full justify-start">
+                <Link href="/create" onClick={() => setMobileMenuOpen(false)}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Create Deck
+                </Link>
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <StatsCard
             title="Total Concepts"
             value={totalConcepts}
@@ -209,21 +242,39 @@ export default function Home() {
         </div>
 
         {/* Topic Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-7">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
+          {/* Mobile Topic Selector */}
+          <div className="sm:hidden">
+            <select
+              value={activeTab}
+              onChange={(e) => setActiveTab(e.target.value)}
+              className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            >
+              <option value="all">All Topics</option>
+              {topics.map((topic) => (
+                <option key={topic.id} value={topic.id}>
+                  {topic.icon} {topic.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Desktop Tabs */}
+          <TabsList className="hidden sm:grid w-full grid-cols-4 lg:grid-cols-7">
             <TabsTrigger value="all">All Topics</TabsTrigger>
             {topics.map((topic) => (
               <TabsTrigger key={topic.id} value={topic.id} className="flex items-center gap-2">
                 <span>{topic.icon}</span>
-                <span className="hidden sm:inline">{topic.name}</span>
+                <span className="hidden lg:inline">{topic.name}</span>
               </TabsTrigger>
             ))}
           </TabsList>
 
           {/* All Topics View */}
-          <TabsContent value="all" className="space-y-12">
+          <TabsContent value="all" className="space-y-8 sm:space-y-12">
             {loading ? (
               <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white mx-auto mb-4"></div>
                 <p className="text-gray-500">Loading decks...</p>
               </div>
             ) : (
@@ -241,6 +292,7 @@ export default function Home() {
             <TabsContent key={topic.id} value={topic.id}>
               {loading ? (
                 <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white mx-auto mb-4"></div>
                   <p className="text-gray-500">Loading decks...</p>
                 </div>
               ) : (
@@ -257,15 +309,23 @@ export default function Home() {
             <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
               No decks yet
             </h3>
-            <p className="mt-2 text-gray-500">
+            <p className="mt-2 text-gray-500 px-4">
               Create your first learning deck to get started
             </p>
-            <Button className="mt-4" asChild>
-              <Link href="/create">
-                <Plus className="mr-2 h-4 w-4" />
-                Create Your First Deck
-              </Link>
-            </Button>
+            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+              <Button asChild className="w-full sm:w-auto">
+                <Link href="/create">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Create Your First Deck
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="w-full sm:w-auto">
+                <Link href="/decks">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  Browse Decks
+                </Link>
+              </Button>
+            </div>
           </div>
         )}
       </div>

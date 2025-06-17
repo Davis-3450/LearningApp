@@ -15,7 +15,10 @@ import {
   Trash2, 
   RefreshCw,
   FileText,
-  Bot
+  Bot,
+  Menu,
+  X,
+  Search
 } from 'lucide-react';
 import type { Deck } from '@/shared/schemas/deck';
 
@@ -26,9 +29,11 @@ interface DeckWithFileName {
 
 export default function DecksPage() {
   const [decks, setDecks] = useState<DeckWithFileName[]>([]);
+  const [filteredDecks, setFilteredDecks] = useState<DeckWithFileName[]>([]);
   const [loading, setLoading] = useState(true);
   const [importing, setImporting] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Load all decks
   const loadDecks = async () => {
@@ -37,6 +42,7 @@ export default function DecksPage() {
       const response = await DecksAPI.getAll();
       if (response.success && response.data) {
         setDecks(response.data);
+        setFilteredDecks(response.data);
       }
     } catch (error) {
       console.error('Failed to load decks:', error);
@@ -48,6 +54,19 @@ export default function DecksPage() {
   useEffect(() => {
     loadDecks();
   }, []);
+
+  // Filter decks based on search query
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredDecks(decks);
+    } else {
+      const filtered = decks.filter(({ deck }) =>
+        deck.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (deck.description && deck.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+      setFilteredDecks(filtered);
+    }
+  }, [searchQuery, decks]);
 
   // Handle file import
   const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,9 +133,7 @@ export default function DecksPage() {
       {/* Mobile-only top bar with hamburger */}
       <div className="md:hidden bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 px-4 py-3 flex items-center justify-between sticky top-0 z-30">
         <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(true)}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          <Menu className="h-5 w-5" />
           <span className="sr-only">Open menu</span>
         </Button>
 
@@ -134,7 +151,12 @@ export default function DecksPage() {
 
             {/* Side menu */}
             <aside className="relative w-72 max-w-full h-full bg-white dark:bg-gray-900 shadow-lg p-6 space-y-4">
-              <h2 className="text-lg font-semibold mb-4">Menu</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold">Menu</h2>
+                <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
               <nav className="space-y-2">
                 <Link href="/" className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setSidebarOpen(false)}>Home</Link>
                 <Link href="/decks" className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setSidebarOpen(false)}>Decks</Link>
@@ -147,27 +169,41 @@ export default function DecksPage() {
       </div>
 
       {/* Main content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+      <div className="container mx-auto px-4 py-4 sm:py-8">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
             Deck Manager
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
             Create, edit, and manage your learning decks. All changes are saved to JSON files.
           </p>
         </div>
 
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Input
+              type="text"
+              placeholder="Search decks..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+        </div>
+
         {/* Action Bar */}
-        <div className="flex flex-wrap gap-4 mb-8">
-          <Button asChild>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <Button asChild className="w-full sm:w-auto">
             <Link href="/decks/create">
               <Plus className="mr-2 h-4 w-4" />
               Create New Deck
             </Link>
           </Button>
           
-          <div className="relative">
-            <Button variant="outline" disabled={importing}>
+          <div className="relative w-full sm:w-auto">
+            <Button variant="outline" disabled={importing} className="w-full sm:w-auto">
               <Upload className="mr-2 h-4 w-4" />
               {importing ? 'Importing...' : 'Import JSON'}
             </Button>
@@ -180,12 +216,12 @@ export default function DecksPage() {
             />
           </div>
 
-          <Button variant="outline" onClick={loadDecks}>
+          <Button variant="outline" onClick={loadDecks} className="w-full sm:w-auto">
             <RefreshCw className="mr-2 h-4 w-4" />
             Refresh
           </Button>
 
-          <Button variant="outline" asChild>
+          <Button variant="outline" asChild className="w-full sm:w-auto">
             <Link href="/decks/ai-generate">
               <Bot className="mr-2 h-4 w-4" />
               Generate with AI
@@ -194,19 +230,19 @@ export default function DecksPage() {
         </div>
 
         {/* Decks Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {decks.map(({ fileName, deck }) => (
-            <Card key={deck.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle className="text-xl">{deck.title}</CardTitle>
-                <CardDescription>{deck.description}</CardDescription>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {filteredDecks.map(({ fileName, deck }) => (
+            <Card key={deck.id} className="hover:shadow-lg transition-shadow h-full flex flex-col">
+              <CardHeader className="flex-1">
+                <CardTitle className="text-lg sm:text-xl line-clamp-2">{deck.title}</CardTitle>
+                <CardDescription className="line-clamp-3">{deck.description}</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 <div className="flex items-center justify-between mb-4">
                   <Badge variant="secondary">
                     {deck.concepts.length} concept{deck.concepts.length !== 1 ? 's' : ''}
                   </Badge>
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="outline" className="text-xs truncate max-w-24">
                     {fileName}.json
                   </Badge>
                 </div>
@@ -227,7 +263,7 @@ export default function DecksPage() {
 
                 {/* Management Buttons */}
                 <div className="grid grid-cols-4 gap-1">
-                  <Button asChild variant="ghost" size="sm">
+                  <Button asChild variant="ghost" size="sm" title="Edit">
                     <Link href={`/decks/edit/${fileName}`}>
                       <Edit className="h-4 w-4" />
                     </Link>
@@ -236,10 +272,11 @@ export default function DecksPage() {
                     variant="ghost" 
                     size="sm"
                     onClick={() => handleExport(fileName, deck)}
+                    title="Export"
                   >
                     <Download className="h-4 w-4" />
                   </Button>
-                  <Button asChild variant="ghost" size="sm">
+                  <Button asChild variant="ghost" size="sm" title="View">
                     <Link href={`/decks/view/${fileName}`}>
                       <FileText className="h-4 w-4" />
                     </Link>
@@ -249,6 +286,7 @@ export default function DecksPage() {
                     size="sm"
                     onClick={() => handleDelete(fileName, deck.title)}
                     className="text-red-600 hover:text-red-700"
+                    title="Delete"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -258,20 +296,40 @@ export default function DecksPage() {
           ))}
         </div>
 
-        {decks.length === 0 && (
+        {/* No Results State */}
+        {!loading && filteredDecks.length === 0 && searchQuery && (
+          <div className="text-center py-12">
+            <Search className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+            <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
+              No decks found for "{searchQuery}"
+            </p>
+            <Button variant="outline" onClick={() => setSearchQuery('')}>
+              Clear Search
+            </Button>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!loading && decks.length === 0 && (
           <div className="text-center py-12">
             <FileText className="mx-auto h-12 w-12 text-gray-400 mb-4" />
             <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
               No decks found
             </p>
-            <p className="text-gray-400 dark:text-gray-500 mb-6">
+            <p className="text-gray-400 dark:text-gray-500 mb-6 px-4">
               Create your first deck or import existing JSON files to get started.
             </p>
-            <div className="flex justify-center gap-4">
-              <Button asChild>
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+              <Button asChild className="w-full sm:w-auto">
                 <Link href="/decks/create">
                   <Plus className="mr-2 h-4 w-4" />
                   Create Deck
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="w-full sm:w-auto">
+                <Link href="/decks/ai-generate">
+                  <Bot className="mr-2 h-4 w-4" />
+                  Generate with AI
                 </Link>
               </Button>
             </div>
@@ -280,4 +338,4 @@ export default function DecksPage() {
       </div>
     </div>
   );
-} 
+}

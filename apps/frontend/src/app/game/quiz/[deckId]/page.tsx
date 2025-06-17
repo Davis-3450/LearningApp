@@ -83,6 +83,7 @@ export default function QuizGame() {
   
   const [deck, setDeck] = useState<Deck | null>(null);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -125,8 +126,8 @@ export default function QuizGame() {
 
   if (!deck || questions.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+        <div className="text-center max-w-md">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
             {!deck ? 'Deck not found' : 'No quiz questions available'}
           </h2>
@@ -202,15 +203,15 @@ export default function QuizGame() {
     const percentage = Math.round((score / questions.length) * 100);
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-4 sm:py-8">
           <div className="max-w-2xl mx-auto text-center">
-            <Card className="p-8">
+            <Card className="p-4 sm:p-8">
               <CardHeader>
-                <CardTitle className="text-2xl">Quiz Complete! 🎉</CardTitle>
+                <CardTitle className="text-xl sm:text-2xl">Quiz Complete! 🎉</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="mb-6">
-                  <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
+                  <div className="text-3xl sm:text-4xl font-bold text-blue-600 dark:text-blue-400">
                     {percentage}%
                   </div>
                   <p className="text-gray-600 dark:text-gray-400 mt-2">
@@ -218,7 +219,7 @@ export default function QuizGame() {
                   </p>
                 </div>
 
-                <div className="space-y-4 mb-6">
+                <div className="space-y-3 sm:space-y-4 mb-6 max-h-60 overflow-y-auto">
                   {answers.map((answer, index) => (
                     <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <span className="text-sm">Question {index + 1}</span>
@@ -236,9 +237,9 @@ export default function QuizGame() {
                   ))}
                 </div>
 
-                <div className="flex gap-4 justify-center">
-                  <Button onClick={resetQuiz}>Try Again</Button>
-                  <Button variant="outline" onClick={() => router.push('/decks')}>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                  <Button onClick={resetQuiz} className="w-full sm:w-auto">Try Again</Button>
+                  <Button variant="outline" onClick={() => router.push('/decks')} className="w-full sm:w-auto">
                     Back to Decks
                   </Button>
                 </div>
@@ -251,31 +252,31 @@ export default function QuizGame() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-32">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20 sm:pb-32">
+      <div className="container mx-auto px-4 py-4 sm:py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={() => router.push('/decks')}>
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+            <Button variant="ghost" onClick={() => router.push('/decks')} size="sm">
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
                 {deck.title}
               </h1>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 Quiz Mode
               </p>
             </div>
           </div>
-          <Button variant="outline" onClick={resetQuiz}>
+          <Button variant="outline" onClick={resetQuiz} size="sm" className="ml-2">
             <RotateCcw className="mr-2 h-4 w-4" />
-            Reset
+            <span className="hidden sm:inline">Reset</span>
           </Button>
         </div>
 
         {/* Progress */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-gray-600 dark:text-gray-400">
               Question {currentQuestionIndex + 1} of {questions.length}
@@ -291,7 +292,7 @@ export default function QuizGame() {
         <div className="max-w-2xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl">{currentQuestion?.question}</CardTitle>
+              <CardTitle className="text-lg sm:text-xl break-words">{currentQuestion?.question}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -301,17 +302,17 @@ export default function QuizGame() {
                     onClick={() => handleOptionSelect(option)}
                     disabled={showResult}
                     className={cn(
-                        'w-full p-4 text-left rounded-lg border transition-colors flex items-center justify-between',
-                        'disabled:cursor-not-allowed',
+                        'w-full p-3 sm:p-4 text-left rounded-lg border transition-colors flex items-center justify-between',
+                        'disabled:cursor-not-allowed text-sm sm:text-base',
                         getOptionClass(option)
                     )}
                   >
-                    <span>{option}</span>
+                    <span className="break-words flex-1">{option}</span>
                     {showResult && option === currentQuestion.correctAnswer && (
-                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 ml-2" />
                     )}
                     {showResult && selectedOption === option && option !== currentQuestion.correctAnswer && (
-                      <XCircle className="h-5 w-5 text-red-500" />
+                      <XCircle className="h-5 w-5 text-red-500 flex-shrink-0 ml-2" />
                     )}
                   </button>
                 ))}
@@ -324,29 +325,29 @@ export default function QuizGame() {
       {showResult && (
         <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 p-4">
           <div className="container mx-auto max-w-2xl flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
               {answers[answers.length - 1]?.isCorrect ? (
-                <CheckCircle className="h-6 w-6 text-green-500" />
+                <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0" />
               ) : (
-                <XCircle className="h-6 w-6 text-red-500" />
+                <XCircle className="h-6 w-6 text-red-500 flex-shrink-0" />
               )}
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="font-medium">
                   {answers[answers.length - 1]?.isCorrect ? 'Correct!' : 'Incorrect'}
                 </p>
                 {!answers[answers.length - 1]?.isCorrect && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
                     Correct answer: {currentQuestion.correctAnswer}
                   </p>
                 )}
               </div>
             </div>
-            <Button onClick={handleNextQuestion}>
-              {currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
+            <Button onClick={handleNextQuestion} className="ml-4 flex-shrink-0">
+              {currentQuestionIndex < questions.length - 1 ? 'Next' : 'Finish'}
             </Button>
           </div>
         </div>
       )}
     </div>
   );
-} 
+}
