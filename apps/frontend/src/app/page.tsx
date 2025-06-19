@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Navigation } from '@/components/layout/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, BookOpen, Play, Clock, Users, Shapes, TrendingUp, Target, Award, Menu, X } from 'lucide-react';
+import { Plus, BookOpen, Play, Clock, Users, Shapes, TrendingUp, Target, Award, Zap } from 'lucide-react';
 import { topics } from '@/lib/mock-data';
 import { Topic } from '@/lib/types';
 import { DecksAPI } from '@/lib/api/decks';
@@ -125,7 +126,6 @@ export default function Home() {
   const [deckItems, setDeckItems] = useState<Array<{ fileName: string; deck: Deck }>>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('all');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const loadDecks = async () => {
@@ -160,67 +160,36 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <Navigation />
+      
       <div className="container mx-auto px-4 py-4 sm:py-8">
-        {/* Mobile Header */}
-        <div className="flex items-center justify-between mb-6 sm:mb-8">
-          <div className="min-w-0 flex-1">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
-              Learning App
-            </h1>
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1 sm:mt-2 line-clamp-2">
-              Explore {deckItems.length} learning decks across {topics.length} topics
-            </p>
-          </div>
+        {/* Hero Section */}
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+            Master Any Subject
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto">
+            Create custom learning decks, study with flashcards, take quizzes, and track your progress across {topics.length} different topics.
+          </p>
           
-          {/* Desktop Actions */}
-          <div className="hidden sm:flex gap-3">
-            <Button asChild variant="outline">
-              <Link href="/decks">
-                <BookOpen className="mr-2 h-4 w-4" />
-                Manage Decks
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="text-lg px-8">
+              <Link href="/decks/create">
+                <Plus className="mr-2 h-5 w-5" />
+                Create Your First Deck
               </Link>
             </Button>
-            <Button asChild>
-              <Link href="/create">
-                <Plus className="mr-2 h-4 w-4" />
-                Create Deck
+            <Button asChild variant="outline" size="lg" className="text-lg px-8">
+              <Link href="/decks">
+                <BookOpen className="mr-2 h-5 w-5" />
+                Browse Existing Decks
               </Link>
             </Button>
           </div>
-
-          {/* Mobile Menu Button */}
-          <Button
-            variant="outline"
-            size="icon"
-            className="sm:hidden ml-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </Button>
         </div>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="sm:hidden mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg border shadow-lg">
-            <div className="space-y-2">
-              <Button asChild variant="outline" className="w-full justify-start">
-                <Link href="/decks" onClick={() => setMobileMenuOpen(false)}>
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  Manage Decks
-                </Link>
-              </Button>
-              <Button asChild className="w-full justify-start">
-                <Link href="/create" onClick={() => setMobileMenuOpen(false)}>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create Deck
-                </Link>
-              </Button>
-            </div>
-          </div>
-        )}
-
         {/* Statistics */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
           <StatsCard
             title="Total Concepts"
             value={totalConcepts}
@@ -239,6 +208,47 @@ export default function Home() {
             description="Concepts per deck"
             icon={Target}
           />
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 sm:mb-12">
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <Link href="/decks/create">
+              <CardContent className="p-6 text-center">
+                <Plus className="h-8 w-8 mx-auto mb-3 text-blue-600" />
+                <h3 className="font-semibold mb-2">Create Deck</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Build custom learning content</p>
+              </CardContent>
+            </Link>
+          </Card>
+          
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <Link href="/decks/ai-generate">
+              <CardContent className="p-6 text-center">
+                <Zap className="h-8 w-8 mx-auto mb-3 text-purple-600" />
+                <h3 className="font-semibold mb-2">AI Generate</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Let AI create content for you</p>
+              </CardContent>
+            </Link>
+          </Card>
+          
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <Link href="/decks">
+              <CardContent className="p-6 text-center">
+                <BookOpen className="h-8 w-8 mx-auto mb-3 text-green-600" />
+                <h3 className="font-semibold mb-2">Browse Decks</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Explore existing content</p>
+              </CardContent>
+            </Link>
+          </Card>
+          
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <CardContent className="p-6 text-center">
+              <TrendingUp className="h-8 w-8 mx-auto mb-3 text-orange-600" />
+              <h3 className="font-semibold mb-2">Progress</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Track your learning journey</p>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Topic Tabs */}
@@ -314,7 +324,7 @@ export default function Home() {
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild className="w-full sm:w-auto">
-                <Link href="/create">
+                <Link href="/decks/create">
                   <Plus className="mr-2 h-4 w-4" />
                   Create Your First Deck
                 </Link>

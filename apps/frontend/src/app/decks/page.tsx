@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Navigation } from '@/components/layout/navigation';
 import { DecksAPI } from '@/lib/api/decks';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,8 +17,6 @@ import {
   RefreshCw,
   FileText,
   Bot,
-  Menu,
-  X,
   Search
 } from 'lucide-react';
 import type { Deck } from '@/shared/schemas/deck';
@@ -32,7 +31,6 @@ export default function DecksPage() {
   const [filteredDecks, setFilteredDecks] = useState<DeckWithFileName[]>([]);
   const [loading, setLoading] = useState(true);
   const [importing, setImporting] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Load all decks
@@ -119,10 +117,13 @@ export default function DecksPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="flex items-center gap-2">
-          <RefreshCw className="h-4 w-4 animate-spin" />
-          Loading decks...
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <Navigation />
+        <div className="flex items-center justify-center py-12">
+          <div className="flex items-center gap-2">
+            <RefreshCw className="h-4 w-4 animate-spin" />
+            Loading decks...
+          </div>
         </div>
       </div>
     );
@@ -130,45 +131,8 @@ export default function DecksPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Mobile-only top bar with hamburger */}
-      <div className="md:hidden bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 px-4 py-3 flex items-center justify-between sticky top-0 z-30">
-        <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(true)}>
-          <Menu className="h-5 w-5" />
-          <span className="sr-only">Open menu</span>
-        </Button>
-
-        <span className="font-semibold">Deck Manager</span>
-        <div />
-
-        {/* Sidebar overlay */}
-        {sidebarOpen && (
-          <div className="fixed inset-0 z-40 flex">
-            {/* Backdrop */}
-            <div
-              className="absolute inset-0 bg-black/50"
-              onClick={() => setSidebarOpen(false)}
-            />
-
-            {/* Side menu */}
-            <aside className="relative w-72 max-w-full h-full bg-white dark:bg-gray-900 shadow-lg p-6 space-y-4">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold">Menu</h2>
-                <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)}>
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-              <nav className="space-y-2">
-                <Link href="/" className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setSidebarOpen(false)}>Home</Link>
-                <Link href="/decks" className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setSidebarOpen(false)}>Decks</Link>
-                <Link href="/decks/create" className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setSidebarOpen(false)}>Create Deck</Link>
-                <Link href="/decks/ai-generate" className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setSidebarOpen(false)}>Generate with AI</Link>
-              </nav>
-            </aside>
-          </div>
-        )}
-      </div>
-
-      {/* Main content */}
+      <Navigation />
+      
       <div className="container mx-auto px-4 py-4 sm:py-8">
         <div className="mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">

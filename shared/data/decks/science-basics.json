@@ -1,0 +1,52 @@
+{
+  "id": "deck-science-basics",
+  "title": "Science Basics",
+  "description": "Fundamental science concepts for beginners",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Photosynthesis",
+      "definition": "The process by which plants use sunlight, water, and carbon dioxide to produce glucose and oxygen",
+      "variations": [
+        {"type": "example", "text": "Plants convert sunlight into energy through photosynthesis"},
+        {"type": "fun-fact", "text": "Photosynthesis produces all the oxygen we breathe"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Gravity",
+      "definition": "The force that attracts objects toward each other, especially toward the center of the Earth",
+      "variations": [
+        {"type": "example", "text": "Gravity keeps us on the ground and makes objects fall"},
+        {"type": "explanation", "text": "The strength of gravity depends on the mass of objects and distance between them"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "DNA",
+      "definition": "Deoxyribonucleic acid, the molecule that carries genetic information in living organisms",
+      "variations": [
+        {"type": "example", "text": "DNA determines traits like eye color and height"},
+        {"type": "fun-fact", "text": "Human DNA is 99.9% identical between all people"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Atom",
+      "definition": "The smallest unit of matter that retains the properties of an element",
+      "variations": [
+        {"type": "example", "text": "Everything around us is made of atoms"},
+        {"type": "explanation", "text": "Atoms consist of protons, neutrons, and electrons"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Ecosystem",
+      "definition": "A community of living organisms interacting with their physical environment",
+      "variations": [
+        {"type": "example", "text": "A forest ecosystem includes trees, animals, soil, and climate"},
+        {"type": "tip", "text": "Ecosystems can be as small as a pond or as large as a desert"}
+      ]
+    }
+  ]
+}

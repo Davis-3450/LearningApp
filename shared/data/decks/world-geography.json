@@ -1,0 +1,52 @@
+{
+  "id": "deck-world-geography",
+  "title": "World Geography",
+  "description": "Countries, capitals, and geographical features around the world",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Mount Everest",
+      "definition": "The highest mountain peak in the world, located in the Himalayas between Nepal and Tibet",
+      "variations": [
+        {"type": "fun-fact", "text": "Mount Everest is 29,032 feet (8,849 meters) tall"},
+        {"type": "historical-note", "text": "First successfully climbed by Edmund Hillary and Tenzing Norgay in 1953"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Amazon River",
+      "definition": "The longest river in the world, flowing through South America",
+      "variations": [
+        {"type": "example", "text": "The Amazon flows from Peru through Brazil to the Atlantic Ocean"},
+        {"type": "fun-fact", "text": "The Amazon River system contains about 20% of the world's fresh water"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Sahara Desert",
+      "definition": "The largest hot desert in the world, covering much of North Africa",
+      "variations": [
+        {"type": "example", "text": "The Sahara covers parts of Morocco, Algeria, Tunisia, Libya, Egypt, and other countries"},
+        {"type": "fun-fact", "text": "The Sahara is about the size of the United States"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Great Barrier Reef",
+      "definition": "The world's largest coral reef system, located off the coast of Australia",
+      "variations": [
+        {"type": "example", "text": "The Great Barrier Reef can be seen from space"},
+        {"type": "tip", "text": "It's home to thousands of species of fish, coral, and marine life"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Ring of Fire",
+      "definition": "A region around the Pacific Ocean where many earthquakes and volcanic eruptions occur",
+      "variations": [
+        {"type": "explanation", "text": "The Ring of Fire is caused by tectonic plate movements"},
+        {"type": "example", "text": "Countries like Japan, Indonesia, and Chile are part of the Ring of Fire"}
+      ]
+    }
+  ]
+}

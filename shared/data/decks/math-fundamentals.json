@@ -1,0 +1,52 @@
+{
+  "id": "deck-math-fundamentals",
+  "title": "Math Fundamentals",
+  "description": "Essential mathematical concepts and operations",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "Prime Number",
+      "definition": "A natural number greater than 1 that has no positive divisors other than 1 and itself",
+      "variations": [
+        {"type": "example", "text": "2, 3, 5, 7, 11, 13 are prime numbers"},
+        {"type": "tip", "text": "2 is the only even prime number"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Fraction",
+      "definition": "A number that represents a part of a whole, written as one number over another",
+      "variations": [
+        {"type": "example", "text": "1/2 means one half, 3/4 means three quarters"},
+        {"type": "explanation", "text": "The top number is the numerator, the bottom is the denominator"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Perimeter",
+      "definition": "The distance around the outside of a shape",
+      "variations": [
+        {"type": "example", "text": "The perimeter of a square with side 4 is 16"},
+        {"type": "tip", "text": "Add up all the side lengths to find perimeter"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Variable",
+      "definition": "A symbol (usually a letter) that represents an unknown number in mathematics",
+      "variations": [
+        {"type": "example", "text": "In the equation x + 5 = 10, x is a variable"},
+        {"type": "explanation", "text": "Variables allow us to write general mathematical relationships"}
+      ]
+    },
+    {
+      "conceptType": "term",
+      "term": "Percentage",
+      "definition": "A way of expressing a number as a fraction of 100",
+      "variations": [
+        {"type": "example", "text": "50% means 50 out of 100, or half"},
+        {"type": "tip", "text": "To convert a decimal to percentage, multiply by 100"}
+      ]
+    }
+  ]
+}
