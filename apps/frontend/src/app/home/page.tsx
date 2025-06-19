@@ -1,13 +1,30 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { ArrowLeft, Plus, Zap, BookOpen, TrendingUp, Clock, BarChart3, Target, Award, Brain } from 'lucide-react'
+import { ArrowLeft, Plus, Zap, BookOpen, TrendingUp, Clock, BarChart3, Target, Award, Brain, Play, Heart, Share, Sparkles } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { DecksAPI } from '@/lib/api/decks'
+import type { Deck } from '@/shared/schemas/deck'
+import { 
+  PageLayout, 
+  PageHeader, 
+  PageContent, 
+  PageSection, 
+  StatsGrid, 
+  ContentGrid, 
+  LoadingGrid 
+} from '@/components/ui/page-layout'
+import { 
+  DeckCard, 
+  StatsCard, 
+  QuickStartCard, 
+  EmptyStateCard 
+} from '@/components/ui/common-cards'
 
 const recentDecks = [
   {
@@ -56,93 +73,63 @@ const quickActions = [
   { id: 'trends', label: 'Trending', icon: TrendingUp, color: 'bg-orange-500', href: '/fyp' }
 ]
 
-function StatCard({ icon: Icon, label, value, description, trend }: { 
-  icon: any, label: string, value: string | number, description: string, trend?: string 
-}) {
-  return (
-    <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <Icon className="h-4 w-4 text-primary" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">{label}</p>
-              <p className="text-2xl font-bold">{value}</p>
-            </div>
-          </div>
-          {trend && (
-            <Badge variant="secondary" className="text-xs">
-              {trend}
-            </Badge>
-          )}
-        </div>
-        <p className="text-xs text-muted-foreground mt-2">{description}</p>
-      </CardContent>
-    </Card>
-  )
+interface DeckWithFileName {
+  fileName: string;
+  deck: Deck;
 }
 
-function DeckCard({ deck }: { deck: any }) {
-  const getProgressColor = (progress: number) => {
-    if (progress >= 80) return 'bg-green-500'
-    if (progress >= 50) return 'bg-blue-500'
-    if (progress >= 20) return 'bg-yellow-500'
-    return 'bg-red-500'
-  }
-
-  return (
-    <Card className="hover:shadow-md transition-all duration-200 group cursor-pointer">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className="text-2xl">{deck.thumbnail}</div>
-            <div className="flex-1">
-              <CardTitle className="text-base">{deck.title}</CardTitle>
-              <CardDescription className="text-sm">
-                {deck.totalCards} cards • {deck.lastStudied}
-              </CardDescription>
-            </div>
-          </div>
-          {deck.streak > 0 && (
-            <Badge variant="secondary" className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300">
-              🔥 {deck.streak}
+// Mobile-friendly deck card for feed
+const FeedDeckCard = ({ deck, fileName }: { deck: Deck; fileName: string }) => (
+  <Card className="hover:shadow-lg transition-all border-0 shadow-sm">
+    <CardContent className="p-4">
+      <div className="flex items-start gap-3">
+        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+          <BookOpen className="h-6 w-6 text-primary" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-sm leading-tight mb-1 truncate">{deck.title}</h3>
+          <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{deck.description}</p>
+          <div className="flex items-center gap-2 mb-3">
+            <Badge variant="outline" className="text-xs h-5">
+              {deck.concepts.length} cards
             </Badge>
-          )}
-        </div>
-      </CardHeader>
-      
-      <CardContent className="pt-0">
-        <div className="space-y-3">
-          <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-muted-foreground">Progress</span>
-              <span className="font-medium">{deck.progress}%</span>
-            </div>
-            <Progress value={deck.progress} className="h-2" />
+            <Badge variant="secondary" className="text-xs h-5">
+              {deck.difficulty || 'Medium'}
+            </Badge>
           </div>
-          
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-muted-foreground">Studied today</span>
-            <span className="font-medium">
-              {deck.studiedToday > 0 ? `${deck.studiedToday} cards` : 'Not yet'}
-            </span>
+          <div className="flex items-center gap-2">
+            <Button size="sm" className="h-7 text-xs flex-1" asChild>
+              <Link href={`/game/flashcard/${fileName}`}>
+                <Play className="mr-1 h-3 w-3" />
+                Study
+              </Link>
+            </Button>
+            <Button variant="outline" size="sm" className="h-7 px-2">
+              <Heart className="h-3 w-3" />
+            </Button>
+            <Button variant="outline" size="sm" className="h-7 px-2">
+              <Share className="h-3 w-3" />
+            </Button>
           </div>
         </div>
-        
-        <div className="flex gap-2 mt-4">
-          <Button size="sm" className="flex-1">
-            Continue
-          </Button>
-          <Button size="sm" variant="outline">
-            Review
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
+      </div>
+    </CardContent>
+  </Card>
+)
+
+// Compact stats card for mobile
+const StatCard = ({ icon: Icon, label, value, color = "text-primary" }: {
+  icon: React.ElementType;
+  label: string;
+  value: string | number;
+  color?: string;
+}) => (
+  <div className="text-center p-3 rounded-lg border">
+    <Icon className={`h-5 w-5 mx-auto mb-1 ${color}`} />
+    <div className={`text-lg font-bold ${color}`}>{value}</div>
+    <div className="text-xs text-muted-foreground">{label}</div>
+  </div>
+)
 
 export default function HomePage() {
   const router = useRouter()
@@ -152,168 +139,107 @@ export default function HomePage() {
     if (hour < 18) return 'Good afternoon'
     return 'Good evening'
   })
+  const [deckItems, setDeckItems] = useState<DeckWithFileName[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadDecks()
+  }, [])
+
+  const loadDecks = async () => {
+    try {
+      const response = await DecksAPI.getAll()
+      if (response.success && response.data) {
+        setDeckItems(response.data)
+      }
+    } catch (error) {
+      console.error('Failed to load decks:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Calculate statistics
+  const totalConcepts = deckItems.reduce((acc, { deck }) => acc + deck.concepts.length, 0)
+  const totalFlashcards = totalConcepts * 2
+
+  const headerActions = (
+    <Button size="sm" asChild>
+      <Link href="/decks/create">
+        <Plus className="h-4 w-4" />
+      </Link>
+    </Button>
+  )
+
+  const quickStartActions = [
+    {
+      href: '/decks/create',
+      icon: Plus,
+      title: 'Create New Deck',
+      subtitle: 'Build custom content',
+      variant: 'default' as const
+    },
+    {
+      href: '/decks/ai-generate',
+      icon: Sparkles,
+      title: 'AI Generate',
+      subtitle: 'Let AI create for you',
+      variant: 'outline' as const
+    }
+  ]
+
+  const sectionActions = (
+    <Button variant="ghost" size="sm" asChild>
+      <Link href="/decks">View All</Link>
+    </Button>
+  )
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Button variant="ghost" size="icon" onClick={() => router.back()}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <h1 className="text-xl font-semibold">Learning Dashboard</h1>
-            <Link href="/settings">
-              <Button variant="ghost" size="icon">
-                <BarChart3 className="h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
+    <PageLayout>
+      <PageHeader
+        title="Learning App"
+        subtitle="Your study companion"
+        actions={headerActions}
+      />
 
-      {/* Content */}
-      <div className="container mx-auto px-4 py-6 space-y-8">
-        {/* Welcome Section */}
-        <section>
-          <h2 className="text-2xl font-bold mb-2">{greeting}! 👋</h2>
-          <p className="text-muted-foreground mb-6">Ready to continue your learning journey?</p>
-          
-          {/* Daily Stats */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <StatCard
-              icon={Target}
-              label="Cards Studied"
-              value={dailyStats.cardsStudied}
-              description="Today's progress"
-              trend="+12%"
-            />
-            <StatCard
-              icon={Clock}
-              label="Minutes"
-              value={dailyStats.minutesSpent}
-              description="Time invested"
-              trend="+5min"
-            />
-            <StatCard
-              icon={Award}
-              label="Day Streak"
-              value={dailyStats.streak}
-              description="Keep it up!"
-              trend="🔥"
-            />
-            <StatCard
-              icon={Brain}
-              label="Accuracy"
-              value={`${dailyStats.accuracy}%`}
-              description="Average score"
-              trend="+3%"
-            />
-          </div>
-        </section>
+      <PageContent>
+        {/* Quick Stats */}
+        <StatsGrid columns={3}>
+          <StatsCard icon={BookOpen} label="Decks" value={deckItems.length} color="text-blue-600" />
+          <StatsCard icon={Target} label="Cards" value={totalFlashcards} color="text-green-600" />
+          <StatsCard icon={Clock} label="Minutes" value={Math.ceil(totalConcepts * 1.5)} color="text-purple-600" />
+        </StatsGrid>
 
         {/* Quick Actions */}
-        <section>
-          <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {quickActions.map((action) => {
-              const Icon = action.icon
-              return (
-                <Link key={action.id} href={action.href}>
-                  <Card className="hover:shadow-md transition-all duration-200 group cursor-pointer">
-                    <CardContent className="p-4 text-center">
-                      <div className={`w-12 h-12 rounded-lg ${action.color} flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
-                        <Icon className="h-6 w-6 text-white" />
-                      </div>
-                      <h4 className="font-medium text-sm">{action.label}</h4>
-                    </CardContent>
-                  </Card>
-                </Link>
-              )
-            })}
-          </div>
-        </section>
+        <QuickStartCard actions={quickStartActions} />
 
         {/* Recent Decks */}
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Your Decks</h3>
-            <Link href="/decks">
-              <Button variant="outline" size="sm">
-                View All
-              </Button>
-            </Link>
-          </div>
-          
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {recentDecks.map((deck) => (
-              <DeckCard key={deck.id} deck={deck} />
-            ))}
-          </div>
-        </section>
-
-        {/* Learning Insights */}
-        <section>
-          <h3 className="text-lg font-semibold mb-4">Learning Insights</h3>
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  Weekly Progress
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span>Cards mastered this week</span>
-                    <span className="font-medium">127</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Study sessions</span>
-                    <span className="font-medium">12</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Average session time</span>
-                    <span className="font-medium">18 min</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Award className="h-4 w-4 text-primary" />
-                  Achievements
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center">
-                      🏆
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium">Week Warrior</p>
-                      <p className="text-xs text-muted-foreground">7-day study streak</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                      🎯
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium">Accuracy Master</p>
-                      <p className="text-xs text-muted-foreground">85%+ accuracy rate</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-      </div>
-    </div>
+        <PageSection title="Your Decks" actions={sectionActions}>
+          {loading ? (
+            <LoadingGrid count={3} />
+          ) : deckItems.length > 0 ? (
+            <ContentGrid>
+              {deckItems.slice(0, 5).map(({ fileName, deck }) => (
+                <DeckCard key={deck.id} deck={deck} fileName={fileName} />
+              ))}
+            </ContentGrid>
+          ) : (
+            <EmptyStateCard
+              icon={BookOpen}
+              title="No decks yet"
+              description="Create your first deck to start learning"
+              action={
+                <Button asChild>
+                  <Link href="/decks/create">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create Deck
+                  </Link>
+                </Button>
+              }
+            />
+          )}
+        </PageSection>
+      </PageContent>
+    </PageLayout>
   )
 } 
