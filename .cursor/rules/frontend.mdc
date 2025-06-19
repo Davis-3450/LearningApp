@@ -5,7 +5,7 @@ alwaysApply: false
 ---
 We are using the lastest versin of all the libraries when possible.
 
-We use nextjs with sahdcn
+We use nextjs with shadcn, read their docs, backend will be ignored
 
 adhere to good standards, modular code and SOLID while avoiding overengineeering.
 
