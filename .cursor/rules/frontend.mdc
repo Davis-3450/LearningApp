@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+We are using the lastest versin of all the libraries when possible.
+
+We use nextjs with sahdcn
+
+adhere to good standards, modular code and SOLID while avoiding overengineeering.
+
