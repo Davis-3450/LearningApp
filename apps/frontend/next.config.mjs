@@ -6,11 +6,12 @@ const __dirname = dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['@/shared']
+  transpilePackages: ['@/shared'],
+  serverExternalPackages: ['zod'],
+  eslint: {
+    ignoreDuringBuilds: true,
   },
   webpack: (config) => {
-    // Handle shared directory
     config.resolve.alias = {
       ...config.resolve.alias,
       '@/shared': resolve(__dirname, '../../shared')

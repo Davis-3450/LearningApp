@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, RotateCcw, CheckCircle, XCircle, Loader } from 'lucide-react';
 import { DecksAPI } from '@/lib/api/decks';
 import type { Deck } from '@/shared/schemas/deck';

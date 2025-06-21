@@ -1,26 +1,25 @@
-// @ts-nocheck
 "use client";
 
-import { scienceDeck } from "../../../../../../shared/data/decks/science-deck";
-import { Card } from "../../../../../../shared/schemas/cards";
+import spanishBasics from "@/shared/data/decks/spanish-basics.json";
+import type { Deck } from "@/shared/schemas/deck";
+import { Card } from "@/shared/schemas/cards";
 import { useMemo, useState } from "react";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableItem } from "./_components/sortable-item";
 
 
-export default function SequenceGamePage({ params }: { params: { deckId: string } }) {
+export default function SequenceGamePage() {
   // NOTE: For now, we are using a mock deck.
   // In the future, you would fetch the deck based on params.deckId
-  const deck = scienceDeck;
+  const deck: Deck = spanishBasics as Deck;
 
   const orderingCards = useMemo(
     () => deck.cards.filter((card: Card) => card.cardType === "ordering"),
     [deck]
   );
 
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
-  const activeCard = orderingCards[activeCardIndex] as Extract<Card, { cardType: 'ordering' }>;
+  const activeCard = orderingCards[0] as Extract<Card, { cardType: 'ordering' }>;
 
   const [items, setItems] = useState(activeCard.data.items);
 

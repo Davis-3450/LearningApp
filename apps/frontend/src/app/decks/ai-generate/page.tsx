@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Bot, Zap, Info } from 'lucide-react';
+import { Bot, Zap, Info } from 'lucide-react';
+import { AppLayout, AppContent } from '@/components/ui/app-layout';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function AIGeneratePage() {
@@ -34,27 +35,15 @@ export default function AIGeneratePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <Button variant="ghost" asChild>
-              <Link href="/decks">
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-            </Button>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <Bot className="h-8 w-8 text-blue-600" />
-                AI Deck Generator
-              </h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                Generate educational content automatically using AI
-              </p>
-            </div>
-          </div>
-        </div>
-
+    <AppLayout 
+      title="Generate Deck with AI" 
+      subtitle="Describe what you want to learn and let AI create a custom deck for you"
+      onBack={() => router.push('/decks')}
+      headerActions={
+        <Zap className="h-5 w-5 text-yellow-500" />
+      }
+    >
+      <AppContent>
         <div className="max-w-2xl mx-auto space-y-6">
           {/* Info Card */}
           <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950 dark:border-blue-800">
@@ -205,7 +194,7 @@ export default function AIGeneratePage() {
             </CardContent>
           </Card>
         </div>
-      </div>
-    </div>
+      </AppContent>
+    </AppLayout>
   );
 } 

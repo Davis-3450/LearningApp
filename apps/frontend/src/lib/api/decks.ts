@@ -13,6 +13,26 @@ export interface DecksListResponse {
   error?: string;
 }
 
+export interface PostDeckResponse {
+  success: boolean;
+  data?: { postId: string; deck: Deck };
+  error?: string;
+  message?: string;
+}
+
+export interface PublicDecksResponse {
+  success: boolean;
+  data?: Array<{ 
+    postId: string; 
+    fileName: string; 
+    deck: Deck; 
+    author?: string; 
+    postedAt: string;
+    likes?: number;
+  }>;
+  error?: string;
+}
+
 export class DecksAPI {
   private static baseUrl = '/api/decks';
 
@@ -85,5 +105,61 @@ export class DecksAPI {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  }
+
+  // Post a deck publicly
+  static async postDeck(fileName: string, deck: Deck, metadata?: { 
+    author?: string; 
+    tags?: string[];
+    isPublic?: boolean;
+  }): Promise<PostDeckResponse> {
+    const response = await fetch(`${this.baseUrl}/post`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        fileName, 
+        deck,
+        ...metadata
+      }),
+    });
+    return response.json();
+  }
+
+  // Get all public decks
+  static async getPublicDecks(): Promise<PublicDecksResponse> {
+    const response = await fetch(`${this.baseUrl}/public`);
+    return response.json();
+  }
+
+  // Get user's posted decks
+  static async getMyPosts(): Promise<PublicDecksResponse> {
+    const response = await fetch(`${this.baseUrl}/my-posts`);
+    return response.json();
+  }
+
+  // Unpost/make private a deck
+  static async unpostDeck(postId: string): Promise<{ success: boolean; message?: string; error?: string }> {
+    const response = await fetch(`${this.baseUrl}/unpost/${postId}`, {
+      method: 'DELETE',
+    });
+    return response.json();
+  }
+
+  // Like a public deck
+  static async likeDeck(postId: string): Promise<{ success: boolean; message?: string; error?: string }> {
+    const response = await fetch(`${this.baseUrl}/like/${postId}`, {
+      method: 'POST',
+    });
+    return response.json();
+  }
+
+  // Unlike a public deck
+  static async unlikeDeck(postId: string): Promise<{ success: boolean; message?: string; error?: string }> {
+    const response = await fetch(`${this.baseUrl}/unlike/${postId}`, {
+      method: 'DELETE',
+    });
+    return response.json();
   }
 } 

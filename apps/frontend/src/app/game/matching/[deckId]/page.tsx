@@ -155,7 +155,7 @@ export default function MatchingGame() {
                🎉 Well Done!
              </h3>
              <p className="text-green-600 dark:text-green-300 mt-2">
-               You've matched all the pairs correctly.
+               You&apos;ve matched all the pairs correctly.
              </p>
              <div className="flex gap-2 justify-center mt-4">
                <Button onClick={() => resetGame(deck.cards)}>Play Again</Button>
