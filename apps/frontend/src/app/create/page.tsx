@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { NavigationMenu, NavigationItem } from '@/components/ui/navigation-menu';
 import { Badge } from '@/components/ui/badge';
-import { Settings, CreditCard, Eye, Lightbulb, Plus, Trash2, BookOpen, Save } from 'lucide-react';
+import { Settings, CreditCard, Eye, Lightbulb, Plus, Trash2, Save } from 'lucide-react';
 import { Card as CardType, Deck } from '@/lib/types';
 import { generateId, topics } from '@/lib/mock-data';
 
@@ -516,7 +516,7 @@ export default function CreateDeck() {
             <div className="p-4 border rounded-lg">
               <h5 className="font-medium mb-2">🧪 Fact-Based Deck</h5>
               <p className="text-sm text-muted-foreground mb-2">
-                Question: "What is...?"<br/>
+                Question: &quot;What is...?&quot;<br/>
                 Answer: Factual information
               </p>
               <p className="text-xs text-muted-foreground">
@@ -527,7 +527,7 @@ export default function CreateDeck() {
             <div className="p-4 border rounded-lg">
               <h5 className="font-medium mb-2">🔧 Process Deck</h5>
               <p className="text-sm text-muted-foreground mb-2">
-                Question: "How do you...?"<br/>
+                Question: &quot;How do you...?&quot;<br/>
                 Answer: Step-by-step process
               </p>
               <p className="text-xs text-muted-foreground">
@@ -584,4 +584,4 @@ export default function CreateDeck() {
       />
     </div>
   );
-} 
+}

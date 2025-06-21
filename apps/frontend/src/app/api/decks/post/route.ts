@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Deck } from '@/shared/schemas/deck';
 
 // In-memory storage for posts (in a real app, this would be a database)
-let posts: Array<{
+const posts: Array<{
   postId: string;
   fileName: string;
   deck: Deck;

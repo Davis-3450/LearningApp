@@ -22,21 +22,21 @@ export default function ThemePreview({
     <Card
       onClick={() => onSelect?.(theme)}
       className={cn(
-        'cursor-pointer w-40 relative transition-colors',
+        'cursor-pointer w-full relative transition-colors',
         theme,
         isActive && 'ring-2 ring-primary'
       )}
     >
-      <CardHeader>
-        <CardTitle className="capitalize text-sm flex items-center gap-1">
+      <CardHeader className="p-3 pb-2">
+        <CardTitle className="capitalize text-xs flex items-center gap-1">
           {theme}
-          {isActive && <Check className="w-4 h-4" />}
+          {isActive && <Check className="w-3 h-3" />}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
-        <div className="h-4 rounded bg-primary" />
-        <div className="h-3 rounded bg-muted" />
-        <Button variant="secondary" className="w-full h-8">
+      <CardContent className="space-y-1 p-3 pt-0">
+        <div className="h-3 rounded bg-primary" />
+        <div className="h-2 rounded bg-muted" />
+        <Button variant="secondary" className="w-full h-7 text-xs">
           Button
         </Button>
       </CardContent>

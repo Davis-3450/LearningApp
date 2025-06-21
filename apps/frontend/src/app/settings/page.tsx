@@ -9,7 +9,7 @@ import { NavigationMenu, NavigationItem } from '@/components/ui/navigation-menu'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { availableThemes, themeColors } from '@/components/theme-provider'
+import { tones, colorAttenuations, attenuationColors, type Tone, type ColorAttenuation } from '@/components/theme-provider'
 import ThemePreview from '@/components/theme-preview'
 import { 
   Palette, 
@@ -24,7 +24,10 @@ import {
   Eye,
   Timer,
   Target,
-  CheckCircle
+  CheckCircle,
+  Sun,
+  Moon,
+  Sunset
 } from 'lucide-react'
 import { PageContent } from '@/components/ui/page-layout'
 
@@ -32,6 +35,8 @@ export default function SettingsPage() {
   const { theme, setTheme } = useTheme()
   const router = useRouter()
   const [mounted, setMounted] = useState(false)
+  const [currentTone, setCurrentTone] = useState<Tone>('light')
+  const [currentAttenuation, setCurrentAttenuation] = useState<ColorAttenuation>('default')
   const [fontSize, setFontSize] = useState([16])
   const [studySettings, setStudySettings] = useState({
     defaultGameType: 'flashcard',
@@ -56,10 +61,40 @@ export default function SettingsPage() {
     if (savedFontSize) setFontSize([parseInt(savedFontSize)])
     if (savedStudySettings) setStudySettings(JSON.parse(savedStudySettings))
     if (savedAccessibilitySettings) setAccessibilitySettings(JSON.parse(savedAccessibilitySettings))
-  }, [])
+
+    // Parse current theme to extract tone and attenuation
+    if (theme && theme !== 'system') {
+      const parts = theme.split('-')
+      if (parts.length === 1) {
+        // Simple tone like 'light', 'dark'
+        setCurrentTone(parts[0] as Tone)
+        setCurrentAttenuation('default')
+      } else {
+        // Combined theme like 'light-rose', 'dark-ocean'
+        setCurrentTone(parts[0] as Tone)
+        setCurrentAttenuation(parts[1] as ColorAttenuation)
+      }
+    }
+  }, [theme])
+
+  // Apply high contrast class to document
+  useEffect(() => {
+    if (accessibilitySettings.highContrast) {
+      document.documentElement.classList.add('high-contrast')
+    } else {
+      document.documentElement.classList.remove('high-contrast')
+    }
+  }, [accessibilitySettings.highContrast])
 
   const saveToLocalStorage = (key: string, value: any) => {
     localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value))
+  }
+
+  const updateTheme = (tone: Tone, attenuation: ColorAttenuation) => {
+    const newTheme = attenuation === 'default' ? tone : `${tone}-${attenuation}`
+    setTheme(newTheme)
+    setCurrentTone(tone)
+    setCurrentAttenuation(attenuation)
   }
 
   const resetAllSettings = () => {
@@ -68,6 +103,8 @@ export default function SettingsPage() {
       localStorage.removeItem('studySettings')
       localStorage.removeItem('accessibilitySettings')
       setTheme('system')
+      setCurrentTone('light')
+      setCurrentAttenuation('default')
       setFontSize([16])
       setStudySettings({
         defaultGameType: 'flashcard',
@@ -84,59 +121,108 @@ export default function SettingsPage() {
     }
   }
 
+  const getToneIcon = (tone: Tone) => {
+    switch (tone) {
+      case 'light': return <Sun className="h-4 w-4" />
+      case 'dim': return <Sunset className="h-4 w-4" />
+      case 'dark': return <Moon className="h-4 w-4" />
+      default: return <Monitor className="h-4 w-4" />
+    }
+  }
+
   if (!mounted) return null
 
   // Theme Settings Content
   const ThemeContent = () => (
     <div className="pb-20">
       <PageContent>
-        {/* Theme Selection */}
+        {/* Tone Selection */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Monitor className="h-5 w-5" />
-              Theme
+              Tone
             </CardTitle>
             <CardDescription>
-              Choose your preferred color scheme
+              Choose the brightness level for your interface
             </CardDescription>
-            {theme && (
+            {currentTone && (
               <Badge variant="outline" className="w-fit">
-                Current: {theme}
+                Current: {currentTone}
               </Badge>
             )}
           </CardHeader>
           <CardContent className="space-y-4">
-            <Select value={theme} onValueChange={setTheme}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select theme" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableThemes.map((t) => (
-                  <SelectItem
-                    key={t}
-                    value={t}
-                    className="capitalize flex items-center gap-2"
-                  >
-                    <span
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: themeColors[t] }}
-                    />
-                    {t}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-              {availableThemes.map((t) => (
-                <ThemePreview
-                  key={t}
-                  theme={t}
-                  isActive={t === theme}
-                  onSelect={setTheme}
-                />
+            <div className="grid grid-cols-3 gap-3">
+              {tones.map((tone) => (
+                <Button
+                  key={tone}
+                  variant={currentTone === tone ? "default" : "outline"}
+                  className="flex items-center gap-2 h-12"
+                  onClick={() => updateTheme(tone, currentAttenuation)}
+                >
+                  {getToneIcon(tone)}
+                  <span className="capitalize">{tone}</span>
+                </Button>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Color Attenuation Selection */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Palette className="h-5 w-5" />
+              Color Theme
+            </CardTitle>
+            <CardDescription>
+              Choose your preferred color scheme
+            </CardDescription>
+            {currentAttenuation && (
+              <Badge variant="outline" className="w-fit">
+                Current: {currentAttenuation}
+              </Badge>
+            )}
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+              {colorAttenuations.map((attenuation) => (
+                <Button
+                  key={attenuation}
+                  variant={currentAttenuation === attenuation ? "default" : "outline"}
+                  className="flex items-center gap-2 h-12"
+                  onClick={() => updateTheme(currentTone, attenuation)}
+                >
+                  <span
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: attenuationColors[attenuation] }}
+                  />
+                  <span className="capitalize">{attenuation}</span>
+                </Button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Combined Theme Preview */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Eye className="h-5 w-5" />
+              Theme Preview
+            </CardTitle>
+            <CardDescription>
+              Preview of your current theme combination: {currentTone} + {currentAttenuation}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 gap-3">
+              <ThemePreview
+                theme={currentAttenuation === 'default' ? currentTone : `${currentTone}-${currentAttenuation}`}
+                isActive={true}
+                onSelect={() => {}}
+              />
             </div>
           </CardContent>
         </Card>

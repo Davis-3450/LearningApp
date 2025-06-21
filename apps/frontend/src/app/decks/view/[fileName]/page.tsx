@@ -17,6 +17,7 @@ export default function ViewDeckPage() {
   
   const [loading, setLoading] = useState(true);
   const [deck, setDeck] = useState<Deck | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadDeck = async () => {
@@ -58,21 +59,34 @@ export default function ViewDeckPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="flex items-center gap-2">
-          <Loader className="h-4 w-4 animate-spin" />
-          Loading deck...
-        </div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardContent className="p-6">
+            <div className="text-center">Loading deck...</div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardContent className="p-6">
+            <div className="text-center text-destructive">{error}</div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   if (!deck) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <FileText className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-          <p className="text-gray-500">Deck not found</p>
+          <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+          <p className="text-muted-foreground">Deck not found</p>
           <Button asChild className="mt-4">
             <Link href="/decks">Back to Decks</Link>
           </Button>
@@ -82,7 +96,7 @@ export default function ViewDeckPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -93,10 +107,10 @@ export default function ViewDeckPage() {
               </Link>
             </Button>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-3xl font-bold text-foreground">
                 {deck.title}
               </h1>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-muted-foreground">
                 {deck.description || 'No description provided'}
               </p>
               <div className="flex items-center gap-2 mt-2">
@@ -139,7 +153,7 @@ export default function ViewDeckPage() {
 
         {/* Concepts */}
         <div className="max-w-4xl mx-auto space-y-6">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-2xl font-semibold text-foreground">
             Concepts
           </h2>
           
@@ -165,7 +179,7 @@ export default function ViewDeckPage() {
                 {concept.variations && concept.variations.length > 0 && (
                   <CardContent>
                     <div className="space-y-3">
-                      <h4 className="font-medium text-gray-900 dark:text-white">
+                      <h4 className="font-medium text-foreground">
                         Additional Information:
                       </h4>
                       <div className="grid gap-3">

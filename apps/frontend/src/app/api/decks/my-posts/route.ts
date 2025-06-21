@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Deck } from '@/lib/types';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // In a real app, this would filter posts by the authenticated user
     // For now, return empty array or mock user posts
     const myPosts: Array<{
       postId: string;
       fileName: string;
-      deck: any;
+      deck: Deck;
       author?: string;
       postedAt: string;
       likes: number;

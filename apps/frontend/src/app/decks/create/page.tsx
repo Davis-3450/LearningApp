@@ -9,7 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Minus, Save, ArrowLeft } from 'lucide-react';
+import { Plus, Minus, Save } from 'lucide-react';
+import { AppLayout, AppContent } from '@/components/ui/app-layout';
 import Link from 'next/link';
 import type { Deck } from '@/shared/schemas/deck';
 import type { TermConcept } from '@/shared/schemas/concepts';
@@ -122,26 +123,12 @@ export default function CreateDeckPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <Button variant="ghost" asChild>
-              <Link href="/decks">
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-            </Button>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Create New Deck
-              </h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                Build a new learning deck with concepts and variations
-              </p>
-            </div>
-          </div>
-        </div>
-
+    <AppLayout 
+      title="Create New Deck" 
+      subtitle="Build a new learning deck with concepts and variations"
+      onBack={() => router.push('/decks')}
+    >
+      <AppContent>
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto space-y-8">
           {/* Basic Info */}
           <Card>
@@ -297,7 +284,7 @@ export default function CreateDeckPage() {
             </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </AppContent>
+    </AppLayout>
   );
 } 

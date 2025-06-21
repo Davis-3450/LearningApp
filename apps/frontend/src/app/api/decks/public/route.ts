@@ -41,7 +41,7 @@ const getMockPosts = () => {
   ];
 };
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // In a real app, this would filter only public posts
     const publicPosts = getMockPosts();
