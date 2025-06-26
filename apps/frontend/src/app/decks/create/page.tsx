@@ -13,7 +13,13 @@ import { Plus, Minus, Save } from 'lucide-react';
 import { AppLayout, AppContent } from '@/components/ui/app-layout';
 import Link from 'next/link';
 import type { Deck } from '@/shared/schemas/deck';
-import type { TermConcept } from '@/shared/schemas/concepts';
+import type { TermConcept, Variation } from '@/shared/schemas/concepts';
+
+interface ConceptFormData {
+  term: string;
+  definition: string;
+  variations?: Variation[];
+}
 
 export default function CreateDeckPage() {
   const router = useRouter();
@@ -24,7 +30,7 @@ export default function CreateDeckPage() {
     description: '',
   });
 
-  const [concepts, setConcepts] = useState<Omit<TermConcept, 'conceptType'>[]>([
+  const [concepts, setConcepts] = useState<ConceptFormData[]>([
     {
       term: '',
       definition: '',
@@ -46,7 +52,7 @@ export default function CreateDeckPage() {
 
   const updateConcept = (
     index: number,
-    field: keyof Omit<TermConcept, 'conceptType'>,
+    field: keyof ConceptFormData,
     value: string
   ) => {
     const updated = [...concepts];
@@ -56,10 +62,11 @@ export default function CreateDeckPage() {
 
   const addVariation = (conceptIndex: number) => {
     const updated = [...concepts];
-    if (!updated[conceptIndex].variations) {
-      updated[conceptIndex].variations = [];
+    const concept = updated[conceptIndex];
+    if (!concept.variations) {
+      concept.variations = [];
     }
-    updated[conceptIndex].variations!.push({
+    concept.variations.push({
       type: 'example',
       text: ''
     });
@@ -68,15 +75,19 @@ export default function CreateDeckPage() {
 
   const removeVariation = (conceptIndex: number, variationIndex: number) => {
     const updated = [...concepts];
-    updated[conceptIndex].variations = updated[conceptIndex].variations?.filter((_, i) => i !== variationIndex);
+    const concept = updated[conceptIndex];
+    if (concept.variations) {
+      concept.variations = concept.variations.filter((_, i) => i !== variationIndex);
+    }
     setConcepts(updated);
   };
 
   const updateVariation = (conceptIndex: number, variationIndex: number, field: 'type' | 'text', value: string) => {
     const updated = [...concepts];
-    if (updated[conceptIndex].variations) {
-      updated[conceptIndex].variations[variationIndex] = {
-        ...updated[conceptIndex].variations[variationIndex],
+    const concept = updated[conceptIndex];
+    if (concept.variations) {
+      concept.variations[variationIndex] = {
+        ...concept.variations[variationIndex],
         [field]: value
       };
     }

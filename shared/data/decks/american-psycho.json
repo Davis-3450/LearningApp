@@ -1,0 +1,82 @@
+{
+  "concepts": [
+    {
+      "conceptType": "term",
+      "definition": "A 2000 psychological horror film directed by Mary Harron, based on the 1991 novel of the same name by Bret Easton Ellis. It stars Christian Bale as Patrick Bateman, a wealthy New York City investment banker who is secretly a serial killer.",
+      "term": "American Psycho",
+      "variations": [
+        {
+          "text": "The film is known for its satirical portrayal of consumerism and yuppie culture in the late 1980s.",
+          "type": "example"
+        },
+        {
+          "text": "Patrick Bateman's meticulous morning routine, including his extensive skincare regimen, is a prominent motif in the film.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "The protagonist of American Psycho, portrayed by Christian Bale. He is an outwardly successful and stylish investment banker who harbors a dark secret as a violent and sadistic serial killer.",
+      "term": "Patrick Bateman",
+      "variations": [
+        {
+          "text": "Bateman's obsession with status, designer labels, and business cards highlights the superficiality of his world.",
+          "type": "example"
+        },
+        {
+          "text": "His violence is often triggered by perceived slights or social anxieties, leading to brutal acts.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "The novel by Bret Easton Ellis, published in 1991, which served as the basis for the film. It is known for its graphic violence, dark humor, and commentary on 1980s consumer culture.",
+      "term": "Bret Easton Ellis Novel",
+      "variations": [
+        {
+          "text": "The novel's explicit content and themes led to controversy and debate upon its release.",
+          "type": "example"
+        },
+        {
+          "text": "Ellis stated that the novel is a critique of the superficiality and moral emptiness of the era.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A key theme in American Psycho, representing the superficiality, materialism, and obsession with appearance and status prevalent in the yuppie culture of the 1980s.",
+      "term": "Consumerism",
+      "variations": [
+        {
+          "text": "Patrick Bateman's detailed descriptions of brand-name clothing, music, and restaurants exemplify this theme.",
+          "type": "example"
+        },
+        {
+          "text": "The film uses consumerism to critique the hollowness and lack of genuine connection in the characters' lives.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A recurring element where characters, including Patrick Bateman, are often mistaken for one another due to their similar appearances and the superficial nature of their social interactions.",
+      "term": "Mistaken Identity",
+      "variations": [
+        {
+          "text": "This trope emphasizes the lack of individuality and the interchangeability of people in Bateman's world.",
+          "type": "example"
+        },
+        {
+          "text": "Bateman frequently uses this to his advantage, both in his social life and his murderous activities.",
+          "type": "example"
+        }
+      ]
+    }
+  ],
+  "description": "A learning deck about the film American Psycho, covering its main characters, themes, and source material.",
+  "id": "american-psycho-learning-deck",
+  "title": "American Psycho"
+}

@@ -1,0 +1,84 @@
+{
+  "concepts": [
+    {
+      "conceptType": "term",
+      "definition": "A block that generates naturally in the Overworld, often found underground. It is the most basic and common resource for crafting tools, weapons, and armor.",
+      "term": "Stone",
+      "variations": [
+        {
+          "text": "Mining stone with a wooden pickaxe yields cobblestone.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A useful mineral that generates deep underground. Iron can be smelted into iron ingots, which are used to craft stronger tools, armor, and many other items.",
+      "term": "Iron Ore",
+      "variations": [
+        {
+          "text": "Smelt iron ore in a furnace to get iron ingots.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A rare and valuable mineral found deep underground. Diamonds are used to craft the strongest tools, weapons, and armor in the game.",
+      "term": "Diamond",
+      "variations": [
+        {
+          "text": "You need an iron pickaxe or better to mine diamond ore.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A hostile mob that spawns in darkness. Zombies attack players on sight and can break down wooden doors.",
+      "term": "Zombie",
+      "variations": [
+        {
+          "text": "Zombies burn in daylight unless they are wearing a helmet.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A flying, skeletal mob that shoots arrows. Skeletons are a common threat in caves and at night.",
+      "term": "Skeleton",
+      "variations": [
+        {
+          "text": "Skeletons are weak to melee attacks and can be defeated with a shield.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A block that can be placed to create structures or light up areas. Torches are crafted using coal or charcoal and sticks.",
+      "term": "Torch",
+      "variations": [
+        {
+          "text": "Place torches to prevent hostile mobs from spawning in your base.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A block that grows crops like wheat, carrots, and potatoes. Farmland must be hydrated by nearby water to grow crops.",
+      "term": "Farmland",
+      "variations": [
+        {
+          "text": "Use a hoe to till grass or dirt blocks into farmland.",
+          "type": "example"
+        }
+      ]
+    }
+  ],
+  "description": "A beginner's guide to essential blocks, resources, and mobs in Minecraft.",
+  "id": "minecraft-basics-101",
+  "title": "Minecraft Basics"
+}

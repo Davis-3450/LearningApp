@@ -1,0 +1,172 @@
+{
+  "concepts": [
+    {
+      "conceptType": "term",
+      "definition": "Software application used to access and display information on the World Wide Web.",
+      "term": "Web Browser",
+      "variations": [
+        {
+          "text": "Examples include Google Chrome, Mozilla Firefox, Apple Safari, and Microsoft Edge.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "The software component responsible for fetching, interpreting, and rendering web content (HTML, CSS, JavaScript).",
+      "term": "Browser Engine",
+      "variations": [
+        {
+          "text": "Also known as a rendering engine or layout engine. Examples: Blink (Chrome, Edge), Gecko (Firefox).",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "The process by which a browser takes the code (HTML, CSS) and displays the web page visually.",
+      "term": "Rendering",
+      "variations": [
+        {
+          "text": "The browser reads the HTML to build the structure (DOM) and then applies CSS for styling.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "Uniform Resource Locator. The address of a specific resource on the internet, like a web page.",
+      "term": "URL",
+      "variations": [
+        {
+          "text": "Example: `https://www.google.com/search?q=web+browsers`",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "Hypertext Transfer Protocol (HTTP) and its secure version (HTTPS). Protocols used for transferring data over the web.",
+      "term": "HTTP/HTTPS",
+      "variations": [
+        {
+          "text": "HTTPS encrypts the communication between your browser and the website for security.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "Hypertext Markup Language. The standard markup language for creating web pages, defining their structure and content.",
+      "term": "HTML",
+      "variations": [
+        {
+          "text": "Uses tags like `<h1>` for headings, `<p>` for paragraphs, and `<a>` for links.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "Cascading Style Sheets. A language used to describe the presentation of a document written in HTML or XML.",
+      "term": "CSS",
+      "variations": [
+        {
+          "text": "Controls colors, fonts, layout, and responsiveness of web pages.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A scripting language that enables dynamic content and interactive features on web pages.",
+      "term": "JavaScript",
+      "variations": [
+        {
+          "text": "Used for things like image sliders, pop-up messages, and form validation.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "Temporary storage of web page files (like images, HTML) on your computer by the browser to speed up subsequent visits to the same page.",
+      "term": "Cache",
+      "variations": [
+        {
+          "text": "Clearing the cache can help resolve display issues but might slow down initial loading times.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "Small text files that websites store on a user's computer to remember information about them, such as login status or preferences.",
+      "term": "Cookies",
+      "variations": [
+        {
+          "text": "Used for personalization, tracking, and session management.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "Allows users to open multiple web pages within a single browser window.",
+      "term": "Tabs",
+      "variations": [
+        {
+          "text": "Makes it easy to switch between different websites or pages without opening new windows.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A feature that allows users to save the addresses of frequently visited or important web pages for easy access later.",
+      "term": "Bookmarks (Favorites)",
+      "variations": [
+        {
+          "text": "You can typically save bookmarks by clicking a star icon or using a keyboard shortcut.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A browsing mode that prevents the browser from saving your browsing history, cookies, site data, and information entered in forms.",
+      "term": "Incognito/Private Browsing",
+      "variations": [
+        {
+          "text": "Useful for privacy or when using a shared computer.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "Software components that can be added to a browser to extend its functionality, such as ad blockers or password managers.",
+      "term": "Extensions (Add-ons)",
+      "variations": [
+        {
+          "text": "Many browsers have an 'extensions store' where you can find and install them.",
+          "type": "example"
+        }
+      ]
+    },
+    {
+      "conceptType": "term",
+      "definition": "A user interface element, often an icon or button, that triggers an action or navigates to a different part of the page or website.",
+      "term": "Hyperlink",
+      "variations": [
+        {
+          "text": "Clicking on a hyperlink (often underlined and blue text) takes you to another URL.",
+          "type": "example"
+        }
+      ]
+    }
+  ],
+  "description": "An introduction to web browsers, their components, and how they work to display internet content.",
+  "id": "web-browsers-intro",
+  "title": "Understanding Web Browsers"
+}

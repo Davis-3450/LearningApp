@@ -92,10 +92,11 @@ export default function EditDeckPage() {
 
   const addVariation = (conceptIndex: number) => {
     const updated = [...concepts];
-    if (!updated[conceptIndex].variations) {
-      updated[conceptIndex].variations = [];
+    const concept = updated[conceptIndex];
+    if (!concept.variations) {
+      concept.variations = [];
     }
-    updated[conceptIndex].variations!.push({
+    concept.variations.push({
       type: 'example',
       text: ''
     });
@@ -104,15 +105,19 @@ export default function EditDeckPage() {
 
   const removeVariation = (conceptIndex: number, variationIndex: number) => {
     const updated = [...concepts];
-    updated[conceptIndex].variations = updated[conceptIndex].variations?.filter((_, i) => i !== variationIndex);
+    const concept = updated[conceptIndex];
+    if (concept.variations) {
+      concept.variations = concept.variations.filter((_, i) => i !== variationIndex);
+    }
     setConcepts(updated);
   };
 
   const updateVariation = (conceptIndex: number, variationIndex: number, field: 'type' | 'text', value: string) => {
     const updated = [...concepts];
-    if (updated[conceptIndex].variations) {
-      updated[conceptIndex].variations[variationIndex] = {
-        ...updated[conceptIndex].variations[variationIndex],
+    const concept = updated[conceptIndex];
+    if (concept.variations) {
+      concept.variations[variationIndex] = {
+        ...concept.variations[variationIndex],
         [field]: value
       };
     }

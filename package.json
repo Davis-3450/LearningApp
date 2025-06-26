@@ -1,0 +1,22 @@
+{
+  "name": "learning-app-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/frontend",
+    "apps/backend",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=apps/frontend",
+    "build": "npm run build --workspace=apps/frontend",
+    "start": "npm run start --workspace=apps/frontend",
+    "lint": "npm run lint --workspace=apps/frontend",
+    "dev:backend": "npm run dev --workspace=apps/backend",
+    "build:backend": "npm run build --workspace=apps/backend"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  },
+  "packageManager": "npm@10.2.4"
+}
