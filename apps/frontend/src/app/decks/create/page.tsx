@@ -13,7 +13,7 @@ import { Plus, Minus, Save } from 'lucide-react';
 import { AppLayout, AppContent } from '@/components/ui/app-layout';
 import Link from 'next/link';
 import type { Deck } from '@/shared/schemas/deck';
-import type { TermConcept } from '@/shared/schemas/concepts';
+import type { TermConcept, Variation } from '@/shared/schemas/concepts';
 
 export default function CreateDeckPage() {
   const router = useRouter();
@@ -56,29 +56,31 @@ export default function CreateDeckPage() {
 
   const addVariation = (conceptIndex: number) => {
     const updated = [...concepts];
-    if (!updated[conceptIndex].variations) {
-      updated[conceptIndex].variations = [];
-    }
-    updated[conceptIndex].variations!.push({
+    const variations = (updated[conceptIndex].variations ?? []) as Variation[];
+    variations.push({
       type: 'example',
       text: ''
     });
+    updated[conceptIndex].variations = variations;
     setConcepts(updated);
   };
 
   const removeVariation = (conceptIndex: number, variationIndex: number) => {
     const updated = [...concepts];
-    updated[conceptIndex].variations = updated[conceptIndex].variations?.filter((_, i) => i !== variationIndex);
+    const variations = (updated[conceptIndex].variations ?? []) as Variation[];
+    updated[conceptIndex].variations = variations.filter((_, i) => i !== variationIndex);
     setConcepts(updated);
   };
 
   const updateVariation = (conceptIndex: number, variationIndex: number, field: 'type' | 'text', value: string) => {
     const updated = [...concepts];
-    if (updated[conceptIndex].variations) {
-      updated[conceptIndex].variations[variationIndex] = {
-        ...updated[conceptIndex].variations[variationIndex],
-        [field]: value
+    const variations = (updated[conceptIndex].variations ?? []) as Variation[];
+    if (variations[variationIndex]) {
+      variations[variationIndex] = {
+        ...variations[variationIndex],
+        [field]: value,
       };
+      updated[conceptIndex].variations = variations;
     }
     setConcepts(updated);
   };

@@ -1,17 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Deck } from '@/shared/schemas/deck';
+import { posts, type Post } from '../posts-store';
 
 // In-memory storage for posts (in a real app, this would be a database)
-const posts: Array<{
-  postId: string;
-  fileName: string;
-  deck: Deck;
-  author?: string;
-  tags?: string[];
-  isPublic: boolean;
-  postedAt: string;
-  likes: number;
-}> = [];
 
 export async function POST(request: NextRequest) {
   try {
@@ -60,4 +51,3 @@ export async function POST(request: NextRequest) {
 }
 
 // Export posts for other routes to access
-export { posts }; 
