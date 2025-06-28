@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { posts } from '@/lib/posts-store';
+import { logger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,7 +40,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error posting deck:', error);
+    logger.error('Error posting deck:', error);
     return NextResponse.json({
       success: false,
       error: 'Failed to post deck'

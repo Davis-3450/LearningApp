@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Edit, Download, Play, FileText, Loader } from 'lucide-react';
 import Link from 'next/link';
 import type { Deck } from '@/shared/schemas/deck';
+import { logger } from '@/lib/logger';
 
 export default function ViewDeckPage() {
   const router = useRouter();
@@ -35,7 +36,7 @@ export default function ViewDeckPage() {
           router.push('/decks');
         }
       } catch (error) {
-        console.error(error);
+        logger.error(error);
         alert('Failed to load deck: Network error');
         router.push('/decks');
       } finally {
@@ -51,7 +52,7 @@ export default function ViewDeckPage() {
       try {
         await DecksAPI.export(fileName, deck);
       } catch (error) {
-        console.error(error);
+        logger.error(error);
         alert('Export failed');
       }
     }

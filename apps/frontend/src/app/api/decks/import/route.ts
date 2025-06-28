@@ -3,6 +3,7 @@ import { DeckSchema } from '@/shared/schemas/deck';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { logger } from '@/lib/logger';
 
 // POST /api/decks/import - Import deck from uploaded JSON
 export async function POST(request: NextRequest) {
@@ -69,7 +70,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error importing deck:', error);
+    logger.error('Error importing deck:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to import deck' },
       { status: 500 }

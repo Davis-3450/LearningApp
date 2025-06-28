@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { Share2, X, Plus, Globe, Lock, Users } from 'lucide-react';
 import type { Deck } from '@/shared/schemas/deck';
 import { DecksAPI } from '@/lib/api/decks';
+import { logger } from '@/lib/logger';
 
 interface PostDeckDialogProps {
   fileName: string;
@@ -63,7 +64,7 @@ export function PostDeckDialog({
         alert(`Failed to post deck: ${response.error}`);
       }
     } catch (error) {
-      console.error('Error posting deck:', error);
+      logger.error('Error posting deck:', error);
       alert('Failed to post deck. Please try again.');
     } finally {
       setIsPosting(false);

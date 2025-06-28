@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 export async function DELETE(
   request: NextRequest,
@@ -16,7 +17,7 @@ export async function DELETE(
 
     // In a real app, this would delete from the database
     // For now, just simulate success
-    console.log(`Deleted post: ${postId}`);
+    logger.log(`Deleted post: ${postId}`);
 
     return NextResponse.json({
       success: true,
@@ -24,7 +25,7 @@ export async function DELETE(
     });
 
   } catch (error) {
-    console.error('Error deleting post:', error);
+    logger.error('Error deleting post:', error);
     return NextResponse.json({
       success: false,
       error: 'Failed to delete post'

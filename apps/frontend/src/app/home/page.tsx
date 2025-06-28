@@ -10,6 +10,7 @@ import { ArrowLeft, Plus, Zap, BookOpen, TrendingUp, Clock, BarChart3, Target, A
 import { useRouter } from 'next/navigation'
 import { DecksAPI } from '@/lib/api/decks'
 import type { Deck } from '@/shared/schemas/deck'
+import { logger } from '@/lib/logger'
 import { 
   PageLayout, 
   PageHeader, 
@@ -153,7 +154,7 @@ export default function HomePage() {
         setDeckItems(response.data)
       }
     } catch (error) {
-      console.error('Failed to load decks:', error)
+      logger.error('Failed to load decks:', error)
     } finally {
       setLoading(false)
     }

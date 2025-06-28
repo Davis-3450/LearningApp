@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 export async function POST(
   request: NextRequest,
@@ -16,7 +17,7 @@ export async function POST(
 
     // In a real app, this would update the database
     // For now, just simulate success
-    console.log(`Liked post: ${postId}`);
+    logger.log(`Liked post: ${postId}`);
 
     return NextResponse.json({
       success: true,
@@ -24,7 +25,7 @@ export async function POST(
     });
 
   } catch (error) {
-    console.error('Error liking post:', error);
+    logger.error('Error liking post:', error);
     return NextResponse.json({
       success: false,
       error: 'Failed to like post'
@@ -48,7 +49,7 @@ export async function DELETE(
 
     // In a real app, this would update the database
     // For now, just simulate success
-    console.log(`Unliked post: ${postId}`);
+    logger.log(`Unliked post: ${postId}`);
 
     return NextResponse.json({
       success: true,
@@ -56,7 +57,7 @@ export async function DELETE(
     });
 
   } catch (error) {
-    console.error('Error unliking post:', error);
+    logger.error('Error unliking post:', error);
     return NextResponse.json({
       success: false,
       error: 'Failed to unlike post'

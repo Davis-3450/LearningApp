@@ -13,6 +13,7 @@ import { Plus, Minus, Save, ArrowLeft, Loader } from 'lucide-react';
 import Link from 'next/link';
 import type { Deck } from '@/shared/schemas/deck';
 import type { TermConcept } from '@/shared/schemas/concepts';
+import { logger } from '@/lib/logger';
 
 export default function EditDeckPage() {
   const router = useRouter();
@@ -57,7 +58,7 @@ export default function EditDeckPage() {
           router.push('/decks');
         }
       } catch (error) {
-        console.error(error);
+        logger.error(error);
         alert('Failed to load deck: Network error');
         router.push('/decks');
       } finally {
@@ -157,7 +158,7 @@ export default function EditDeckPage() {
         alert(`Update failed: ${response.error}`);
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       alert('Update failed: Network error');
     } finally {
       setSaving(false);

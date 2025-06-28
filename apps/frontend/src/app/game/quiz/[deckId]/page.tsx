@@ -9,6 +9,7 @@ import { ArrowLeft, RotateCcw, CheckCircle, XCircle, Loader } from 'lucide-react
 import { DecksAPI } from '@/lib/api/decks';
 import type { Deck } from '@/shared/schemas/deck';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 
 interface QuizAnswer {
   conceptIndex: number;
@@ -99,10 +100,10 @@ export default function QuizGame() {
           const quizQuestions = generateQuizQuestions(deck);
           setQuestions(quizQuestions);
         } else {
-          console.error('Failed to load deck:', response.error);
+          logger.error('Failed to load deck:', response.error);
         }
       } catch (error) {
-        console.error('Error loading deck:', error);
+        logger.error('Error loading deck:', error);
       } finally {
         setLoading(false);
       }

@@ -4,6 +4,7 @@ import { DeckSchema } from '@/shared/schemas/deck';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { logger } from '@/lib/logger';
 
 // GET /api/decks - List all decks
 export async function GET() {
@@ -11,7 +12,7 @@ export async function GET() {
     const decks = await DeckService.getAllDecksInfo();
     return NextResponse.json({ success: true, data: decks });
   } catch (error) {
-    console.error('Error fetching decks:', error);
+    logger.error('Error fetching decks:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch decks' },
       { status: 500 }
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error creating deck:', error);
+    logger.error('Error creating deck:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to create deck' },
       { status: 500 }

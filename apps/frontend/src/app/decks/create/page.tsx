@@ -126,7 +126,7 @@ export default function CreateDeckPage() {
         alert(`Creation failed: ${response.error}`);
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       alert('Creation failed: Network error');
     } finally {
       setLoading(false);

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 // Import posts from the post route
 const getMockPosts = () => {
@@ -52,7 +53,7 @@ export async function GET() {
     });
 
   } catch (error) {
-    console.error('Error fetching public decks:', error);
+    logger.error('Error fetching public decks:', error);
     return NextResponse.json({
       success: false,
       error: 'Failed to fetch public decks'

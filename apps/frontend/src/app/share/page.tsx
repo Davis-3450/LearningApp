@@ -10,7 +10,7 @@ import {
   PageHeader, 
   PageContent, 
   PageSection, 
-  ContentGrid, 
+  ContentGrid,
   LoadingGrid,
   SearchHeader
 } from '@/components/ui/page-layout';
@@ -18,6 +18,7 @@ import {
   EmptyStateCard,
   FilterTabs
 } from '@/components/ui/common-cards';
+import { logger } from '@/lib/logger';
 import { PostDeckDialog } from '@/components/ui/post-deck-dialog';
 import { 
   Share2, 
@@ -73,7 +74,7 @@ export default function SharePage() {
         setMyPosts(postsResponse.data);
       }
     } catch (error) {
-      console.error('Failed to load data:', error);
+      logger.error('Failed to load data:', error);
     } finally {
       setLoading(false);
     }
@@ -94,7 +95,7 @@ export default function SharePage() {
       await DecksAPI.likeDeck(postId);
       await loadData(); // Refresh data
     } catch (error) {
-      console.error('Failed to like deck:', error);
+      logger.error('Failed to like deck:', error);
     }
   };
 
@@ -110,7 +111,7 @@ export default function SharePage() {
         alert(`Failed to unpost: ${response.error}`);
       }
     } catch (error) {
-      console.error('Failed to unpost deck:', error);
+      logger.error('Failed to unpost deck:', error);
       alert('Failed to unpost deck');
     }
   };

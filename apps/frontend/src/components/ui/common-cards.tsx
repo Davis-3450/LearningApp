@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 import { BookOpen, Play, Heart, Share, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import type { Deck } from '@/shared/schemas/deck';
@@ -100,7 +101,7 @@ export function DeckCard({
         onClose={() => setShowPostDialog(false)}
         onSuccess={() => {
           // Optionally refresh the page or show success message
-          console.log('Deck posted successfully!');
+          logger.log('Deck posted successfully!');
         }}
       />
     </Card>

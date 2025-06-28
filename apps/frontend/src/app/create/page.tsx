@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Settings, CreditCard, Eye, Lightbulb, Plus, Trash2, Save } from 'lucide-react';
 import { Card as CardType, Deck } from '@/lib/types';
 import { generateId, topics } from '@/lib/mock-data';
+import { logger } from '@/lib/logger';
 
 export default function CreateDeck() {
   const router = useRouter();
@@ -88,7 +89,7 @@ export default function CreateDeck() {
       estimatedTime: Math.ceil(cards.length * 1.5) // Rough estimate
     };
 
-    console.log('Created deck:', newDeck);
+    logger.log('Created deck:', newDeck);
     alert('Deck created successfully! (This is a mock save)');
     router.push('/');
   };

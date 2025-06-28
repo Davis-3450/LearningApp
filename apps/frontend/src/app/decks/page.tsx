@@ -43,6 +43,7 @@ import {
   QuickStartCard
 } from '@/components/ui/common-cards';
 import { PostDeckDialog } from '@/components/ui/post-deck-dialog';
+import { logger } from '@/lib/logger';
 
 interface DeckWithFileName {
   fileName: string;
@@ -69,7 +70,7 @@ export default function DecksPage() {
         setDecks(response.data);
       }
     } catch (error) {
-      console.error('Failed to load decks:', error);
+      logger.error('Failed to load decks:', error);
     } finally {
       setLoading(false);
     }
@@ -94,7 +95,7 @@ export default function DecksPage() {
         alert(`Import failed: ${response.error}`);
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       alert('Import failed: Network error');
     } finally {
       setImporting(false);
@@ -116,7 +117,7 @@ export default function DecksPage() {
         alert(`Delete failed: ${response.error}`);
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       alert('Delete failed: Network error');
     }
   };
@@ -126,7 +127,7 @@ export default function DecksPage() {
     try {
       await DecksAPI.export(fileName, deck);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       alert('Export failed');
     }
   };
@@ -497,7 +498,7 @@ export default function DecksPage() {
           isOpen={postDialog.isOpen}
           onClose={() => setPostDialog({ isOpen: false })}
           onSuccess={() => {
-            console.log('Deck posted successfully!');
+            logger.log('Deck posted successfully!');
             setPostDialog({ isOpen: false });
           }}
         />

@@ -3,6 +3,7 @@ import { DeckService } from '@/shared/lib/deck-service';
 import { DeckSchema } from '@/shared/schemas/deck';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { logger } from '@/lib/logger';
 
 // GET /api/decks/[fileName] - Get a specific deck
 export async function GET(
@@ -26,7 +27,7 @@ export async function GET(
     });
 
   } catch (error) {
-    console.error('Error fetching deck:', error);
+    logger.error('Error fetching deck:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch deck' },
       { status: 500 }
@@ -57,7 +58,7 @@ export async function PUT(
     });
 
   } catch (error) {
-    console.error('Error updating deck:', error);
+    logger.error('Error updating deck:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to update deck' },
       { status: 500 }
@@ -94,7 +95,7 @@ export async function DELETE(
     });
 
   } catch (error) {
-    console.error('Error deleting deck:', error);
+    logger.error('Error deleting deck:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to delete deck' },
       { status: 500 }

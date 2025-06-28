@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Deck } from '@/lib/types';
+import { logger } from '@/lib/logger';
 
 export async function GET() {
   try {
@@ -22,7 +23,7 @@ export async function GET() {
     });
 
   } catch (error) {
-    console.error('Error fetching user posts:', error);
+    logger.error('Error fetching user posts:', error);
     return NextResponse.json({
       success: false,
       error: 'Failed to fetch user posts'

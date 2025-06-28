@@ -12,13 +12,14 @@ import {
   PageSection, 
   ContentGrid, 
   LoadingGrid,
-  SectionHeader 
+  SectionHeader
 } from '@/components/ui/page-layout'
 import { 
-  DeckCard, 
+  DeckCard,
   EmptyStateCard,
-  FilterTabs 
+  FilterTabs
 } from '@/components/ui/common-cards'
+import { logger } from '@/lib/logger'
 
 // Mock data for the FYP
 const trendingDecks = [
@@ -108,7 +109,7 @@ export default function FYPPage() {
         setDeckItems(response.data)
       }
     } catch (error) {
-      console.error('Failed to load decks:', error)
+      logger.error('Failed to load decks:', error)
     } finally {
       setLoading(false)
     }
