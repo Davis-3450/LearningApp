@@ -14,6 +14,11 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    // ... existing experimental options can remain here
+  },
+  // Ensure monorepo files outside the app are traced correctly
+  outputFileTracingRoot: resolve(__dirname, '../../'),
   async redirects() {
     return [
       {

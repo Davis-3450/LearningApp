@@ -1,1 +1,14 @@
-{"projectId":"prj_j1FTNdqgUSngw5ci12qJ0auZNuBD","orgId":"team_RPfrA9lON4iwhAmA4q88NMhD"}
+{
+  "projectId": "prj_j1FTNdqgUSngw5ci12qJ0auZNuBD",
+  "orgId": "team_RPfrA9lON4iwhAmA4q88NMhD",
+  "settings": {
+    "createdAt": 1750476586634,
+    "framework": "nextjs",
+    "devCommand": null,
+    "installCommand": "npm install",
+    "buildCommand": "npm run build",
+    "rootDirectory": "apps/frontend",
+    "directoryListing": false,
+    "nodeVersion": "22.x"
+  }
+}

@@ -8,15 +8,17 @@
     "shared"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace=apps/frontend",
-    "build": "npm run build --workspace=apps/frontend",
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build --filter=apps/frontend",
     "start": "npm run start --workspace=apps/frontend",
-    "lint": "npm run lint --workspace=apps/frontend",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
     "dev:backend": "npm run dev --workspace=apps/backend",
     "build:backend": "npm run build --workspace=apps/backend"
   },
   "devDependencies": {
-    "typescript": "^5"
+    "typescript": "^5",
+    "turbo": "^1.13.0"
   },
   "packageManager": "npm@10.2.4"
 }

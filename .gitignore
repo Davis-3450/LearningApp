@@ -70,3 +70,6 @@ Desktop.ini
 
 # Cursor
 .cursor/
+
+# Python virtual environment
+.venv/
