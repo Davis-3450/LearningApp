@@ -8,11 +8,12 @@ const __dirname = dirname(__filename);
 const nextConfig = {
   transpilePackages: ['@/shared'],
   serverExternalPackages: ['zod'],
+  // Allow build to fail on lint or type errors
   eslint: {
-    ignoreDuringBuilds: true,
+    // ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    // ignoreBuildErrors: true,
   },
   experimental: {
     // ... existing experimental options can remain here
