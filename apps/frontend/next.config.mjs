@@ -15,6 +15,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   experimental: {
+    externalDir: true 
     // ... existing experimental options can remain here
   },
   // Ensure monorepo files outside the app are traced correctly
