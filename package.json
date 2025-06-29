@@ -14,12 +14,13 @@
     "lint": "turbo run lint",
     "clean": "turbo run clean",
     "dev:backend": "npm run dev --workspace=apps/backend",
-    "build:backend": "npm run build --workspace=apps/backend"
+    "build:backend": "npm run build --workspace=apps/backend",
+    "postinstall": "npm --workspace=apps/frontend rebuild lightningcss --update-binary"
   },
   "devDependencies": {
     "typescript": "^5"
   },
-  "packageManager": "npm@10.2.4",
+  "packageManager": "bun@1.2.17",
   "dependencies": {
     "turbo": "^2.5.4"
   }
