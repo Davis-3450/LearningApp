@@ -3,7 +3,7 @@
 import { AppLayout, AppContent } from '@/components/ui/app-layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Settings, Plus } from 'lucide-react'
+import { Settings } from 'lucide-react';
 
 export default function DemoLayoutPage() {
   return (

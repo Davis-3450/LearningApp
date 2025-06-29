@@ -11,6 +11,7 @@ import { AppLayout, AppContent } from '@/components/ui/app-layout';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { DecksAPI } from '@/lib/api/decks';
+import { toast } from 'sonner';
 
 export default function AIGeneratePage() {
   const router = useRouter();
@@ -27,7 +28,8 @@ export default function AIGeneratePage() {
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+    toast.info('Generating deck... This may take a moment.');
+
     try {
       const response = await DecksAPI.generateWithAI({
         topic: formData.topic,
@@ -36,14 +38,35 @@ export default function AIGeneratePage() {
       });
 
       if (response.success && response.data) {
-        alert('Deck generated successfully!');
+        if (response.warning) {
+          toast.warning(response.warning);
+        } else {
+          toast.success('Deck generated successfully!');
+        }
         router.push(`/decks/view/${response.data.fileName}`);
       } else {
-        alert(`Generation failed: ${response.error}`);
+        // Manejo de errores específicos
+        if (response.error?.includes('rate limit') || response.error?.includes('quota')) {
+          toast.error('API rate limit exceeded. Please try again in a few minutes.');
+        } else if (response.error?.includes('API key')) {
+          toast.error('AI service configuration error. Please contact support.');
+        } else if (response.error?.includes('Invalid JSON') || response.error?.includes('format')) {
+          toast.error('AI generated invalid content. Please try again with a different topic.');
+        } else {
+          toast.error(`Generation failed: ${response.error || 'Unknown error'}`);
+        }
       }
     } catch (error) {
-      console.error(error);
-      alert('Generation failed: Network error');
+      console.error('Generation error:', error);
+      if (error instanceof Error) {
+        if (error.message.includes('fetch')) {
+          toast.error('Network error. Please check your connection and try again.');
+        } else {
+          toast.error(`Generation failed: ${error.message}`);
+        }
+      } else {
+        toast.error('Generation failed: Unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }
@@ -90,6 +113,7 @@ export default function AIGeneratePage() {
                     onChange={(e) => setFormData({...formData, topic: e.target.value})}
                     placeholder="e.g., Basic Spanish vocabulary, Chemistry fundamentals, World War II facts..."
                     required
+                    disabled={loading}
                   />
                   <p className="text-sm text-gray-500 mt-1">
                     Be specific about what you want to learn
@@ -103,6 +127,7 @@ export default function AIGeneratePage() {
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
                     placeholder="Any specific requirements, focus areas, or style preferences..."
                     rows={3}
+                    disabled={loading}
                   />
                 </div>
 
@@ -112,6 +137,7 @@ export default function AIGeneratePage() {
                     <Select
                       value={formData.difficulty}
                       onValueChange={(value) => setFormData({...formData, difficulty: value})}
+                      disabled={loading}
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -129,6 +155,7 @@ export default function AIGeneratePage() {
                     <Select
                       value={formData.conceptCount}
                       onValueChange={(value) => setFormData({...formData, conceptCount: value})}
+                      disabled={loading}
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -138,7 +165,6 @@ export default function AIGeneratePage() {
                         <SelectItem value="10">10 concepts</SelectItem>
                         <SelectItem value="15">15 concepts</SelectItem>
                         <SelectItem value="20">20 concepts</SelectItem>
-                        <SelectItem value="25">25 concepts</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -151,6 +177,7 @@ export default function AIGeneratePage() {
                     checked={formData.includeVariations}
                     onChange={(e) => setFormData({...formData, includeVariations: e.target.checked})}
                     className="rounded border-gray-300"
+                    disabled={loading}
                   />
                   <label htmlFor="variations" className="text-sm font-medium">
                     Include variations (examples, fun facts, alternative definitions)
@@ -160,7 +187,7 @@ export default function AIGeneratePage() {
             </Card>
 
             <div className="flex justify-end gap-4">
-              <Button type="button" variant="outline" asChild>
+              <Button type="button" variant="outline" asChild disabled={loading}>
                 <Link href="/decks">Back to Decks</Link>
               </Button>
               <Button type="submit" disabled={loading || !formData.topic.trim()}>

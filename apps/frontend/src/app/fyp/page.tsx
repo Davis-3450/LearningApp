@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Filter, TrendingUp, Sparkles } from 'lucide-react'
+import { Filter, TrendingUp, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { DecksAPI } from '@/lib/api/decks'
 import type { Deck } from '@/shared/schemas/deck'
 import { 

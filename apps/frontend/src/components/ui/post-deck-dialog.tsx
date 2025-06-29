@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Share2, X, Plus, Globe, Lock, Users } from 'lucide-react';
+import { Share2, X, Plus, Globe, Users } from 'lucide-react';
 import type { Deck } from '@/shared/schemas/deck';
 import { DecksAPI } from '@/lib/api/decks';
 

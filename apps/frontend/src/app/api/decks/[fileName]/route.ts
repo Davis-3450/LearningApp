@@ -1,19 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DeckService } from '@/shared/lib/deck-service';
+import { deckStore } from '@/lib/deck-store';
 import { DeckSchema } from '@/shared/schemas/deck';
-import { promises as fs } from 'fs';
-import path from 'path';
 
 // GET /api/decks/[fileName] - Get a specific deck
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ fileName: string }> }
+  { params }: { params: { fileName: string } }
 ) {
   try {
-    const { fileName } = await params;
-    const deck = await DeckService.loadDeck(fileName);
+    const { fileName } = params;
+    const deckData = deckStore.getOne(fileName);
     
-    if (!deck) {
+    if (!deckData) {
       return NextResponse.json(
         { success: false, error: 'Deck not found' },
         { status: 404 }
@@ -22,7 +20,7 @@ export async function GET(
 
     return NextResponse.json({
       success: true,
-      data: { fileName, deck }
+      data: deckData
     });
 
   } catch (error) {
@@ -37,29 +35,25 @@ export async function GET(
 // PUT /api/decks/[fileName] - Update a specific deck
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ fileName: string }> }
+  { params }: { params: { fileName: string } }
 ) {
   try {
-    const { fileName } = await params;
+    const { fileName } = params;
     const body = await request.json();
+    const validatedDeck = DeckSchema.parse(body);
     
-    // Validate the deck data
-    const validatedDeck = DeckSchema.parse(body);    // Write the updated deck to file
-    const deckDirectory = path.join(process.cwd(), '../../shared/data/decks');
-    const filePath = path.join(deckDirectory, `${fileName}.json`);
-    
-    await fs.writeFile(filePath, JSON.stringify(validatedDeck, null, 2), 'utf8');
+    const updatedDeck = deckStore.update(fileName, validatedDeck);
 
     return NextResponse.json({
       success: true,
-      data: { fileName, deck: validatedDeck },
+      data: updatedDeck,
       message: 'Deck updated successfully'
     });
 
   } catch (error) {
-    console.error('Error updating deck:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
     return NextResponse.json(
-      { success: false, error: 'Failed to update deck' },
+      { success: false, error: `Failed to update deck: ${errorMessage}` },
       { status: 500 }
     );
   }
@@ -68,25 +62,11 @@ export async function PUT(
 // DELETE /api/decks/[fileName] - Delete a specific deck
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ fileName: string }> }
+  { params }: { params: { fileName: string } }
 ) {
   try {
-    const { fileName } = await params;
-      const deckDirectory = path.join(process.cwd(), '../../shared/data/decks');
-    const filePath = path.join(deckDirectory, `${fileName}.json`);
-    
-    // Check if file exists
-    try {
-      await fs.access(filePath);
-    } catch {
-      return NextResponse.json(
-        { success: false, error: 'Deck not found' },
-        { status: 404 }
-      );
-    }
-
-    // Delete the file
-    await fs.unlink(filePath);
+    const { fileName } = params;
+    deckStore.delete(fileName);
 
     return NextResponse.json({
       success: true,
@@ -94,10 +74,10 @@ export async function DELETE(
     });
 
   } catch (error) {
-    console.error('Error deleting deck:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
     return NextResponse.json(
-      { success: false, error: 'Failed to delete deck' },
+      { success: false, error: `Failed to delete deck: ${errorMessage}` },
       { status: 500 }
     );
   }
-} 
+}

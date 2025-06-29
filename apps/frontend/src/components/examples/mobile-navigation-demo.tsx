@@ -6,12 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { 
   Home, 
   BookOpen, 
-  Settings, 
   User,
-  TrendingUp,
-  Clock,
-  Target
-} from 'lucide-react'
+  TrendingUp
+} from 'lucide-react';
 
 /**
  * Demo component showing how to use NavigationMenu with bottom mobile variant

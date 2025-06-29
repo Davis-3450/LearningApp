@@ -13,18 +13,15 @@ import { tones, colorAttenuations, attenuationColors, type Tone, type ColorAtten
 import ThemePreview from '@/components/theme-preview'
 import { 
   Palette, 
-  Settings as SettingsIcon, 
   Accessibility, 
   Info, 
   Monitor, 
   Type, 
-  Zap,
   BookOpen,
   RotateCcw,
   Eye,
   Timer,
   Target,
-  CheckCircle,
   Sun,
   Moon,
   Sunset

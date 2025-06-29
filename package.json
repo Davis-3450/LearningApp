@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev": "turbo run dev --parallel",
-    "build": "turbo run build --filter=apps/frontend",
+    "build": "turbo run build --filter=frontend",
     "start": "npm run start --workspace=apps/frontend",
     "lint": "turbo run lint",
     "clean": "turbo run clean",

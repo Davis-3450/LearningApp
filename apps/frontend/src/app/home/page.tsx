@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { ArrowLeft, Plus, Zap, BookOpen, TrendingUp, Clock, BarChart3, Target, Award, Brain, Play, Heart, Share, Sparkles } from 'lucide-react'
+import { Plus, Zap, BookOpen, TrendingUp, Clock, Play, Heart, Share, Sparkles, Target } from 'lucide-react';
 import { useRouter } from 'next/navigation'
 import { DecksAPI } from '@/lib/api/decks'
 import type { Deck } from '@/shared/schemas/deck'

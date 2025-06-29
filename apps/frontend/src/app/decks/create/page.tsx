@@ -13,7 +13,7 @@ import { Plus, Minus, Save } from 'lucide-react';
 import { AppLayout, AppContent } from '@/components/ui/app-layout';
 import Link from 'next/link';
 import type { Deck } from '@/shared/schemas/deck';
-import type { TermConcept, Variation } from '@/shared/schemas/concepts';
+import type { Variation } from '@/shared/schemas/concepts';
 
 interface ConceptFormData {
   term: string;

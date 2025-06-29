@@ -6,7 +6,7 @@ import { DecksAPI } from '@/lib/api/decks';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Edit, Download, Play, FileText, Loader } from 'lucide-react';
+import { ArrowLeft, Edit, Download, Play, FileText } from 'lucide-react';
 import Link from 'next/link';
 import type { Deck } from '@/shared/schemas/deck';
 

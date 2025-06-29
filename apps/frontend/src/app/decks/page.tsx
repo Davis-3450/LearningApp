@@ -23,8 +23,6 @@ import {
   Archive,
   BookOpen,
   Play,
-  Shapes,
-  Search,
   Share2
 } from 'lucide-react';
 import type { Deck } from '@/shared/schemas/deck';

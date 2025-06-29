@@ -1,0 +1,220 @@
+
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Learning App API for GPTs",
+    "description": "API for managing learning decks. Allows GPTs to list, view, and create new decks.",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{YOUR_VERCEL_URL}"
+    }
+  ],
+  "paths": {
+    "/api/gpts/decks": {
+      "get": {
+        "description": "Get a list of all available learning decks.",
+        "operationId": "listDecks",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of decks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecksListResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new learning deck.",
+        "operationId": "createDeck",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Deck"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deck created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeckResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gpts/decks/{fileName}": {
+      "get": {
+        "description": "Get a specific deck by its file name.",
+        "operationId": "getDeckByFileName",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "description": "The file name of the deck to retrieve.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested deck.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeckResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deck not found."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Variation": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": ["type", "text"]
+      },
+      "TermConcept": {
+        "type": "object",
+        "properties": {
+          "conceptType": {
+            "type": "string",
+            "enum": ["term"]
+          },
+          "term": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string"
+          },
+          "variations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variation"
+            }
+          }
+        },
+        "required": ["conceptType", "term", "definition"]
+      },
+      "Deck": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "concepts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TermConcept"
+            }
+          }
+        },
+        "required": ["id", "title", "concepts"]
+      },
+      "DeckResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "fileName": {
+                "type": "string"
+              },
+              "deck": {
+                "$ref": "#/components/schemas/Deck"
+              }
+            }
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "DecksListResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fileName": {
+                  "type": "string"
+                },
+                "deck": {
+                  "$ref": "#/components/schemas/Deck"
+                }
+              }
+            }
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      }
+    }
+  }
+}
