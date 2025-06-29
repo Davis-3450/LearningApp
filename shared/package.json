@@ -9,7 +9,7 @@
     "./schemas/*": "./schemas/*",
     "./data/*": "./data/*"
   },
-  "dependencies" : {
-    "zod" : "^3.25.57"
+  "dependencies": {
+    "zod": "^3.25.57"
   }
 }
