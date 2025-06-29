@@ -10,6 +10,7 @@ import { Bot, Zap, Info } from 'lucide-react';
 import { AppLayout, AppContent } from '@/components/ui/app-layout';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { DecksAPI } from '@/lib/api/decks';
 
 export default function AIGeneratePage() {
   const router = useRouter();
@@ -27,11 +28,25 @@ export default function AIGeneratePage() {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate AI generation delay
-    setTimeout(() => {
-      alert('AI Generation is not yet implemented!\n\nThis would integrate with OpenAI, Claude, or another LLM to automatically generate educational content based on your topic and preferences.\n\nFor now, you can create decks manually or import JSON files.');
+    try {
+      const response = await DecksAPI.generateWithAI({
+        topic: formData.topic,
+        description: formData.description,
+        conceptCount: parseInt(formData.conceptCount, 10),
+      });
+
+      if (response.success && response.data) {
+        alert('Deck generated successfully!');
+        router.push(`/decks/view/${response.data.fileName}`);
+      } else {
+        alert(`Generation failed: ${response.error}`);
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Generation failed: Network error');
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -50,11 +65,10 @@ export default function AIGeneratePage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
                 <Info className="h-5 w-5" />
-                Coming Soon!
+                How it Works
               </CardTitle>
               <CardDescription className="text-blue-600 dark:text-blue-400">
-                This feature will integrate with AI services to automatically generate learning content. 
-                The form below shows what the interface would look like.
+                This feature uses AI to generate learning content. Describe a topic, and the AI will create a deck for you.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -145,27 +159,6 @@ export default function AIGeneratePage() {
               </CardContent>
             </Card>
 
-            {/* Features Preview */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-yellow-500" />
-                  Planned AI Features
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                  <li>• Intelligent content generation based on learning objectives</li>
-                  <li>• Multiple question variations for each concept</li>
-                  <li>• Difficulty-appropriate explanations and examples</li>
-                  <li>• Fact-checking and source citations</li>
-                  <li>• Multi-language support</li>
-                  <li>• Image and diagram suggestions</li>
-                  <li>• Spaced repetition scheduling</li>
-                </ul>
-              </CardContent>
-            </Card>
-
             <div className="flex justify-end gap-4">
               <Button type="button" variant="outline" asChild>
                 <Link href="/decks">Back to Decks</Link>
@@ -176,25 +169,9 @@ export default function AIGeneratePage() {
               </Button>
             </div>
           </form>
-
-          {/* Alternative Actions */}
-          <Card className="border-gray-200">
-            <CardHeader>
-              <CardTitle className="text-lg">In the meantime...</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                <Button asChild variant="outline" size="sm">
-                  <Link href="/decks/create">Create Manually</Link>
-                </Button>
-                <Button asChild variant="outline" size="sm">
-                  <Link href="/decks">Import JSON</Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </AppContent>
     </AppLayout>
   );
-} 
+}
+ 

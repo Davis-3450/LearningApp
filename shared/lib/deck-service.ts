@@ -16,10 +16,11 @@ export class DeckService {
       const filePath = path.join(this.deckDirectory, `${deckFileName}.json`);
       const fileContent = await fs.readFile(filePath, 'utf8');
       const data = JSON.parse(fileContent);
-
+      
       // Validate data against our schema
       const deck = DeckSchema.parse(data);
       return deck;
+
     } catch (error) {
       console.error(`Failed to load deck "${deckFileName}":`, error);
       return null;
@@ -46,7 +47,7 @@ export class DeckService {
    */
   static async getAllDecksInfo(): Promise<Array<{ fileName: string; deck: Deck }>> {
     const deckFiles = await this.listAvailableDecks();
-    const decks: Array<{ fileName: string; deck: Deck }> = [];
+    const decks = [];
 
     for (const fileName of deckFiles) {
       const deck = await this.loadDeck(fileName);
@@ -57,4 +58,4 @@ export class DeckService {
 
     return decks;
   }
-}
+} 

@@ -162,4 +162,18 @@ export class DecksAPI {
     });
     return response.json();
   }
+  static async generateWithAI(params: {
+    topic: string;
+    description?: string;
+    conceptCount: number;
+  }): Promise<DeckResponse> {
+    const response = await fetch('/api/ai/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    });
+    return response.json();
+  }
 } 
