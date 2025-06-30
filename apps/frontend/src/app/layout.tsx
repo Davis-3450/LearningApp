@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { QueryProvider } from "@/lib/providers/query-provider";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,14 +31,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        <ErrorBoundary>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <QueryProvider>
+              {children}
+            </QueryProvider>
+          </ThemeProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

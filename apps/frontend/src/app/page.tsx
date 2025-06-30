@@ -1,69 +1,20 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Navigation } from '@/components/layout/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, BookOpen, Play, Clock, Users, Shapes, TrendingUp, Target, Award, Zap } from 'lucide-react';
+import { Plus, BookOpen, Clock, Users, Target, TrendingUp, Zap } from 'lucide-react';
 import { topics } from '@/lib/mock-data';
 import { Topic } from '@/lib/types';
-import { DecksAPI } from '@/lib/api/decks';
+import { useDecks } from '@/lib/hooks/use-decks';
+import { AsyncBoundary } from '@/components/ui/async-boundary';
+import { DeckCard } from '@/components/deck/deck-card';
+import { CardGrid } from '@/components/ui/card-grid';
 import type { Deck } from '@/shared/schemas/deck';
 import Link from 'next/link';
-
-const DeckCard = ({ deck, fileName }: { deck: Deck; fileName: string }) => (
-  <Card className="hover:shadow-lg transition-all hover:scale-[1.02] h-full">
-    <CardHeader className="pb-3">
-      <div className="flex items-start justify-between">
-        <div className="flex-1 min-w-0">
-          <CardTitle className="text-lg mb-2 line-clamp-2">{deck.title}</CardTitle>
-          <CardDescription className="mb-3 line-clamp-3">
-            {deck.description}
-          </CardDescription>
-          <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className="text-xs">
-              <Users className="mr-1 h-3 w-3" />
-              {deck.concepts.length} concepts
-            </Badge>
-          </div>
-        </div>
-      </div>
-    </CardHeader>
-    <CardContent className="pt-0">
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-sm text-gray-500 flex items-center gap-1">
-          <BookOpen className="h-4 w-4" />
-          {deck.concepts.length * 2} flashcards
-        </span>
-      </div>
-      
-      <div className="space-y-2">
-        <div className="grid grid-cols-2 gap-2">
-          <Button variant="default" size="sm" asChild className="w-full">
-            <Link href={`/game/flashcard/${fileName}`}>
-              <BookOpen className="mr-2 h-4 w-4" />
-              Study
-            </Link>
-          </Button>
-          <Button variant="outline" size="sm" asChild className="w-full">
-            <Link href={`/game/quiz/${fileName}`}>
-              <Play className="mr-2 h-4 w-4" />
-              Quiz
-            </Link>
-          </Button>
-        </div>
-        <Button variant="secondary" size="sm" asChild className="w-full">
-          <Link href={`/game/matching/${fileName}`}>
-            <Shapes className="mr-2 h-4 w-4" />
-            Matching Game
-          </Link>
-        </Button>
-      </div>
-    </CardContent>
-  </Card>
-);
+import { useState } from 'react';
 
 const TopicSection = ({ topic, deckItems }: { topic: Topic; deckItems: Array<{ fileName: string; deck: Deck }> }) => {
   return (
@@ -91,11 +42,11 @@ const TopicSection = ({ topic, deckItems }: { topic: Topic; deckItems: Array<{ f
               ({deckItems.length} deck{deckItems.length !== 1 ? 's' : ''})
             </span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <CardGrid>
             {deckItems.map(({ fileName, deck }) => (
               <DeckCard key={deck.id} deck={deck} fileName={fileName} />
             ))}
-          </div>
+          </CardGrid>
         </div>
       )}
     </div>
@@ -123,26 +74,8 @@ const StatsCard = ({ title, value, description, icon: Icon }: {
 );
 
 export default function Home() {
-  const [deckItems, setDeckItems] = useState<Array<{ fileName: string; deck: Deck }>>([]);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('all');
-
-  useEffect(() => {
-    const loadDecks = async () => {
-      try {
-        const response = await DecksAPI.getAll();
-        if (response.success && response.data) {
-          setDeckItems(response.data);
-        }
-      } catch (error) {
-        console.error('Failed to load decks:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadDecks();
-  }, []);
+  const { data: deckItems = [], isLoading, error, refetch } = useDecks();
 
   // Group decks by topic (we'll use a simple title-based grouping for now)
   const groupedDeckItems = topics.reduce((acc, topic) => {
@@ -282,62 +215,66 @@ export default function Home() {
 
           {/* All Topics View */}
           <TabsContent value="all" className="space-y-8 sm:space-y-12">
-            {loading ? (
-              <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white mx-auto mb-4"></div>
-                <p className="text-gray-500">Loading decks...</p>
-              </div>
-            ) : (
-              topics.map((topic) => {
+            <AsyncBoundary 
+              loading={isLoading} 
+              error={error} 
+              onRetry={refetch}
+            >
+              {topics.map((topic) => {
                 const topicDeckItems = groupedDeckItems[topic.id];
                 return topicDeckItems.length > 0 ? (
                   <TopicSection key={topic.id} topic={topic} deckItems={topicDeckItems} />
                 ) : null;
-              })
-            )}
+              })}
+            </AsyncBoundary>
           </TabsContent>
 
           {/* Individual Topic Views */}
           {topics.map((topic) => (
             <TabsContent key={topic.id} value={topic.id}>
-              {loading ? (
-                <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white mx-auto mb-4"></div>
-                  <p className="text-gray-500">Loading decks...</p>
-                </div>
-              ) : (
+              <AsyncBoundary 
+                loading={isLoading} 
+                error={error} 
+                onRetry={refetch}
+              >
                 <TopicSection topic={topic} deckItems={groupedDeckItems[topic.id]} />
-              )}
+              </AsyncBoundary>
             </TabsContent>
           ))}
         </Tabs>
 
         {/* Empty State */}
-        {!loading && deckItems.length === 0 && (
-          <div className="text-center py-12">
-            <BookOpen className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
-              No decks yet
-            </h3>
-            <p className="mt-2 text-gray-500 px-4">
-              Create your first learning deck to get started
-            </p>
-            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-              <Button asChild className="w-full sm:w-auto">
-                <Link href="/decks/create">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create Your First Deck
-                </Link>
-              </Button>
-              <Button asChild variant="outline" className="w-full sm:w-auto">
-                <Link href="/decks">
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  Browse Decks
-                </Link>
-              </Button>
+        <AsyncBoundary 
+          loading={isLoading} 
+          error={error} 
+          onRetry={refetch}
+        >
+          {deckItems.length === 0 && (
+            <div className="text-center py-12">
+              <BookOpen className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
+                No decks yet
+              </h3>
+              <p className="mt-2 text-gray-500 px-4">
+                Create your first learning deck to get started
+              </p>
+              <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                <Button asChild className="w-full sm:w-auto">
+                  <Link href="/decks/create">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create Your First Deck
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="w-full sm:w-auto">
+                  <Link href="/decks">
+                    <BookOpen className="mr-2 h-4 w-4" />
+                    Browse Decks
+                  </Link>
+                </Button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </AsyncBoundary>
       </div>
     </div>
   );
