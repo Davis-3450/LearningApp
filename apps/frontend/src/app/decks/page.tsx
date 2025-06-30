@@ -60,15 +60,33 @@ export default function DecksPage() {
 
   // Load all decks
   const loadDecks = async () => {
+    console.log('🚀 Starting loadDecks...');
     setLoading(true);
     try {
+      console.log('📡 Calling DecksAPI.getAll()...');
       const response = await DecksAPI.getAll();
+      console.log('🔍 Raw API Response:', response);
+      console.log('🔍 Response.success:', response.success);
+      console.log('🔍 Response.data exists:', !!response.data);
+      console.log('🔍 Response.data length:', response.data?.length);
+      console.log('🔍 Response.data type:', typeof response.data);
+      console.log('🔍 Response.data:', response.data);
+      
       if (response.success && response.data) {
+        console.log('✅ Conditions met, setting decks to:', response.data);
         setDecks(response.data);
+        console.log('✅ setDecks called successfully');
+      } else {
+        console.error('❌ Conditions not met:');
+        console.error('❌ response.success:', response.success);
+        console.error('❌ response.data:', response.data);
+        console.error('❌ Full response:', response);
       }
     } catch (error) {
-      console.error('Failed to load decks:', error);
+      console.error('❌ Exception in loadDecks:', error);
+      console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack');
     } finally {
+      console.log('🏁 Setting loading to false');
       setLoading(false);
     }
   };
@@ -76,6 +94,13 @@ export default function DecksPage() {
   useEffect(() => {
     loadDecks();
   }, []);
+
+  // Debug logging when state changes
+  useEffect(() => {
+    console.log('🔍 Current decks state:', decks);
+    console.log('🔍 Decks length:', decks.length);
+    console.log('🔍 Loading state:', loading);
+  }, [decks, loading]);
 
   // Handle file import
   const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,10 +158,11 @@ export default function DecksPage() {
   const filteredDecks = decks.filter(({ deck }) => {
     const matchesSearch = deck.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          (deck.description && deck.description.toLowerCase().includes(searchQuery.toLowerCase()));
-    
     if (filterType === 'all') return matchesSearch;
-    return matchesSearch && deck.difficulty === filterType;
+    return matchesSearch && (deck as any).difficulty === filterType;
   });
+  
+  console.log('🎯 FINAL: decks.length:', decks.length, 'filteredDecks.length:', filteredDecks.length);
 
   // Enhanced Deck Card Component with actions
   const DeckCardWithActions = ({ fileName, deck }: DeckWithFileName) => (

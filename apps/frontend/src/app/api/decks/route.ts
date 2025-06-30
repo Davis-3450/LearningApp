@@ -1,21 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { deckStore } from '@/lib/deck-store';
+import { initializeDeckStore } from '@/lib/deck-store';
 import { DeckSchema } from '@/shared/schemas/deck';
 import { v4 as uuidv4 } from 'uuid';
 import { deckCache } from '@/lib/redis-client';
+import { DeckService } from '@/shared/lib/deck-service';
 
 // GET /api/decks - List all decks
 export async function GET() {
   try {
-    // Try Redis cache first
-    const cachedDecks = await deckCache.getAll();
-    if (cachedDecks) {
-      return NextResponse.json({ success: true, data: cachedDecks });
-    }
-
-    // Fallback to local store and cache the result
-    const decks = await deckStore.getAll();
-    await deckCache.setAll(decks);
+    await initializeDeckStore();
+    const decks = await deckCache.getAll();
     return NextResponse.json({ success: true, data: decks });
   } catch (error) {
     console.error('Error fetching decks:', error);
@@ -29,6 +23,7 @@ export async function GET() {
 // POST /api/decks - Create a new deck
 export async function POST(request: NextRequest) {
   try {
+    await initializeDeckStore();
     const body = await request.json();
     const validatedDeck = DeckSchema.parse({
       ...body,
@@ -41,7 +36,6 @@ export async function POST(request: NextRequest) {
       .replace(/\s+/g, '-')
       .trim();
 
-    // Check if deck already exists in cache first
     const existingDeck = await deckCache.getOne(fileName);
     if (existingDeck) {
       return NextResponse.json(
@@ -50,16 +44,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create deck in local store
-    const newDeck = await deckStore.create(fileName, validatedDeck);
-
-    // Update cache with all decks
-    const allDecks = await deckStore.getAll();
-    await deckCache.setAll(allDecks);
+    // Add to Redis cache
+    await deckCache.addOne(fileName, validatedDeck);
+    
+    // Persist to filesystem in development to make it easier to manage decks
+    if (process.env.NODE_ENV === 'development') {
+        await DeckService.createDeck(fileName, validatedDeck);
+    }
 
     return NextResponse.json({
       success: true,
-      data: newDeck,
+      data: { fileName, deck: validatedDeck },
       message: 'Deck created successfully'
     });
 

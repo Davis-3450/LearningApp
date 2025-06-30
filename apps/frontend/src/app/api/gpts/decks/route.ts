@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { DeckService } from '@/shared/lib/deck-service';
-import { DeckSchema } from '@/shared/schemas/deck';
-import { deckStore } from '@/lib/deck-store';
+import { DeckSchema, type Deck } from '@/shared/schemas/deck';
+import { initializeDeckStore } from '@/lib/deck-store';
 import { v4 as uuidv4 } from 'uuid';
 import { deckCache } from '@/lib/redis-client';
 
@@ -23,15 +23,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
   }
   try {
-    // Try Redis cache first
-    const cachedDecks = await deckCache.getAll();
-    if (cachedDecks) {
-      return NextResponse.json({ success: true, data: cachedDecks });
-    }
-
-    // Fallback to DeckService and cache the result
-    const decks = await DeckService.getAllDecksInfo();
-    await deckCache.setAll(decks);
+    await initializeDeckStore();
+    const decks = await deckCache.getAll();
     return NextResponse.json({ success: true, data: decks });
   } catch (error) {
     console.error('Error fetching decks:', error);
@@ -48,13 +41,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
   }
   try {
+    await initializeDeckStore();
     const body = await request.json();
-    const validatedDeck = DeckSchema.parse({
+    
+    // Use the schema for validation
+    const validatedDeckData = DeckSchema.parse({
       ...body,
-      id: body.id || uuidv4(),
+      id: body.id || uuidv4(), // Ensure an ID exists
     });
 
-    const fileName = validatedDeck.title
+    const fileName = validatedDeckData.title
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/\s+/g, '-')
@@ -69,16 +65,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create deck in local store
-    await deckStore.create(fileName, validatedDeck);
+    // Add to Redis cache
+    await deckCache.addOne(fileName, validatedDeckData);
 
-    // Update cache with all decks
-    const allDecks = await deckStore.getAll();
-    await deckCache.setAll(allDecks);
+    // No need to persist to filesystem in production. It's handled by the dev workflow.
 
     return NextResponse.json({
       success: true,
-      data: { fileName, deck: validatedDeck },
+      data: { fileName, deck: validatedDeckData },
       message: 'Deck created successfully'
     });
 
