@@ -2,11 +2,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import { deckStore } from '@/lib/deck-store';
 import { DeckSchema } from '@/shared/schemas/deck';
 import { v4 as uuidv4 } from 'uuid';
+import { deckCache } from '@/lib/redis-client';
 
 // GET /api/decks - List all decks
 export async function GET() {
   try {
-    const decks = deckStore.getAll();
+    // Try Redis cache first
+    const cachedDecks = await deckCache.getAll();
+    if (cachedDecks) {
+      return NextResponse.json({ success: true, data: cachedDecks });
+    }
+
+    // Fallback to local store and cache the result
+    const decks = await deckStore.getAll();
+    await deckCache.setAll(decks);
     return NextResponse.json({ success: true, data: decks });
   } catch (error) {
     console.error('Error fetching decks:', error);
@@ -32,7 +41,21 @@ export async function POST(request: NextRequest) {
       .replace(/\s+/g, '-')
       .trim();
 
-    const newDeck = deckStore.create(fileName, validatedDeck);
+    // Check if deck already exists in cache first
+    const existingDeck = await deckCache.getOne(fileName);
+    if (existingDeck) {
+      return NextResponse.json(
+        { success: false, error: 'A deck with this name already exists' },
+        { status: 409 }
+      );
+    }
+
+    // Create deck in local store
+    const newDeck = await deckStore.create(fileName, validatedDeck);
+
+    // Update cache with all decks
+    const allDecks = await deckStore.getAll();
+    await deckCache.setAll(allDecks);
 
     return NextResponse.json({
       success: true,

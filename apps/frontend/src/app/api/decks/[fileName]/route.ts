@@ -1,28 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { deckStore } from '@/lib/deck-store';
 import { DeckSchema } from '@/shared/schemas/deck';
+import { deckCache } from '@/lib/redis-client';
 
 // GET /api/decks/[fileName] - Get a specific deck
 export async function GET(
   request: NextRequest,
-  { params }: { params: { fileName: string } }
+  { params }: { params: Promise<{ fileName: string }> }
 ) {
   try {
-    const { fileName } = params;
-    const deckData = deckStore.getOne(fileName);
-    
-    if (!deckData) {
+    const { fileName } = await params;
+
+    // Try Redis cache first
+    const cachedDeck = await deckCache.getOne(fileName);
+    if (cachedDeck) {
+      return NextResponse.json({ success: true, data: cachedDeck });
+    }
+
+    // Fallback to local store
+    const deck = await deckStore.getOne(fileName);
+    if (!deck) {
       return NextResponse.json(
         { success: false, error: 'Deck not found' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({
-      success: true,
-      data: deckData
-    });
-
+    return NextResponse.json({ success: true, data: deck });
   } catch (error) {
     console.error('Error fetching deck:', error);
     return NextResponse.json(
@@ -35,14 +39,20 @@ export async function GET(
 // PUT /api/decks/[fileName] - Update a specific deck
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { fileName: string } }
+  { params }: { params: Promise<{ fileName: string }> }
 ) {
   try {
-    const { fileName } = params;
+    const { fileName } = await params;
     const body = await request.json();
-    const validatedDeck = DeckSchema.parse(body);
     
-    const updatedDeck = deckStore.update(fileName, validatedDeck);
+    const validatedDeck = DeckSchema.parse(body);
+
+    // Update deck in local store
+    const updatedDeck = await deckStore.update(fileName, validatedDeck);
+
+    // Update cache
+    const allDecks = await deckStore.getAll();
+    await deckCache.setAll(allDecks);
 
     return NextResponse.json({
       success: true,
@@ -62,11 +72,17 @@ export async function PUT(
 // DELETE /api/decks/[fileName] - Delete a specific deck
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { fileName: string } }
+  { params }: { params: Promise<{ fileName: string }> }
 ) {
   try {
-    const { fileName } = params;
-    deckStore.delete(fileName);
+    const { fileName } = await params;
+
+    // Delete from local store
+    await deckStore.delete(fileName);
+
+    // Update cache
+    const allDecks = await deckStore.getAll();
+    await deckCache.setAll(allDecks);
 
     return NextResponse.json({
       success: true,

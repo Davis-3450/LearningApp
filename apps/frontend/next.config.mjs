@@ -15,7 +15,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   experimental: {
-    // ... existing experimental options can remain here
+    // Enable for better performance in production
+    optimizePackageImports: ['lucide-react'],
   },
   // Ensure monorepo files outside the app are traced correctly
   outputFileTracingRoot: resolve(__dirname, '../../'),
@@ -34,7 +35,24 @@ const nextConfig = {
       '@/shared': resolve(__dirname, '../../shared')
     };
     return config;
-  }
+  },
+  // Allow cross-origin requests in development
+  async headers() {
+    return [
+      {
+        source: '/api/:path*',
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          { key: 'Access-Control-Allow-Methods', value: 'GET, POST, PUT, DELETE, OPTIONS' },
+          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization, X-API-Key' },
+        ],
+      },
+    ];
+  },
+  // Configure environment variables for production
+  env: {
+    NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
+  },
 };
 
 export default nextConfig;

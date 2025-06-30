@@ -1,0 +1,19 @@
+{
+  "id": "test-deck-1751245071837",
+  "title": "Test Deck",
+  "description": "A test deck for API testing",
+  "concepts": [
+    {
+      "conceptType": "term",
+      "term": "API Testing",
+      "definition": "The process of verifying that an API works as expected",
+      "variations": [
+        {
+          "type": "example",
+          "text": "Testing HTTP endpoints to ensure they return correct responses"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}

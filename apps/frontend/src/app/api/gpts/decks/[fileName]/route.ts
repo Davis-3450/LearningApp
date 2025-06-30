@@ -1,23 +1,37 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import { DeckService } from '@/shared/lib/deck-service';
+import { deckCache } from '@/lib/redis-client';
 
-const getApiKey = (req: NextRequest) => {
-  return req.headers.get('X-API-Key');
+// Helper to extract API token from either "Authorization: Bearer <token>" or "X-API-Key" header
+const getApiKey = (req: NextRequest): string | null => {
+  const authHeader = req.headers.get('authorization');
+  if (authHeader && authHeader.toLowerCase().startsWith('bearer ')) {
+    return authHeader.slice(7).trim();
+  }
+  return req.headers.get('x-api-key');
 };
 
-const API_KEY = process.env.GPT_API_KEY;
+// Environment variable holding the shared secret
+const API_KEY = process.env.AGENT_SECRET;
 
 // GET /api/gpts/decks/[fileName] - Get a specific deck
 export async function GET(
   request: NextRequest,
-  { params }: { params: { fileName: string } }
+  { params }: { params: Promise<{ fileName: string }> }
 ) {
   if (getApiKey(request) !== API_KEY) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
   }
   try {
-    const { fileName } = params;
+    const { fileName } = await params;
+
+    // Try Redis cache first
+    const cachedDeck = await deckCache.getOne(fileName);
+    if (cachedDeck) {
+      return NextResponse.json({ success: true, data: cachedDeck });
+    }
+
+    // Fallback to filesystem
     const deck = await DeckService.loadDeck(fileName);
     
     if (!deck) {
@@ -27,9 +41,16 @@ export async function GET(
       );
     }
 
+    const deckData = { fileName, deck };
+    
+    // Cache the result for future requests
+    const allDecks = await deckCache.getAll() || [];
+    const updatedDecks = [...allDecks.filter(d => d.fileName !== fileName), deckData];
+    await deckCache.setAll(updatedDecks);
+
     return NextResponse.json({
       success: true,
-      data: { fileName, deck }
+      data: deckData
     });
 
   } catch (error) {

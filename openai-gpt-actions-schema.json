@@ -1,0 +1,342 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Learning App API for GPT Actions",
+    "description": "API for managing learning decks in the Learning App. Allows GPTs to list, view, create, and manage educational content.",
+    "version": "v1.2.0"
+  },
+  "servers": [
+    {
+      "url": "https://learningapp-one.vercel.app/"
+    }
+  ],
+  "paths": {
+    "/api/gpts/decks": {
+      "get": {
+        "operationId": "listDecks",
+        "summary": "Get all available learning decks",
+        "description": "Retrieve a list of all available learning decks with their metadata.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of decks retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecksListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid API key"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createDeck",
+        "summary": "Create a new learning deck",
+        "description": "Create a new learning deck with educational concepts. Each deck contains terms and definitions for studying.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDeckRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deck created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeckResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A deck with this title already exists"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid API key"
+          }
+        }
+      }
+    },
+    "/api/gpts/decks/{fileName}": {
+      "get": {
+        "operationId": "getDeckByFileName",
+        "summary": "Get a specific deck by file name",
+        "description": "Retrieve detailed information about a specific deck using its file name identifier.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "description": "The file name of the deck to retrieve (e.g., 'spanish-basics', 'math-algebra')",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]+$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested deck retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeckResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deck not found"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid API key"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "UUID",
+        "description": "Bearer token used for authentication. Set the Authorization header to 'Bearer <AGENT_SECRET>'."
+      }
+    },
+    "schemas": {
+      "Variation": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "example",
+              "fun-fact",
+              "context",
+              "usage",
+              "synonym",
+              "antonym"
+            ],
+            "description": "Type of variation to provide additional context"
+          },
+          "text": {
+            "type": "string",
+            "description": "The variation content text"
+          }
+        },
+        "required": ["type", "text"],
+        "additionalProperties": false
+      },
+      "TermConcept": {
+        "type": "object",
+        "properties": {
+          "conceptType": {
+            "type": "string",
+            "enum": ["term"],
+            "description": "Type of concept - currently only 'term' is supported"
+          },
+          "term": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "description": "The term, word, or phrase to learn"
+          },
+          "definition": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000,
+            "description": "Clear and concise definition of the term"
+          },
+          "variations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variation"
+            },
+            "maxItems": 5,
+            "description": "Optional variations like examples, fun facts, or usage notes"
+          }
+        },
+        "required": ["conceptType", "term", "definition"],
+        "additionalProperties": false
+      },
+      "CreateDeckRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "Title of the learning deck"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Optional description of what this deck teaches"
+          },
+          "concepts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TermConcept"
+            },
+            "minItems": 1,
+            "maxItems": 50,
+            "description": "Array of learning concepts (terms and definitions)"
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": ["beginner", "intermediate", "advanced"],
+            "description": "Difficulty level of the content"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10,
+            "description": "Optional tags for categorization"
+          }
+        },
+        "required": ["title", "concepts"],
+        "additionalProperties": false
+      },
+      "Deck": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the deck"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the learning deck"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of what this deck teaches"
+          },
+          "concepts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TermConcept"
+            },
+            "description": "Array of learning concepts"
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": ["beginner", "intermediate", "advanced"],
+            "description": "Difficulty level of the content"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tags for categorization"
+          },
+          "version": {
+            "type": "integer",
+            "description": "Version number of the deck"
+          }
+        },
+        "required": ["id", "title", "concepts"],
+        "additionalProperties": false
+      },
+      "DeckWithFileName": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "description": "File name identifier for the deck"
+          },
+          "deck": {
+            "$ref": "#/components/schemas/Deck"
+          }
+        },
+        "required": ["fileName", "deck"],
+        "additionalProperties": false
+      },
+      "DecksListResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicates if the request was successful"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeckWithFileName"
+            },
+            "description": "Array of decks with their file names"
+          }
+        },
+        "required": ["success", "data"],
+        "additionalProperties": false
+      },
+      "DeckResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicates if the request was successful"
+          },
+          "data": {
+            "$ref": "#/components/schemas/DeckWithFileName"
+          },
+          "message": {
+            "type": "string",
+            "description": "Optional success message"
+          }
+        },
+        "required": ["success", "data"],
+        "additionalProperties": false
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [false],
+            "description": "Always false for error responses"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message describing what went wrong"
+          }
+        },
+        "required": ["success", "error"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ]
+}

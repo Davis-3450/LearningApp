@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/frontend/package.json",
+      "use": "@vercel/next",
+      "config": {
+        "projectSettings": {
+          "framework": "nextjs"
+        }
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "apps/frontend/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "apps/frontend/$1"
+    }
+  ],
+  "functions": {
+    "apps/frontend/src/app/api/**/*.ts": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "installCommand": "bun install",
+  "buildCommand": "cd apps/frontend && bun run build",
+  "outputDirectory": "apps/frontend/.next"
+}
