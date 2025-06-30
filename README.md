@@ -37,3 +37,10 @@ We will have a separate mode for soroban like math challenges with a graphical i
    The deck will be saved as a JSON file under `shared/data/decks`.
 3. You can also create deck JSON files manually. Use `shared/data/decks/spanish-basics.json`
    as a template and place additional files in the same directory.
+
+## Run with Turbo
+```bash
+bun i
+turbo dev
+turbo run build
+```
