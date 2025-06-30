@@ -1,8 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { 
+  useDecks, 
+  useDeleteDeck, 
+  useImportDeck 
+} from '@/lib/hooks/use-decks';
 import { DecksAPI } from '@/lib/api/decks';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -41,6 +46,7 @@ import {
   QuickStartCard
 } from '@/components/ui/common-cards';
 import { PostDeckDialog } from '@/components/ui/post-deck-dialog';
+import { toast } from 'sonner';
 
 interface DeckWithFileName {
   fileName: string;
@@ -49,108 +55,52 @@ interface DeckWithFileName {
 
 export default function DecksPage() {
   const router = useRouter();
-  const [decks, setDecks] = useState<DeckWithFileName[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [importing, setImporting] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [postDialog, setPostDialog] = useState<{ isOpen: boolean; fileName?: string; deck?: Deck }>({ 
     isOpen: false 
   });
 
-  // Load all decks
-  const loadDecks = async () => {
-    console.log('🚀 Starting loadDecks...');
-    setLoading(true);
-    try {
-      console.log('📡 Calling DecksAPI.getAll()...');
-      const response = await DecksAPI.getAll();
-      console.log('🔍 Raw API Response:', response);
-      console.log('🔍 Response.success:', response.success);
-      console.log('🔍 Response.data exists:', !!response.data);
-      console.log('🔍 Response.data length:', response.data?.length);
-      console.log('🔍 Response.data type:', typeof response.data);
-      console.log('🔍 Response.data:', response.data);
-      
-      if (response.success && response.data) {
-        console.log('✅ Conditions met, setting decks to:', response.data);
-        setDecks(response.data);
-        console.log('✅ setDecks called successfully');
-      } else {
-        console.error('❌ Conditions not met:');
-        console.error('❌ response.success:', response.success);
-        console.error('❌ response.data:', response.data);
-        console.error('❌ Full response:', response);
-      }
-    } catch (error) {
-      console.error('❌ Exception in loadDecks:', error);
-      console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack');
-    } finally {
-      console.log('🏁 Setting loading to false');
-      setLoading(false);
-    }
-  };
+  // React Query hooks for data management
+  const { data: decks = [], isLoading, error, refetch } = useDecks();
+  const deleteDeckMutation = useDeleteDeck();
+  const importDeckMutation = useImportDeck();
 
-  useEffect(() => {
-    loadDecks();
-  }, []);
-
-  // Debug logging when state changes
-  useEffect(() => {
-    console.log('🔍 Current decks state:', decks);
-    console.log('🔍 Decks length:', decks.length);
-    console.log('🔍 Loading state:', loading);
-  }, [decks, loading]);
-
-  // Handle file import
+  // Handle file import using React Query mutation
   const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    setImporting(true);
     try {
-      const response = await DecksAPI.import(file);
-      if (response.success) {
-        await loadDecks(); // Refresh the list
-        alert('Deck imported successfully!');
-      } else {
-        alert(`Import failed: ${response.error}`);
-      }
+      await importDeckMutation.mutateAsync(file);
+      toast.success('Deck imported successfully!');
     } catch (error) {
-      console.error(error);
-      alert('Import failed: Network error');
+      toast.error('Import failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
-      setImporting(false);
       // Reset file input
       event.target.value = '';
     }
   };
 
-  // Handle deck deletion
+  // Handle deck deletion using React Query mutation
   const handleDelete = async (fileName: string, deckTitle: string) => {
     if (!confirm(`Are you sure you want to delete "${deckTitle}"?`)) return;
 
     try {
-      const response = await DecksAPI.delete(fileName);
-      if (response.success) {
-        await loadDecks(); // Refresh the list
-        alert('Deck deleted successfully!');
-      } else {
-        alert(`Delete failed: ${response.error}`);
-      }
+      await deleteDeckMutation.mutateAsync(fileName);
+      toast.success('Deck deleted successfully!');
     } catch (error) {
-      console.error(error);
-      alert('Delete failed: Network error');
+      toast.error('Delete failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 
-  // Handle deck export
+  // Handle deck export (unchanged - no server state involved)
   const handleExport = async (fileName: string, deck: Deck) => {
     try {
       await DecksAPI.export(fileName, deck);
     } catch (error) {
       console.error(error);
-      alert('Export failed');
+      toast.error('Export failed');
     }
   };
 
@@ -159,10 +109,8 @@ export default function DecksPage() {
     const matchesSearch = deck.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          (deck.description && deck.description.toLowerCase().includes(searchQuery.toLowerCase()));
     if (filterType === 'all') return matchesSearch;
-    return matchesSearch && (deck as any).difficulty === filterType;
+    return matchesSearch && deck.difficulty === filterType;
   });
-  
-  console.log('🎯 FINAL: decks.length:', decks.length, 'filteredDecks.length:', filteredDecks.length);
 
   // Enhanced Deck Card Component with actions
   const DeckCardWithActions = ({ fileName, deck }: DeckWithFileName) => (
@@ -233,6 +181,7 @@ export default function DecksPage() {
                 size="sm"
                 className="h-6 text-xs px-2 text-destructive hover:text-destructive"
                 onClick={() => handleDelete(fileName, deck.title)}
+                disabled={deleteDeckMutation.isPending}
               >
                 <Trash2 className="h-3 w-3" />
               </Button>
@@ -243,7 +192,26 @@ export default function DecksPage() {
     </Card>
   );
 
-  if (loading) {
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-lg font-semibold mb-2">Failed to load decks</h2>
+          <p className="text-muted-foreground mb-4">
+            {error instanceof Error ? error.message : 'An unknown error occurred'}
+          </p>
+          <Button onClick={() => refetch()}>
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Loading state
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex items-center gap-2">
@@ -278,9 +246,7 @@ export default function DecksPage() {
         </SearchHeader>
 
         <PageContent>
-          {loading ? (
-            <LoadingGrid count={6} />
-          ) : filteredDecks.length > 0 ? (
+          {filteredDecks.length > 0 ? (
             <ContentGrid>
               {filteredDecks.map(({ fileName, deck }) => (
                 <DeckCardWithActions key={deck.id} fileName={fileName} deck={deck} />
@@ -367,11 +333,11 @@ export default function DecksPage() {
                     onChange={handleImport}
                     className="hidden"
                     id="deck-import"
-                    disabled={importing}
+                    disabled={importDeckMutation.isPending}
                   />
-                  <Button asChild disabled={importing}>
+                  <Button asChild disabled={importDeckMutation.isPending}>
                     <label htmlFor="deck-import" className="cursor-pointer">
-                      {importing ? (
+                      {importDeckMutation.isPending ? (
                         <>
                           <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
                           Importing...
@@ -460,8 +426,13 @@ export default function DecksPage() {
                     <h4 className="font-medium">Refresh All Decks</h4>
                     <p className="text-sm text-muted-foreground">Reload all decks from storage</p>
                   </div>
-                  <Button variant="outline" size="sm" onClick={loadDecks}>
-                    <RefreshCw className="mr-2 h-4 w-4" />
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => refetch()}
+                    disabled={isLoading}
+                  >
+                    <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
                     Refresh
                   </Button>
                 </div>
@@ -479,28 +450,28 @@ export default function DecksPage() {
       label: 'My Decks',
       shortLabel: 'Browse',
       icon: FolderOpen,
-      content: <BrowseContent />
+      content: BrowseContent()
     },
     {
       id: 'create',
       label: 'Create',
       shortLabel: 'Create',
       icon: Plus,
-      content: <CreateContent />
+      content: CreateContent()
     },
     {
       id: 'import-export',
       label: 'Import/Export',
       shortLabel: 'Import',
       icon: Archive,
-      content: <ImportExportContent />
+      content: ImportExportContent()
     },
     {
       id: 'manage',
       label: 'Manage',
       shortLabel: 'Manage',
       icon: Settings,
-      content: <ManagementContent />
+      content: ManagementContent()
     }
   ];
 
@@ -521,7 +492,7 @@ export default function DecksPage() {
           isOpen={postDialog.isOpen}
           onClose={() => setPostDialog({ isOpen: false })}
           onSuccess={() => {
-            console.log('Deck posted successfully!');
+            toast.success('Deck posted successfully!');
             setPostDialog({ isOpen: false });
           }}
         />

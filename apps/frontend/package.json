@@ -39,8 +39,7 @@
     "sonner": "^2.0.5",
     "tailwind-merge": "^3.3.0",
     "uuid": "^11.1.0",
-    "zod": "^3.25.57",
-    "zustand": "^5.0.6"
+    "zod": "^3.25.57"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

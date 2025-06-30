@@ -88,7 +88,7 @@ export default function CreateDeck() {
       estimatedTime: Math.ceil(cards.length * 1.5) // Rough estimate
     };
 
-    console.log('Created deck:', newDeck);
+            // Deck created successfully
     alert('Deck created successfully! (This is a mock save)');
     router.push('/');
   };

@@ -100,7 +100,7 @@ export function DeckCard({
         onClose={() => setShowPostDialog(false)}
         onSuccess={() => {
           // Optionally refresh the page or show success message
-          console.log('Deck posted successfully!');
+          // Deck posted successfully - handled by parent component
         }}
       />
     </Card>
